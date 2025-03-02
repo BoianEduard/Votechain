@@ -1,4 +1,3 @@
-// models/voterRegistration.js (with composite primary key)
 export default (sequelize, DataTypes) => {
     return sequelize.define('voterRegistration', {
       status: {

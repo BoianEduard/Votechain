@@ -9,7 +9,7 @@
  * @property {string} position - The position the candidate is running for. This field is optional.
  * @property {string} description - A description of the candidate. This field is optional.
  */
-export default (sequelize, DataTypes) => {
+export default (sequelize, DataTypes, UUIDV4) => {
     return sequelize.define('candidate', {
       id: {
         type: DataTypes.UUID,

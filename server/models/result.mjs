@@ -20,7 +20,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'Elections',
+          model: 'elections',
           key: 'id',
         },
         onDelete: 'CASCADE',
