@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import authThunks from '../../redux/thunks/authThunks';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -7,29 +10,27 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch = useDispatch();
+  const { errorMessage, loading } = useSelector((state) => state.auth);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validare simplă
     if (!email || !password) {
       setError('Please enter both email and password');
       return;
     }
 
+    setIsLoading(true);
+    setError('');
+
     try {
-      setIsLoading(true);
-      setError('');
-
-      // Simulare login (înlocuiește cu apel API real)
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulează un delay
-      console.log('Logged in with:', { email, password });
-
-      // Resetare formular după login
+      await dispatch(authThunks.loginUser({ email, password }));
       setEmail('');
       setPassword('');
       alert('Login successful!');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError(errorMessage || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -44,46 +45,42 @@ const LoginPage = () => {
         {error && <div className="login-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+
           <div className="form-group">
-            <label htmlFor="email" className="visually-hidden">
-              Email address
-            </label>
-            <div className="input-with-icon">
-              <span className="input-icon">📧</span>
-              <input
-                type="email"
-                id="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isLoading}
-                required
-              />
-            </div>
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
+              required
+            />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="visually-hidden">
-              Password
-            </label>
-            <div className="input-with-icon">
-              <span className="input-icon">🔒</span>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={isLoading}
-                required
-              />
-            </div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+              required
+            />
           </div>
 
           <button type="submit" className="login-button" disabled={isLoading}>
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
+
         </form>
+
+       <p className="signup-link"> 
+        Don't have an account? <Link to ="/signup">Sign up!</Link> 
+        </p>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@
  * @property {string} passwordHash - The hashed password of the user. This field is required.  
  * @property {string} token - The authentication token for the user. This field is optional.
  */ 
-export default (sequelize, DataTypes) => {
+export default (sequelize, DataTypes, UUIDV4) => {
     return sequelize.define('user', {
       id: {
         type: DataTypes.UUID,
@@ -24,16 +24,21 @@ export default (sequelize, DataTypes) => {
           isEmail: true
         },
       },
-      passwordHash: {
+      firstName: {
+        type:DataTypes.STRING,
+        allowNull:false,
+      },
+      lastName: {
+        type:DataTypes.STRING,
+        allowNull:false,
+      },
+      password: {
         type: DataTypes.STRING,
         allowNull: false
       },
       publicKey: {
-        type:DataTypes.STRING,
+        type:DataTypes.TEXT,
         allowNull:false
-      },
-      token: {
-        type: DataTypes.STRING
-      },
+      }
     })
   }
