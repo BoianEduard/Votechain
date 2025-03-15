@@ -17,6 +17,8 @@ const auth = (req, res, next) => {
     req.user = {
       userId: decoded.userId,
       email: decoded.email,
+      firstName:decoded.firstName,
+      lastName:decoded.lastName,
       publicKey: decoded.publicKey
     };
     
@@ -30,7 +32,6 @@ const auth = (req, res, next) => {
       return res.status(401).json({ message: 'Invalid token. Please login again.' });
     }
     
-    // For any other errors
     console.error('Auth middleware error:', error);
     res.status(500).json({ message: 'Internal server error during authentication' });
   }

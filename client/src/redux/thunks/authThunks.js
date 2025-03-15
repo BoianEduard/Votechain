@@ -1,10 +1,7 @@
 import { loginStart, loginSuccess, loginFailure, logout } from "../slices/authSlice";
 import authAPI from "../../api/auth";
 
-/**
- * Login user and dispatch appropriate Redux actions based on success/failure.
- * @param {Object} credentials - The login credentials (email, password).
- */
+
 const loginUser = (credentials) => async (dispatch) => {
   dispatch(loginStart()); // Start login process
 
@@ -17,10 +14,7 @@ const loginUser = (credentials) => async (dispatch) => {
   }
 };
 
-/**
- * Register user and dispatch appropriate Redux actions based on success/failure.
- * @param {Object} userData - The registration data (email, password, etc.).
- */
+
 const registerUser = (userData) => async (dispatch) => {
   dispatch(loginStart()); // Start registration process
 
@@ -34,17 +28,13 @@ const registerUser = (userData) => async (dispatch) => {
   }
 };
 
-/**
- * Logout user and clear localStorage.
- */
+
 const logoutUser = () => (dispatch) => {
   localStorage.removeItem('token'); // Clear token from localStorage
   dispatch(logout()); // Dispatch logout action to update Redux state
 };
 
-/**
- * Check if the user is authenticated by verifying token in localStorage.
- */
+
 const checkAuthStatus = () => (dispatch) => {
   const token = localStorage.getItem('token');
   

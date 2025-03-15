@@ -1,0 +1,91 @@
+/* Card styling */
+.nav-button-container {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.nav-button-container:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #3182ce, #63b3ed);
+}
+
+.nav-button-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(49, 130, 206, 0.1);
+}
+
+/* Button styling */
+.nav-button {
+  background: linear-gradient(90deg, #3182ce, #4299e1);
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+  padding: 1rem 1.75rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button:hover {
+  background: linear-gradient(90deg, #2b6cb0, #3182ce);
+  box-shadow: 0 6px 15px rgba(49, 130, 206, 0.35);
+}
+
+.nav-button:active {
+  transform: translateY(2px);
+}
+
+.nav-button-description {
+  color: #718096;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-container {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.nav-button-container:nth-child(1) {
+  animation: fadeIn 0.7s ease-out;
+}
+
+.nav-button-container:nth-child(2) {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.nav-button-container:nth-child(3) {
+  animation: fadeIn 0.9s ease-out;
+}

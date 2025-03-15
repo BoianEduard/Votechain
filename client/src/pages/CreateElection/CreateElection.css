@@ -1,0 +1,388 @@
+.create-election-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header .title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #2c5282;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.025em;
+  position: relative;
+  display: inline-block;
+}
+
+.header .title:after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 4px;
+  background-color: #4299e1;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.header .subtitle {
+  font-size: 1.125rem;
+  color: #4a5568;
+  margin-top: 1.25rem;
+}
+
+/* Progress Tracker */
+.progress-tracker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  color: #718096;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-number {
+  background-color: #3182ce;
+  color: white;
+  box-shadow: 0 0 0 5px rgba(49, 130, 206, 0.2);
+}
+
+.progress-step p {
+  font-size: 0.875rem;
+  color: #718096;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active p {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.progress-line {
+  flex-grow: 1;
+  height: 3px;
+  background-color: #e2e8f0;
+  margin: 0 10px;
+  margin-top: -36px;
+  z-index: 0;
+}
+
+.form-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  position: relative;
+}
+
+.form-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #3182ce, #63b3ed);
+  border-radius: 6px 6px 0 0;
+}
+
+.form-step h2 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.form-hint {
+  color: #718096;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #f7fafc;
+  border-radius: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+/* Candidate Section */
+.candidate-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.candidate-input {
+  flex-grow: 1;
+  margin-bottom: 0;
+  margin-right: 1rem;
+}
+
+.btn-remove {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-remove:hover {
+  background-color: #c53030;
+}
+
+.btn-remove:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.btn-add {
+  background-color: transparent;
+  color: #3182ce;
+  border: 2px dashed #cbd5e0;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  margin: 1rem 0 2rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-add:hover {
+  border-color: #4299e1;
+  background-color: rgba(66, 153, 225, 0.05);
+}
+
+/* Review Section */
+.review-section {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.review-section h3 {
+  font-size: 1.125rem;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.review-item {
+  margin-bottom: 0.75rem;
+}
+
+.candidate-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.candidate-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.candidate-list li:last-child {
+  border-bottom: none;
+}
+
+.blockchain-notice {
+  display: flex;
+  align-items: center;
+  background-color: #ebf8ff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 2rem 0;
+}
+
+.notice-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.blockchain-notice p {
+  margin: 0;
+  color: #2c5282;
+  font-size: 0.95rem;
+}
+
+/* Button Styles */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.btn-back {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #cbd5e0;
+}
+
+.btn-next, .btn-create {
+  background: linear-gradient(90deg, #3182ce, #4299e1);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(66, 153, 225, 0.15);
+  transition: all 0.2s;
+}
+
+.btn-next:hover, .btn-create:hover {
+  background: linear-gradient(90deg, #2b6cb0, #3182ce);
+  box-shadow: 0 6px 8px rgba(49, 130, 206, 0.25);
+}
+
+.btn-create {
+  background: linear-gradient(90deg, #38a169, #48bb78);
+}
+
+.btn-create:hover {
+  background: linear-gradient(90deg, #2f855a, #38a169);
+}
+
+@media (max-width: 768px) {
+  .form-row {
+      flex-direction: column;
+      gap: 0;
+  }
+  
+  .progress-tracker {
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+  }
+  
+  .progress-line {
+      width: 3px;
+      height: 20px;
+      margin: 0;
+  }
+  
+  .progress-step {
+      flex-direction: row;
+      width: 100%;
+      gap: 1rem;
+  }
+  
+  .form-card {
+      padding: 1.5rem;
+  }
+  
+  .form-actions {
+      flex-direction: column;
+      gap: 1rem;
+  }
+  
+  .btn-back, .btn-next, .btn-create {
+      width: 100%;
+  }
+}

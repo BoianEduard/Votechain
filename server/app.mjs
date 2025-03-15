@@ -1,10 +1,10 @@
 import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/authRoutes.mjs'
+import electionRoutes from './routes/electionRoutes.mjs'
 
 const app = express()
 
-// Fix the CORS configuration
 const corsOptions = {
   origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -13,11 +13,11 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
-// Apply CORS middleware
 app.use(cors(corsOptions))
 app.use(express.json())
 
-// Fix the route path with a leading slash
 app.use("/api/auth", authRoutes)
+app.use("/api/election", electionRoutes)
+app.use("/api/candidates",authRoutes)
 
 export default app
