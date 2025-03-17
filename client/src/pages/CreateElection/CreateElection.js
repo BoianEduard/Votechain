@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as electionThunks from '../../redux/thunks/electionThunks';
-import { validateSingleDate, validateElectionForm, parseWhitelist } from '../../utils/validators';
+import { validateSingleDate, validateElectionForm, parseWhitelist, validateDates, validateCandidates, validateTitleDescription, validateWhitelist } from '../../utils/validators';
 import ElectionForm from '../../components/ElectionForm/ElectionForm';
 import './CreateElection.css';
 
@@ -56,23 +56,41 @@ const CreateElection = () => {
 
   const validateStep = () => {
     if (step === 1) {
-      if (!formData.title.trim() || !formData.description.trim()) {
-        alert('Title and Description are required.');
+      const dateValidation = validateDates(formData.startDate, formData.endDate);
+      if (!dateValidation.isValid) {
+        setError(dateValidation.error);
+        setIsLoading(false);
+        alert('Error: ' + dateValidation.error);
         return false;
       }
-      
-      for (const field of ['startDate', 'endDate']) {
-        const validation = validateSingleDate(formData[field], field === 'startDate' ? 'Start date' : 'End date');
-        if (!validation.isValid) {
-          alert(validation.error);
-          return false;
-        }
+  
+      const titleDescValidation = validateTitleDescription(formData.title, formData.description);
+      if (!titleDescValidation.isValid) {
+        setError(titleDescValidation.error);
+        setIsLoading(false);
+        alert('Error: ' + titleDescValidation.error);
+        return false;
       }
     }
     
-    if (step === 2 && formData.candidates.some(candidate => !candidate.trim())) {
-      alert('Each candidate must have a name.');
-      return false;
+    if (step === 2) {
+      const candidateValidation = validateCandidates(formData.candidates);
+      if (!candidateValidation.isValid) {
+        setError(candidateValidation.error);
+        setIsLoading(false);
+        alert('Error: ' + candidateValidation.error);
+        return false;
+      }
+    }
+
+    if (step === 3 && formData.eligibilityType == 'whitelist') {
+      const whiteListValidation = validateWhitelist(formData.whitelist); 
+      if(!whiteListValidation.isValid) {
+        setError(whiteListValidation.error)
+        setIsLoading(false)
+        alert(whiteListValidation.error)
+        return false
+      }
     }
     
     return true;
@@ -80,6 +98,7 @@ const CreateElection = () => {
 
   const nextStep = () => {
     if (validateStep()) {
+      setError(null)
       setStep(step + 1);
     }
   };

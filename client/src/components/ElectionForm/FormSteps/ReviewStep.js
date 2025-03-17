@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 const ReviewStep = ({ formData, loading, error, prevStep }) => {
   return (
     <div className="form-step">
-      <h2>Review Election Details</h2>
+      <h2> Review Election Details </h2>
       
       <div className="review-section">
-        <h3>Basic Information</h3>
+        <h3> Basic Information </h3>
         <div className="review-item">
-          <strong>Title:</strong> {formData.title || 'Not specified'}
+          <strong>Title: </strong> {formData.title || 'Not specified'}
         </div>
         <div className="review-item">
           <strong>Description:</strong> {formData.description || 'Not specified'}
@@ -37,7 +37,6 @@ const ReviewStep = ({ formData, loading, error, prevStep }) => {
         <div className="review-item">
           <strong>Eligibility:</strong> {
             formData.eligibilityType === 'all' ? 'All Registered Users' :
-            formData.eligibilityType === 'id' ? 'ID Verification Required' :
             'Specific Whitelist'
           }
         </div>
