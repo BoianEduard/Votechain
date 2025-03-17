@@ -26,45 +26,35 @@ export const validateElectionForm = (formData) => {
   
     return { isValid: true, error: "" };
   };
+
+  //Basic title and description check
+  export const validateTitleDescription = (title, description) => {
+    if (!title.trim()) {
+      return { isValid: false, error: "Election title is required!"}
+    }
+  
+    if(!description.trim()) {
+      return { isValid: false, error: "Description is required!"}
+    }
+    
+    return { isValid: true, error: "" };
+  }
   
   export const validateDates = (startDate, endDate) => {
-    if (!startDate) {
-      return { isValid: false, error: "Start date is required" };
-    }
+    const startValidation = validateSingleDate(startDate, "Start date");
+    if (!startValidation.isValid) return startValidation;
   
-    if (!endDate) {
-      return { isValid: false, error: "End date is required" };
-    }
-  
-    // Validate date format
-    const datePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-    
-    if (!datePattern.test(startDate)) {
-      return { isValid: false, error: "Start date has an invalid format" };
-    }
-    
-    if (!datePattern.test(endDate)) {
-      return { isValid: false, error: "End date has an invalid format" };
-    }
-  
-    // Validate year
-    const yearPattern = /^\d{4}-/;
-    if (!yearPattern.test(startDate)) {
-      return { isValid: false, error: "Start date must have a valid 4-digit year" };
-    }
-  
-    if (!yearPattern.test(endDate)) {
-      return { isValid: false, error: "End date must have a valid 4-digit year" };
-    }
+    const endValidation = validateSingleDate(endDate, "End date");
+    if (!endValidation.isValid) return endValidation;
   
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-    
+    const now = new Date();
+  
     if (startDateObj >= endDateObj) {
       return { isValid: false, error: "End date must be after start date" };
     }
   
-    const now = new Date();
     if (startDateObj < now) {
       return { isValid: false, error: "Start date must be in the future" };
     }
@@ -72,7 +62,8 @@ export const validateElectionForm = (formData) => {
     return { isValid: true, error: "" };
   };
   
-
+  
+  //Validate candiddate list
   export const validateCandidates = (candidates) => {
     const validCandidates = candidates.filter(candidate => candidate.trim() !== "");
     
@@ -83,7 +74,7 @@ export const validateElectionForm = (formData) => {
     return { isValid: true, error: "" };
   };
   
-
+  //Validate voter whitelist
   export const validateWhitelist = (whitelist) => {
     if (!whitelist.trim()) {
       return { isValid: false, error: "Whitelist is required when eligibility type is set to whitelist" };
@@ -117,6 +108,7 @@ export const validateElectionForm = (formData) => {
   };
   
 
+  //valid date check
   export const validateSingleDate = (date, fieldName) => {
     if (!date) {
       return { isValid: false, error: `${fieldName} is required` };

@@ -15,7 +15,6 @@ const SettingsStep = ({ formData, handleInputChange, nextStep, prevStep }) => {
           onChange={handleInputChange}
         >
           <option value="all">All Registered Users</option>
-          <option value="id">ID Verification Required</option>
           <option value="whitelist">Specific Whitelist</option>
         </select>
       </div>

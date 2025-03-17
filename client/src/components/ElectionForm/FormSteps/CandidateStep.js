@@ -1,4 +1,3 @@
-// src/components/ElectionForm/FormSteps/CandidatesStep.js
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,7 +12,7 @@ const CandidatesStep = ({
   return (
     <div className="form-step">
       <h2>Candidates</h2>
-      <p className="form-hint">Add at least two candidates for your election</p>
+      <p className="form-hint"> Add at least two candidates for your election </p>
       
       {formData.candidates.map((candidate, index) => (
         <div key={index} className="candidate-row">
@@ -61,7 +60,7 @@ CandidatesStep.propTypes = {
   addCandidate: PropTypes.func.isRequired,
   removeCandidate: PropTypes.func.isRequired,
   nextStep: PropTypes.func.isRequired,
-  prevStep: PropTypes.func.isRequired
+  prevStep: PropTypes.func.isRequired,
 };
 
 export default CandidatesStep;
