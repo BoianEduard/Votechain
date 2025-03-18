@@ -1,10 +1,10 @@
-// Importă combineReducers și reducer-ele tale
 import { combineReducers } from 'redux';
 import authReducer from './slices/authSlice';
+import userReducer from './slices/userSlice'
 
-// Combină reducer-ele într-un singur reducer principal
 const rootReducer = combineReducers({
   auth: authReducer,
+  user: userReducer
 });
 
 export default rootReducer

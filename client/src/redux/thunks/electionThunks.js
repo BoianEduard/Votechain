@@ -10,12 +10,11 @@ export const createElection = (details) => async (dispatch) => {
     } catch (error) {
         const serializedError = {
             message: error.message || "Creating election failed",
-            // Only include safe, serializable properties
             code: error.code,
             status: error.response?.status
         };
         dispatch(electionSlice.createElectionFail(serializedError));
-        throw error; // Re-throw so we can catch it in the component
+        throw error;
     }
 };
 
@@ -26,10 +25,8 @@ export const addCandidates = (candidateData) => async (dispatch) => {
         dispatch(electionSlice.addCandidatesSuccess(data));
         return data;
     } catch (error) {
-        // Handle error properly for Redux
         const serializedError = {
             message: error.message || "Adding candidates failed",
-            // Only include safe, serializable properties
             code: error.code,
             status: error.response?.status
         };
@@ -45,10 +42,8 @@ export const addWhitelist = (whitelistData) => async (dispatch) => {
         dispatch(electionSlice.addWhitelistSuccess(data));
         return data;
     } catch (error) {
-        // Handle error properly for Redux
         const serializedError = {
             message: error.message || "Adding whitelist failed",
-            // Only include safe, serializable properties
             code: error.code,
             status: error.response?.status
         };

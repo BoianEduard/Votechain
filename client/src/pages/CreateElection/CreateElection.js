@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as electionThunks from '../../redux/thunks/electionThunks';
+import * as userSlice from '../../redux/slices/userSlice'
 import { validateSingleDate, validateElectionForm, parseWhitelist, validateDates, validateCandidates, validateTitleDescription, validateWhitelist } from '../../utils/validators';
 import ElectionForm from '../../components/ElectionForm/ElectionForm';
 import './CreateElection.css';
@@ -25,6 +26,8 @@ const CreateElection = () => {
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState(1);
+  const userId = useSelector((state) => state.user.id);
+  console.log("User ID at component level:", userId);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -127,6 +130,7 @@ const CreateElection = () => {
         eligibilityType: formData.eligibilityType,
         anonymousResults: formData.anonymousResults,
         realTimeResults: formData.realTimeResults,
+        creatorId: userId
       };
       
       const result = await dispatch(electionThunks.createElection(electionData));
