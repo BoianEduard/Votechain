@@ -43,9 +43,9 @@ const login = async (req, res, next) => {
                 email: req.body.email
             }
         })
-        
+    
         if (user) {
-            const isValidPassword = await bcrypt.compare(req.body.password, user.passwordHash)
+            const isValidPassword = await bcrypt.compare(req.body.password, user.password)
             if (!isValidPassword) return res.status(401).json({message: "Invalid email or password"})
             
             const token = generateToken(user)
@@ -66,7 +66,7 @@ const login = async (req, res, next) => {
             return res.status(401).json({message: "Invalid email or password"})
         }
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 }
 

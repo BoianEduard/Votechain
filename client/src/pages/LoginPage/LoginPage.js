@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import authThunks from '../../redux/thunks/authThunks';
 import './LoginPage.css';
 
@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { errorMessage, loading } = useSelector((state) => state.auth);
@@ -28,7 +29,7 @@ const LoginPage = () => {
       await dispatch(authThunks.loginUser({ email, password }));
       setEmail('');
       setPassword('');
-      alert('Login successful!');
+      navigate('/dashboard')
     } catch (err) {
       setError(errorMessage || 'Login failed. Please try again.');
     } finally {
