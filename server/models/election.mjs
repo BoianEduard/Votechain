@@ -14,37 +14,49 @@
  */
 
 export default (sequelize, DataTypes) => {
-    return sequelize.define('election', {
-      id: {
-        type:DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey:true
+  return sequelize.define('election', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: 'draft',
+      validate: {
+        isIn: [['draft', 'active', 'closed']],
       },
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: DataTypes.TEXT,
-      },
-      startDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      endDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.STRING,
-        defaultValue: 'draft',
-        validate: {
-          isIn: [['draft', 'active', 'closed']],
-        },
-      },
-      electionFee: {
-        type: DataTypes.DECIMAL(10, 2), // Stores monetary values with precision
-        allowNull: true, // Optional: If some elections don't require a fee
-      },
-    });
-  };
+    },
+    eligibilityType: {
+      type: DataTypes.ENUM('all', 'id', 'whitelist'),
+      allowNull: false,
+    },
+    anonymousResults: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    realTimeResults: {  
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    electionFee: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+  });
+};

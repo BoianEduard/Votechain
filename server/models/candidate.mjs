@@ -9,23 +9,34 @@
  * @property {string} position - The position the candidate is running for. This field is optional.
  * @property {string} description - A description of the candidate. This field is optional.
  */
-export default (sequelize, DataTypes) => {
-    return sequelize.define('candidate', {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        primaryKey: true
+export default (sequelize, DataTypes, UUIDV4) => {
+  return sequelize.define('candidate', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    position: {
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    electionId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'elections',
+        key: 'id'
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      position: {
-        type: DataTypes.STRING,
-      },
-      description: {
-        type: DataTypes.TEXT,
-      },
-    });
-  };
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    }
+  });
+};
+
   

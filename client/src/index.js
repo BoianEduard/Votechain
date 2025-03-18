@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './app/store';
+import store from "./redux/store"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,5 +15,4 @@ root.render(
   </React.StrictMode>
 );
 
-// Măsoară performanța aplicației (opțional)
 reportWebVitals(console.log);
