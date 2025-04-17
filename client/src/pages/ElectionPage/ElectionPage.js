@@ -8,50 +8,6 @@ const ElectionPage = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const { elections, loading, error } = useSelector(state => state.election);
-  // const [elections, setElections] = useState([
-  //   {
-  //     id: '1',
-  //     title: 'City Council Election 2024',
-  //     description: 'Annual election for city council representatives',
-  //     startDate: '2024-06-01',
-  //     endDate: '2024-06-15',
-  //     candidates: [
-  //       {
-  //         id: 'c1',
-  //         name: 'Jane Smith',
-  //         position: 'Council Member, District 3',
-  //         description: 'Experienced local community leader with 10+ years of public service'
-  //       },
-  //       {
-  //         id: 'c2',
-  //         name: 'John Doe',
-  //         position: 'Council Member, District 3',
-  //         description: 'Small business owner committed to local economic development'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'State Senate Special Election',
-  //     description: 'Special election to fill vacant state senate seat',
-  //     startDate: '2024-07-10',
-  //     endDate: '2024-07-24',
-  //     candidates: [
-  //       {
-  //         id: 'c3',
-  //         name: 'Maria Rodriguez',
-  //         position: 'State Senator',
-  //         description: 'Education policy expert with a focus on school funding reform'
-  //       },
-  //       {
-  //         id: 'c4',
-  //         name: 'Alex Chen',
-  //         position: 'State Senator',
-  //         description: 'Environmental lawyer advocating for climate action'
-  //       }
-  //     ]
-  //   }
-  // ]);
 
   useEffect(() => {
     dispatch(fetchAllElections());
