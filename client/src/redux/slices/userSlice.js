@@ -19,6 +19,7 @@ const userSlice = createSlice({
             state.error = null;
           },
         setUserSuccess(state, action) {
+            console.log("this is user id:" + action.payload.id);
             state.loading = false;
             state.id = action.payload.id;
             state.email = action.payload.email;

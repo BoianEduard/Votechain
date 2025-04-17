@@ -36,6 +36,16 @@ const generateToken = (user) => {
     )
 }
 
+const setCookieToken = (res, token) => {
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: false, 
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+        path: '/'
+    });
+}
+
 const login = async (req, res, next) => {
     try {
         const user = await models.User.findOne({
@@ -47,8 +57,9 @@ const login = async (req, res, next) => {
         if (user) {
             const isValidPassword = await bcrypt.compare(req.body.password, user.password)
             if (!isValidPassword) return res.status(401).json({message: "Invalid email or password"})
-            
-            const token = generateToken(user)
+
+            const token = generateToken(user);
+            setCookieToken(res, token);
             
             return res.status(200).json({
                 message: "Login successful!",
@@ -114,7 +125,19 @@ const register = async (req, res, next) => {
     }
 }
 
+const logout = (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/'
+    });
+
+    return res.status(200).json({ message: "Logged out successfully." });
+};
+
 export default {
     register,
-    login,    
+    login,
+    logout,
 }

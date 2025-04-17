@@ -69,3 +69,37 @@ export const addAll = (electionId) => async (dispatch) => {
         throw error;
     }
 }
+
+export const fetchAllElections = () => async (dispatch) => {
+    dispatch(electionSlice.fetchElectionsStart());
+    try {
+        const data = await electionAPI.getAllElections();
+        dispatch(electionSlice.fetchElectionsSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message: error.message || "Fetching elections failed",
+            code: error.code,
+            status: error.response?.status
+        };
+        dispatch(electionSlice.fetchElectionsFail(serializedError));
+        throw error;
+    }
+}
+
+export const fetchElectionDetails = (electionId) => async (dispatch) => {
+    dispatch(electionSlice.fetchElectionDetailsStart());
+    try {
+        const data = await electionAPI.getElection(electionId);
+        dispatch(electionSlice.fetchElectionDetailsSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message:error.message || "Fetching election details failed",
+            code: error.code,
+            status: error.response?.status
+        }
+        dispatch(electionSlice.fetchElectionDetailsFail(serializedError));
+        throw error;
+    }
+}
