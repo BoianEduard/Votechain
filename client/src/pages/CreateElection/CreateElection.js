@@ -1,184 +1,189 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import * as electionThunks from '../../redux/thunks/electionThunks';
-import * as userSlice from '../../redux/slices/userSlice'
-import { validateSingleDate, validateElectionForm, parseWhitelist, validateDates, validateCandidates, validateTitleDescription, validateWhitelist } from '../../utils/validators';
-import ElectionForm from '../../components/ElectionForm/ElectionForm';
-import './CreateElection.css';
+import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import * as electionThunk from "../../redux/thunks/electionThunks";
+import * as validator from "../../utils/validators";
+import ElectionForm from "../../components/ElectionCreate/ElectionForm";
+import './CreateElection.css'
 
 const CreateElection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    startDate: '',
-    endDate: '',
-    candidates: ['', ''],
-    eligibilityType: 'all',
-    whitelist: '',
-    anonymousResults: false,
-    realTimeResults: false,
-  });
-  
-  const [loading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    candidates:["",""],
+    eligibilityType: "all",
+    whitelist:"",
+    annonymousResults:"",
+    realTimeResults:"",
+  })
+
+  const [loading, setLoading] = useState(false);
+  const[error, setError] = useState("");
   const [step, setStep] = useState(1);
   const userId = useSelector((state) => state.user.id);
-  console.log("User ID at component level:", userId);
-
+  console.log("uSER ID: " + userId);
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+    const {name, value, type, checked} = e.target;
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
   const handleCandidateChange = (index, value) => {
-    const updatedCandidates = [...formData.candidates];
-    updatedCandidates[index] = value;
-    setFormData({
-      ...formData,
-      candidates: updatedCandidates,
+    const updatedCandidate = [...form.candidates];
+    updatedCandidate[index] = value;
+    setForm({
+      ...form,
+      candidates: updatedCandidate,
     });
   };
 
   const addCandidate = () => {
-    setFormData({ ...formData, candidates: [...formData.candidates, ''] });
+    setForm({ ...form, candidates: [...form.candidates, ''] });
   };
 
   const removeCandidate = (index) => {
-    if (formData.candidates.length > 2) {
-      const updatedCandidates = formData.candidates.filter((_, i) => i !== index);
-      setFormData({ ...formData, candidates: updatedCandidates });
+    if (form.candidates.length > 2) {
+      const updatedCandidates = form.candidates.filter((_, i) => i !== index);
+      setForm({ ...form, candidates: updatedCandidates });
     }
-  };
+  }
 
   const validateStep = () => {
     if (step === 1) {
-      const dateValidation = validateDates(formData.startDate, formData.endDate);
+      const dateValidation = validator.validateDates(form.startDate, form.endDate);
       if (!dateValidation.isValid) {
         setError(dateValidation.error);
-        setIsLoading(false);
-        alert('Error: ' + dateValidation.error);
+        setLoading(false);
+        alert("Error: " + dateValidation.error);
         return false;
       }
-  
-      const titleDescValidation = validateTitleDescription(formData.title, formData.description);
-      if (!titleDescValidation.isValid) {
-        setError(titleDescValidation.error);
-        setIsLoading(false);
-        alert('Error: ' + titleDescValidation.error);
+
+      const titleAndDescValidation = validator.validateTitleDescription(form.title,form.description)
+
+      if (!titleAndDescValidation.isValid) {
+        setError(titleAndDescValidation.error);
+        setLoading(false);
+        alert("Error: " + titleAndDescValidation.error);
         return false;
       }
     }
-    
-    if (step === 2) {
-      const candidateValidation = validateCandidates(formData.candidates);
+
+    else if (step === 2) {
+      const candidateValidation = validator.validateCandidates(form.candidates);
       if (!candidateValidation.isValid) {
         setError(candidateValidation.error);
-        setIsLoading(false);
-        alert('Error: ' + candidateValidation.error);
+        setLoading(false)
+        alert("Error: " + candidateValidation.error);
         return false;
       }
     }
 
-    if (step === 3 && formData.eligibilityType == 'whitelist') {
-      const whiteListValidation = validateWhitelist(formData.whitelist); 
-      if(!whiteListValidation.isValid) {
-        setError(whiteListValidation.error)
-        setIsLoading(false)
-        alert(whiteListValidation.error)
-        return false
+    else if (step === 3 && form.eligibilityType === 'whitelist') {
+      const whitelistValidation = validator.validateWhitelist(form.whitelist);
+      if (!whitelistValidation.isValid) {
+        setError(whitelistValidation.error);
+        setLoading(false)
+        alert("Error: " + whitelistValidation.error);
+        return false;
       }
     }
-    
+
     return true;
-  };
+  }
 
   const nextStep = () => {
-    if (validateStep()) {
-      setError(null)
+    if(validateStep()) {
+      setError(null);
       setStep(step + 1);
     }
-  };
+  }
 
-  const prevStep = () => setStep(step - 1);
+  const prevStep = () => {
+    setStep(step - 1);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
+    setLoading(true);
+    setError("");
 
-    const validation = validateElectionForm(formData);
+    const validation = validator.validateElectionForm(form);
     if (!validation.isValid) {
       setError(validation.error);
-      setIsLoading(false);
-      alert('Error: ' + validation.error);
+      setLoading(false);
+      alert("Error: " + validation.error);
       return;
     }
 
     try {
       const electionData = {
-        title: formData.title,
-        description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        eligibilityType: formData.eligibilityType,
-        anonymousResults: formData.anonymousResults,
-        realTimeResults: formData.realTimeResults,
-        creatorId: userId
-      };
-      
-      const result = await dispatch(electionThunks.createElection(electionData));
-      if (!result || !result.id) throw new Error('Failed to get election ID');
-      const electionId = result.id;
-
-      await dispatch(electionThunks.addCandidates({ electionId, candidates: formData.candidates }));
-
-      if (formData.eligibilityType === 'whitelist') {
-        const emails = parseWhitelist(formData.whitelist);
-        if (emails.length > 0) {
-          await dispatch(electionThunks.addWhitelist({ electionId, emails }));
-        }
-      } else {
-        await dispatch(electionThunks.addAll(electionId));
+        title: form.title,
+        description: form.description,
+        startDate: form.startDate,
+        endDate: form.endDate,
+        candidates: form.candidates,
+        eligibilityType: form.eligibilityType,
+        annonymousResults: form.candidates,
+        realTimeResults:form.realTimeResults,
+        creatorId: userId,
       }
 
-      alert('Election created successfully!');
-      navigate('/dashboard');
+      const result = await dispatch(electionThunk.createElection(electionData));
+
+      if(!result || !result.id) throw new Error('Something went wrong creating elections');
+
+      const electionId = result.id;
+      await dispatch(electionThunk.addCandidates({ electionId, candidates: form.candidates }));
+
+      if (form.eligibilityType === "whitelist") {
+        const emails = validator.parseWhitelist(form.whitelist);
+        if(emails.length > 0) {
+          await dispatch(electionThunk.addWhitelist(electionId, emails));
+        }
+      }
+      else {
+        await dispatch(electionThunk.addAll(electionId));
+      }
+      alert("Election created successfully.");
+      navigate("/dashboard");
     } catch (error) {
       console.error('Error creating election:', error);
       setError(error.message || 'Failed to create election');
       alert('Error: ' + (error.message || 'Failed to create election'));
-    } finally {
-      setIsLoading(false);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="create-election-container">
-      <div className="header">
-        <h1 className="title">Create New Election</h1>
-        <p className="subtitle">Set up a secure, blockchain-based election</p>
+      <div className="create-election-container">
+        <div className="header">
+          <h1 className="title"> Create new election </h1>
+          <p className="subtitle"> Set up a secure election process</p>
+        </div>
+
+        <ElectionForm
+            formData={form}
+            handleInputChange={handleInputChange}
+            handleCandidateChange={handleCandidateChange}
+            addCandidate={addCandidate}
+            removeCandidate={removeCandidate}
+            handleSubmit={handleSubmit}
+            loading={loading}
+            error={error}
+            step={step}
+            nextStep={nextStep}
+            prevStep={prevStep}
+        />
       </div>
-      <ElectionForm
-        formData={formData}
-        handleInputChange={handleInputChange}
-        handleCandidateChange={handleCandidateChange}
-        addCandidate={addCandidate}
-        removeCandidate={removeCandidate}
-        handleSubmit={handleSubmit}
-        loading={loading}
-        error={error}
-        step={step}
-        nextStep={nextStep}
-        prevStep={prevStep}
-      />
-    </div>
   );
 };
 

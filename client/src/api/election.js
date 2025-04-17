@@ -1,11 +1,30 @@
 import axios from "axios";
 import { API_URL } from "../config/config";
+import Cookies from 'js-cookie';
+
+const axiosInstance = axios.create({
+    baseURL: API_URL,
+    withCredentials: true
+});
+
+axiosInstance.interceptors.request.use(
+    config => {
+        const token = Cookies.get("token") || sessionStorage.getItem('authToken');
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    error => Promise.reject(error)
+);
 
 const API_ENDPOINT = `${API_URL}/election`;
 
 const createElection = async (data) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/create-election`, data);
+        const response = await axiosInstance.post(`${API_ENDPOINT}/create-election`, data);
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Creating election failed";
@@ -14,7 +33,7 @@ const createElection = async (data) => {
 
 const addCandidates = async (candidates) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/set-candidates`, candidates);
+        const response = await axiosInstance.post(`${API_ENDPOINT}/set-candidates`, candidates);
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Adding candidates failed";
@@ -23,7 +42,7 @@ const addCandidates = async (candidates) => {
 
 const addWhitelist = async (whitelistData) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/set-whitelist`, whitelistData);
+        const response = await axiosInstance.post(`${API_ENDPOINT}/set-whitelist`, whitelistData);
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Adding whitelist failed";
@@ -32,10 +51,29 @@ const addWhitelist = async (whitelistData) => {
 
 const addAll = async (electionId) => {
     try {
-        const response = await axios.post(`${API_ENDPOINT}/set-whitelist-all`, { electionId });
+        const response = await axiosInstance.post(`${API_ENDPOINT}/set-whitelist-all`, { electionId });
         return response.data
     } catch (error) {
         throw error.response?.data?.message || "Adding all voters failed";
+    }
+}
+
+const getAllElections = async () => {
+    try {
+        const response = await axiosInstance.get(`${API_ENDPOINT}/elections`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Fetching elections failed";
+    }
+}
+
+const getElection = async (electionId) => {
+    try {
+        const response = await axiosInstance.get(`${API_ENDPOINT}/elections/${electionId}`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Fetching election details failed";
     }
 }
 
@@ -44,4 +82,6 @@ export default {
     addCandidates,
     addWhitelist,
     addAll,
+    getAllElections,
+    getElection
 };

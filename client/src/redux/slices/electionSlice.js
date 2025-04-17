@@ -49,6 +49,32 @@ const electionSlice = createSlice({
         addWhitelistFail(state, action) {
             state.loading = false;
             state.error = action.payload;
+        },
+        fetchElectionsStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchElectionsSuccess(state, action) {
+            state.loading = false;
+            state.elections = action.payload;
+            state.error = null;
+        },
+        fetchElectionsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        fetchElectionDetailsStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchElectionDetailsSuccess(state, action) {
+            state.loading = false;
+            state.selectedElection = action.payload;
+            state.error = null;
+        },
+        fetchElectionDetailsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
         }
     }
 });
@@ -56,7 +82,9 @@ const electionSlice = createSlice({
 export const {
     createElectionStart, createElectionSuccess, createElectionFail,
     addCandidatesStart, addCandidatesSuccess, addCandidatesFail,
-    addWhitelistStart, addWhitelistSuccess, addWhitelistFail
+    addWhitelistStart, addWhitelistSuccess, addWhitelistFail,
+    fetchElectionsStart, fetchElectionsSuccess, fetchElectionsFail,
+    fetchElectionDetailsStart, fetchElectionDetailsSuccess, fetchElectionDetailsFail
 } = electionSlice.actions;
 
 export default electionSlice.reducer;

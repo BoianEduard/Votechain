@@ -4,7 +4,9 @@ const API_ENDPOINT = `${API_URL}/auth`;
 
 const login = async (credentials) => {
   try {
-    const response = await axios.post(`${API_ENDPOINT}/login`, credentials);
+    const response = await axios.post(`${API_ENDPOINT}/login`, credentials, {
+      withCredentials: true
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Login failed. Please try again.';
@@ -13,7 +15,9 @@ const login = async (credentials) => {
 
 const register = async (userData) => {
   try {
-    const response = await axios.post(`${API_ENDPOINT}/register`, userData);
+    const response = await axios.post(`${API_ENDPOINT}/register`, userData, {
+      withCredentials: true
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || 'Registration failed. Please try again.';
@@ -22,7 +26,9 @@ const register = async (userData) => {
 
 const logOut = async () => {
   try {
-    await axios.post(`${API_ENDPOINT}/logout`);
+    await axios.post(`${API_ENDPOINT}/logout`, {}, {
+      withCredentials: true
+    });
     return true;
   } catch (error) {
     throw error.response?.data?.message || 'Logout failed. Please try again.';

@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser';
 import authRoutes from './routes/authRoutes.mjs'
 import electionRoutes from './routes/electionRoutes.mjs'
 
@@ -15,6 +16,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes)
 app.use("/api/election", electionRoutes)

@@ -8,10 +8,8 @@ const loginUser = (credentials) => async (dispatch) => {
 
   try {
     const data = await authAPI.login(credentials);
-    localStorage.setItem('token', data.token);
-    dispatch(loginSuccess(data.token)); 
+    dispatch(loginSuccess(data.token));
     dispatch(setUserSuccess(data.user));
-    console.log(data.user)
   } catch (error) {
     dispatch(loginFailure(error));
   }
@@ -23,9 +21,8 @@ const registerUser = (userData) => async (dispatch) => {
 
   try {
     const data = await authAPI.register(userData); 
-    localStorage.setItem('token', data.token); 
-    localStorage.setItem('privateKey',data.privateKey)
     dispatch(loginSuccess(data.token));
+    localStorage.setItem('privateKey', data.privateKey);
   } catch (error) {
     dispatch(loginFailure(error));
   }
@@ -33,10 +30,9 @@ const registerUser = (userData) => async (dispatch) => {
 
 
 const logoutUser = () => (dispatch) => {
-  localStorage.removeItem('token');
   dispatch(logout());
+  sessionStorage.removeItem('privateKey');
 };
-
 
 const checkAuthStatus = () => (dispatch) => {
   const token = localStorage.getItem('token');

@@ -17,8 +17,32 @@ const createElection = async(req, res, next) => {
     }
 };
 
+const getAllElections = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        console.log(userId);
+        const elections = await models.Election.findAll({
+            include: [
+                {
+                    model: models.VoterRegistration,
+                    where: { userId: userId },
+                    required: true,
+                },
+                {
+                    model: models.Candidate,
+                    as: 'candidates',
+                }
+            ]
+        });
 
+        return res.status(200).json(elections);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 export default {
-    createElection
+    createElection,
+    getAllElections
 }

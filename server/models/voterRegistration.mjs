@@ -1,3 +1,5 @@
+import sequelize from "../config/database.mjs";
+
 export default (sequelize, DataTypes) => {
     return sequelize.define('voterRegistration', {
       status: {
