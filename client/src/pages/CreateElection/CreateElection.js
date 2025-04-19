@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as electionThunk from "../../redux/thunks/electionThunks";
 import * as validator from "../../utils/validators";
@@ -15,37 +15,87 @@ const CreateElection = () => {
     description: "",
     startDate: "",
     endDate: "",
-    candidates:["",""],
+    candidates: [
+      { name: "", image: null, imagePreview: "" },
+      { name: "", image: null, imagePreview: "" }
+    ],
     eligibilityType: "all",
-    whitelist:"",
-    annonymousResults:"",
-    realTimeResults:"",
-  })
+    whitelist: "",
+    annonymousResults: "",
+    realTimeResults: "",
+  });
 
   const [loading, setLoading] = useState(false);
-  const[error, setError] = useState("");
+  const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const userId = useSelector((state) => state.user.id);
   console.log("uSER ID: " + userId);
+
   const handleInputChange = (e) => {
-    const {name, value, type, checked} = e.target;
+    const { name, value, type, checked } = e.target;
     setForm({
       ...form,
       [name]: type === "checkbox" ? checked : value,
     });
   };
 
-  const handleCandidateChange = (index, value) => {
-    const updatedCandidate = [...form.candidates];
-    updatedCandidate[index] = value;
+  const handleCandidateChange = (index, field, value) => {
+    const updatedCandidates = [...form.candidates];
+
+    if (typeof field === 'string' && value !== undefined) {
+      updatedCandidates[index] = {
+        ...updatedCandidates[index],
+        [field]: value
+      };
+    } else {
+      const value = field;
+      updatedCandidates[index] = {
+        ...updatedCandidates[index],
+        name: value
+      };
+    }
+
     setForm({
       ...form,
-      candidates: updatedCandidate,
+      candidates: updatedCandidates,
     });
   };
 
+  const handleCandidateImageChange = (index, file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const updatedCandidates = [...form.candidates];
+        updatedCandidates[index] = {
+          ...updatedCandidates[index],
+          image: file,
+          imagePreview: reader.result
+        };
+        setForm({
+          ...form,
+          candidates: updatedCandidates
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const updatedCandidates = [...form.candidates];
+      updatedCandidates[index] = {
+        ...updatedCandidates[index],
+        image: null,
+        imagePreview: ""
+      };
+      setForm({
+        ...form,
+        candidates: updatedCandidates
+      });
+    }
+  };
+
   const addCandidate = () => {
-    setForm({ ...form, candidates: [...form.candidates, ''] });
+    setForm({
+      ...form,
+      candidates: [...form.candidates, { name: "", image: null, imagePreview: "" }]
+    });
   };
 
   const removeCandidate = (index) => {
@@ -53,7 +103,7 @@ const CreateElection = () => {
       const updatedCandidates = form.candidates.filter((_, i) => i !== index);
       setForm({ ...form, candidates: updatedCandidates });
     }
-  }
+  };
 
   const validateStep = () => {
     if (step === 1) {
@@ -65,8 +115,7 @@ const CreateElection = () => {
         return false;
       }
 
-      const titleAndDescValidation = validator.validateTitleDescription(form.title,form.description)
-
+      const titleAndDescValidation = validator.validateTitleDescription(form.title, form.description);
       if (!titleAndDescValidation.isValid) {
         setError(titleAndDescValidation.error);
         setLoading(false);
@@ -74,53 +123,46 @@ const CreateElection = () => {
         return false;
       }
     }
-
     else if (step === 2) {
-      const candidateValidation = validator.validateCandidates(form.candidates);
+      const candidateNames = form.candidates.map(candidate =>
+          typeof candidate === 'string' ? candidate : candidate.name
+      );
+      const candidateValidation = validator.validateCandidates(candidateNames);
       if (!candidateValidation.isValid) {
         setError(candidateValidation.error);
-        setLoading(false)
+        setLoading(false);
         alert("Error: " + candidateValidation.error);
         return false;
       }
     }
-
     else if (step === 3 && form.eligibilityType === 'whitelist') {
       const whitelistValidation = validator.validateWhitelist(form.whitelist);
       if (!whitelistValidation.isValid) {
         setError(whitelistValidation.error);
-        setLoading(false)
+        setLoading(false);
         alert("Error: " + whitelistValidation.error);
         return false;
       }
     }
 
     return true;
-  }
+  };
 
   const nextStep = () => {
-    if(validateStep()) {
+    if (validateStep()) {
       setError(null);
       setStep(step + 1);
     }
-  }
+  };
 
   const prevStep = () => {
     setStep(step - 1);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    const validation = validator.validateElectionForm(form);
-    if (!validation.isValid) {
-      setError(validation.error);
-      setLoading(false);
-      alert("Error: " + validation.error);
-      return;
-    }
 
     try {
       const electionData = {
@@ -128,37 +170,54 @@ const CreateElection = () => {
         description: form.description,
         startDate: form.startDate,
         endDate: form.endDate,
-        candidates: form.candidates,
         eligibilityType: form.eligibilityType,
-        annonymousResults: form.candidates,
-        realTimeResults:form.realTimeResults,
+        annonymousResults: form.annonymousResults,
+        realTimeResults: form.realTimeResults,
         creatorId: userId,
-      }
+      };
 
       const result = await dispatch(electionThunk.createElection(electionData));
 
-      if(!result || !result.id) throw new Error('Something went wrong creating elections');
+      if (!result || !result.id) throw new Error('Something went wrong creating elections');
 
       const electionId = result.id;
-      await dispatch(electionThunk.addCandidates({ electionId, candidates: form.candidates }));
+
+      const candidatesWithImages = form.candidates.map(candidate => {
+        if (typeof candidate === 'object' && candidate !== null) {
+          return {
+            name: candidate.name,
+            image: candidate.imagePreview || null
+          };
+        }
+        return {
+          name: candidate,
+          image: null
+        };
+      });
+
+      const candidateResult = await dispatch(electionThunk.addCandidates({
+        electionId,
+        candidates: candidatesWithImages
+      }));
+
+      if (!candidateResult) throw new Error('Failed to add candidates');
 
       if (form.eligibilityType === "whitelist") {
         const emails = validator.parseWhitelist(form.whitelist);
-        if(emails.length > 0) {
+        if (emails.length > 0) {
           await dispatch(electionThunk.addWhitelist(electionId, emails));
         }
-      }
-      else {
+      } else {
         await dispatch(electionThunk.addAll(electionId));
       }
+
       alert("Election created successfully.");
       navigate("/dashboard");
     } catch (error) {
       console.error('Error creating election:', error);
       setError(error.message || 'Failed to create election');
       alert('Error: ' + (error.message || 'Failed to create election'));
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -166,14 +225,15 @@ const CreateElection = () => {
   return (
       <div className="create-election-container">
         <div className="header">
-          <h1 className="title"> Create new election </h1>
-          <p className="subtitle"> Set up a secure election process</p>
+          <h1 className="title">Create new election</h1>
+          <p className="subtitle">Set up a secure election process</p>
         </div>
 
         <ElectionForm
             formData={form}
             handleInputChange={handleInputChange}
             handleCandidateChange={handleCandidateChange}
+            handleCandidateImageChange={handleCandidateImageChange}
             addCandidate={addCandidate}
             removeCandidate={removeCandidate}
             handleSubmit={handleSubmit}

@@ -8,78 +8,81 @@ import ReviewStep from './FormSteps/ReviewStep';
 import './ElectionForm.css';
 
 const ElectionForm = ({
-                        formData,
-                        handleInputChange,
-                        handleCandidateChange,
-                        addCandidate,
-                        removeCandidate,
-                        handleSubmit,
-                        loading,
-                        error,
-                        step,
-                        nextStep,
-                        prevStep
+                          formData,
+                          handleInputChange,
+                          handleCandidateChange,
+                          handleCandidateImageChange,
+                          addCandidate,
+                          removeCandidate,
+                          handleSubmit,
+                          loading,
+                          error,
+                          step,
+                          nextStep,
+                          prevStep
                       }) => {
-  return (
-      <div className="election-form-container">
-        <ProgressTracker currentStep={step} />
+    return (
+        <div className="election-form-container">
+            <ProgressTracker currentStep={step} />
 
-        <div className="form-card">
-          <form onSubmit={handleSubmit}>
-            {step === 1 && (
-                <BasicInfoStep
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    nextStep={nextStep}
-                />
-            )}
+            <div className="form-card">
+                <form onSubmit={handleSubmit}>
+                    {step === 1 && (
+                        <BasicInfoStep
+                            formData={formData}
+                            handleInputChange={handleInputChange}
+                            nextStep={nextStep}
+                        />
+                    )}
 
-            {step === 2 && (
-                <CandidatesStep
-                    formData={formData}
-                    handleCandidateChange={handleCandidateChange}
-                    addCandidate={addCandidate}
-                    removeCandidate={removeCandidate}
-                    nextStep={nextStep}
-                    prevStep={prevStep}
-                />
-            )}
+                    {step === 2 && (
+                        <CandidatesStep
+                            formData={formData}
+                            handleCandidateChange={handleCandidateChange}
+                            handleCandidateImageChange={handleCandidateImageChange}
+                            addCandidate={addCandidate}
+                            removeCandidate={removeCandidate}
+                            nextStep={nextStep}
+                            prevStep={prevStep}
+                        />
+                    )}
 
-            {step === 3 && (
-                <SettingsStep
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    nextStep={nextStep}
-                    prevStep={prevStep}
-                />
-            )}
+                    {step === 3 && (
+                        <SettingsStep
+                            formData={formData}
+                            handleInputChange={handleInputChange}
+                            nextStep={nextStep}
+                            prevStep={prevStep}
+                        />
+                    )}
 
-            {step === 4 && (
-                <ReviewStep
-                    formData={formData}
-                    loading={loading}
-                    error={error}
-                    prevStep={prevStep}
-                />
-            )}
-          </form>
+                    {step === 4 && (
+                        <ReviewStep
+                            formData={formData}
+                            loading={loading}
+                            error={error}
+                            prevStep={prevStep}
+                        />
+                    )}
+                </form>
+            </div>
         </div>
-      </div>
-  );
+    );
 };
 
 ElectionForm.propTypes = {
-  formData: PropTypes.object.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
-  handleCandidateChange: PropTypes.func.isRequired,
-  addCandidate: PropTypes.func.isRequired,
-  removeCandidate: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
-  step: PropTypes.number.isRequired,
-  nextStep: PropTypes.func.isRequired,
-  prevStep: PropTypes.func.isRequired
+    formData: PropTypes.object.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    handleCandidateChange: PropTypes.func.isRequired,
+    handleCandidateImageChange: PropTypes.func.isRequired,
+    addCandidate: PropTypes.func.isRequired,
+    removeCandidate: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.string,
+    step: PropTypes.number.isRequired,
+    nextStep: PropTypes.func.isRequired,
+    prevStep: PropTypes.func.isRequired
 };
 
 export default ElectionForm;

@@ -262,3 +262,46 @@
     }
   }
 
+/* Add this to your existing CSS file */
+
+.candidate-image-upload {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  gap: 10px;
+}
+
+.image-upload-btn {
+  background-color: #e9ecef;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.image-upload-btn:hover {
+  background-color: #dee2e6;
+}
+
+.image-preview {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.remove-image-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
