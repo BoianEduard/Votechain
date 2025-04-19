@@ -1,14 +1,3 @@
-/**
- * Defines the 'candidate' entity in the database.
- *
- * @param {object} sequelize - The Sequelize instance used to define the model.
- * @param {object} DataTypes - A collection of data types supported by Sequelize.
- * @returns {object} A Sequelize model representing the 'candidate' entity.
- *
- * @property {string} name - The name of the candidate. This field is required.
- * @property {string} position - The position the candidate is running for. This field is optional.
- * @property {string} description - A description of the candidate. This field is optional.
- */
 export default (sequelize, DataTypes, UUIDV4) => {
   return sequelize.define('candidate', {
     id: {
@@ -25,6 +14,10 @@ export default (sequelize, DataTypes, UUIDV4) => {
     },
     description: {
       type: DataTypes.TEXT,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     electionId: {
       type: DataTypes.UUID,

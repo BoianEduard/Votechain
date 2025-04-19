@@ -27,7 +27,16 @@ const ReviewStep = ({ formData, loading, error, prevStep }) => {
                 <h3>Candidates</h3>
                 <ul className="candidate-list">
                     {formData.candidates.map((candidate, index) => (
-                        <li key={index}>{candidate || `Candidate ${index + 1} (unnamed)`}</li>
+                        <li key={index}>
+                            <p>{candidate.name || `Candidate ${index + 1} (unnamed)`}</p>
+                            {candidate.imagePreview && (
+                                <img
+                                    src={candidate.imagePreview}
+                                    alt={`Preview for ${candidate.name}`}
+                                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8 }}
+                                />
+                            )}
+                        </li>
                     ))}
                 </ul>
             </div>
