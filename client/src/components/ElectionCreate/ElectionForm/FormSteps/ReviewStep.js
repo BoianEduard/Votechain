@@ -36,6 +36,7 @@ const ReviewStep = ({ formData, loading, error, prevStep }) => {
                                     style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8 }}
                                 />
                             )}
+                            <p>{candidate.description || "No description provided"}</p> {/* Show description */}
                         </li>
                     ))}
                 </ul>

@@ -9,18 +9,27 @@ const ProgressTracker = ({ currentStep }) => {
                 <p>Basic Info</p>
             </div>
             <div className="progress-line"></div>
+
             <div className={`progress-step ${currentStep >= 2 ? 'active' : ''}`}>
                 <div className="step-number">2</div>
-                <p>Add Candidates</p>
+                <p>Candidate Names</p>
             </div>
             <div className="progress-line"></div>
+
             <div className={`progress-step ${currentStep >= 3 ? 'active' : ''}`}>
                 <div className="step-number">3</div>
+                <p>Candidate Details</p>
+            </div>
+            <div className="progress-line"></div>
+
+            <div className={`progress-step ${currentStep >= 4 ? 'active' : ''}`}>
+                <div className="step-number">4</div>
                 <p>Settings</p>
             </div>
             <div className="progress-line"></div>
-            <div className={`progress-step ${currentStep >= 4 ? 'active' : ''}`}>
-                <div className="step-number">4</div>
+
+            <div className={`progress-step ${currentStep >= 5 ? 'active' : ''}`}>
+                <div className="step-number">5</div>
                 <p>Review</p>
             </div>
         </div>

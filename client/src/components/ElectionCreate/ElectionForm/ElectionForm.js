@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProgressTracker from './FormSteps/ProgressTracker';
 import BasicInfoStep from './FormSteps/BasicInfoStep';
 import CandidatesStep from './FormSteps/CandidateStep';
+import CandidateInfoStep from './FormSteps/CandidateInfoStep'
 import SettingsStep from './FormSteps/SettingsStep';
 import ReviewStep from './FormSteps/ReviewStep';
 import './ElectionForm.css';
@@ -39,7 +40,6 @@ const ElectionForm = ({
                         <CandidatesStep
                             formData={formData}
                             handleCandidateChange={handleCandidateChange}
-                            handleCandidateImageChange={handleCandidateImageChange}
                             addCandidate={addCandidate}
                             removeCandidate={removeCandidate}
                             nextStep={nextStep}
@@ -48,6 +48,16 @@ const ElectionForm = ({
                     )}
 
                     {step === 3 && (
+                        <CandidateInfoStep
+                            formData={formData}
+                            handleCandidateImageChange={handleCandidateImageChange}
+                            handleCandidateChange={handleCandidateChange}
+                            nextStep={nextStep}
+                            prevStep={prevStep}
+                        />
+                    )}
+
+                    {step === 4 && (
                         <SettingsStep
                             formData={formData}
                             handleInputChange={handleInputChange}
@@ -56,7 +66,7 @@ const ElectionForm = ({
                         />
                     )}
 
-                    {step === 4 && (
+                    {step === 5 && (
                         <ReviewStep
                             formData={formData}
                             loading={loading}

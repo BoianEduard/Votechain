@@ -16,8 +16,8 @@ const CreateElection = () => {
     startDate: "",
     endDate: "",
     candidates: [
-      { name: "", image: null, imagePreview: "" },
-      { name: "", image: null, imagePreview: "" }
+      { name: "", image: null, imagePreview: "", description: "" },
+      { name: "", image: null, imagePreview: "", description: "" }
     ],
     eligibilityType: "all",
     whitelist: "",
@@ -94,7 +94,7 @@ const CreateElection = () => {
   const addCandidate = () => {
     setForm({
       ...form,
-      candidates: [...form.candidates, { name: "", image: null, imagePreview: "" }]
+      candidates: [...form.candidates, { name: "", image: null, imagePreview: "", description: "" }]
     });
   };
 
@@ -135,7 +135,7 @@ const CreateElection = () => {
         return false;
       }
     }
-    else if (step === 3 && form.eligibilityType === 'whitelist') {
+    else if (step === 4 && form.eligibilityType === 'whitelist') {
       const whitelistValidation = validator.validateWhitelist(form.whitelist);
       if (!whitelistValidation.isValid) {
         setError(whitelistValidation.error);
@@ -156,7 +156,7 @@ const CreateElection = () => {
   };
 
   const prevStep = () => {
-    setStep(step - 1);
+    if (step > 1) setStep(step - 1);
   };
 
   const handleSubmit = async (e) => {
@@ -186,12 +186,14 @@ const CreateElection = () => {
         if (typeof candidate === 'object' && candidate !== null) {
           return {
             name: candidate.name,
-            image: candidate.imagePreview || null
+            image: candidate.imagePreview || null,
+            description: candidate.description || ""
           };
         }
         return {
           name: candidate,
-          image: null
+          image: null,
+          description: ""
         };
       });
 
