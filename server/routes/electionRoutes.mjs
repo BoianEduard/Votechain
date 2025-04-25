@@ -6,14 +6,15 @@ import express from 'express'
 
 const router = express.Router()
 
-router.post('/create-election', electionController.createElection)
+router.post('/create-election', auth, electionController.createElection)
 router.get('/elections', auth, electionController.getAllElections)
+router.get("/elections/:id", auth, electionController.getElectionById);
 
-router.post('/set-candidates', candidateController.createCandidates);
+router.post('/set-candidates', auth, candidateController.createCandidates);
 
 
-router.post('/set-whitelist', voterRegistrationController.addWhitelist);
+router.post('/set-whitelist', auth, voterRegistrationController.addWhitelist);
 
-router.post('/set-whitelist-all', voterRegistrationController.addAll)
+router.post('/set-whitelist-all',auth, voterRegistrationController.addAll)
 
 export default router
