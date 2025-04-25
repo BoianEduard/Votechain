@@ -29,7 +29,6 @@ const ElectionHead = ({ election, expanded, toggleExpand }) => {
                             boxShadow: "0 2px 5px rgba(0,0,0,0.05)"
                         }}
                     >
-                        <span className="fw-bold text-primary">{election.id}</span>
                     </div>
                     <div>
                         <h3 className="h5 mb-0 fw-bold">{election.title}</h3>

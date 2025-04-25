@@ -32,7 +32,6 @@ const CandidateSelectionCard = ({
                         >
                             <CandidateCard candidate={candidate} />
 
-                            {/* Selection indicator */}
                             <div
                                 className={`card-footer border-0 d-flex justify-content-between align-items-center ${
                                     selectedCandidate?.id === candidate.id ? "bg-primary" : "bg-light"
