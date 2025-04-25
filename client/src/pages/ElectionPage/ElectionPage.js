@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import { AlertCircle, Search, Filter } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import ElectionCard from '../../components/ElectionView/ElectionCard';
-import {fetchElectionDetails} from "../../redux/thunks/electionThunks";
+import {fetchAllElections} from "../../redux/thunks/electionThunks";
 
 const ElectionPage = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const ElectionPage = () => {
   const { elections, loading, error } = useSelector(state => state.election);
 
   useEffect(() => {
-    dispatch(fetchElectionDetails());
+    dispatch(fetchAllElections());
   },[])
 
   return (
