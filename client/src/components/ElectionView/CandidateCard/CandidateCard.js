@@ -3,10 +3,6 @@ import {useEffect} from 'react';
 
 
 const CandidateCard = ({ candidate }) => {
-    useEffect(() => {
-        console.log(`Attempting to load image for ${candidate.name}:`, candidate.imageUrl);
-        console.log(candidate.imageUrl);
-    }, []);
     return (
         <div
             className="p-3 h-100 rounded-3 border"
@@ -21,7 +17,9 @@ const CandidateCard = ({ candidate }) => {
         >
             <div className="d-flex">
                 <img
-                    src={`http://localhost:5001${candidate.imageUrl}`}
+                    src={candidate.imageUrl
+                        ? `http://localhost:5001${candidate.imageUrl}`
+                        : `http://localhost:5001/default.png`}
                     alt={candidate.name}
                     className="rounded-circle me-3"
                     style={{

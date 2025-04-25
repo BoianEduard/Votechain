@@ -1,13 +1,14 @@
 import React from 'react';
 import { AlertTriangle, ArrowLeft, Check } from 'lucide-react';
+import CandidateCard from '../../ElectionView/CandidateCard';
 
 const VoteConfirmationCard = ({
-                              election,
-                              selectedCandidate,
-                              formatDate,
-                              handleStartOver,
-                              handleSubmitVote
-                          }) => {
+                                  election,
+                                  selectedCandidate,
+                                  formatDate,
+                                  handleStartOver,
+                                  handleSubmitVote
+                              }) => {
     return (
         <div className="card border-0 shadow-sm" style={{ borderRadius: "12px" }}>
             <div className="card-header bg-light py-3 border-0">
@@ -26,18 +27,9 @@ const VoteConfirmationCard = ({
 
                 <div className="p-4 border rounded-3 mb-4">
                     <h4 className="h5 fw-bold mb-3">You are voting for:</h4>
-                    <div className="d-flex align-items-center">
-                        <img
-                            src={selectedCandidate.image}
-                            alt={selectedCandidate.name}
-                            className="rounded-circle me-3"
-                            style={{ width: "60px", height: "60px" }}
-                        />
-                        <div>
-                            <h5 className="h5 fw-bold mb-1">{selectedCandidate.name}</h5>
-                            <p className="text-primary mb-0">{selectedCandidate.position}</p>
-                        </div>
-                    </div>
+                    <CandidateCard
+                        candidate={selectedCandidate}
+                    />
                 </div>
 
                 <div className="p-4 bg-light rounded-3 mb-4">
@@ -49,7 +41,7 @@ const VoteConfirmationCard = ({
                         <strong>Voting Period:</strong> {formatDate(election.startDate)} - {formatDate(election.endDate)}
                     </p>
                     <p className="mb-0">
-                        <strong>Eligibility:</strong> {election.eligibilityRequirements}
+                        <strong>Eligibility:</strong> {election.eligibilityType}
                     </p>
                 </div>
 

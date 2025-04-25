@@ -20,7 +20,6 @@ const createElection = async(req, res, next) => {
 const getAllElections = async (req, res, next) => {
     try {
         const userId = req.user.userId;
-        console.log(userId);
         const elections = await models.Election.findAll({
             include: [
                 {
@@ -42,7 +41,37 @@ const getAllElections = async (req, res, next) => {
     }
 };
 
+const getElectionById = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const electionId = req.params.id;
+        const election = await models.Election.findOne({
+            where: { id: electionId },
+            include: [
+                {
+                    model: models.VoterRegistration,
+                    where: { userId },
+                    required: true,
+                },
+                {
+                    model: models.Candidate,
+                    as: 'candidates'
+                }
+            ]
+        });
+        if (!election) {
+            return res.status(404).json({ message: "Election not found or not eligible" });
+        }
+
+        res.status(200).json(election);
+    } catch (error) {
+        console.error("Error fetching election:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export default {
     createElection,
-    getAllElections
+    getAllElections,
+    getElectionById,
 }
