@@ -30,7 +30,7 @@ const saveImage = (imageData, candidateName) => {
 
     return null;
   } catch (error) {
-    console.error("Error saving image:", error);
+    console.error("Error while saving candidate image:", error);
     return null;
   }
 };
@@ -50,14 +50,16 @@ const createCandidates = async (req, res, next) => {
     console.log("Available candidate fields:", candidateFields);
 
     const candidatePromises = candidates.map(candidate => {
-      let name, image;
+      let name, image, description;
 
       if (typeof candidate === 'object' && candidate !== null) {
         name = candidate.name;
         image = candidate.image;
+        description = candidate.description || "No description provided";
       } else {
         name = candidate;
         image = null;
+        description = "No description provided";
       }
 
       const imageUrl = image ? saveImage(image, name) : null;
@@ -67,7 +69,7 @@ const createCandidates = async (req, res, next) => {
         name: name,
         electionId: electionId,
         position: null,
-        description: null
+        description: description
       };
 
       if (candidateFields.includes('imageUrl')) {
