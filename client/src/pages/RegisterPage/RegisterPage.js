@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import authThunks from "../../redux/thunks/authThunks";
 
 const RegisterPage = () => {
@@ -26,7 +26,6 @@ const RegisterPage = () => {
     try {
       await dispatch(authThunks.registerUser({ email, password, firstName, lastName }));
       alert("Registration successful!");
-      
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {
@@ -35,91 +34,91 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card shadow-lg rounded-3 p-4" style={{ width: '420px' }}>
-        <h1 className="text-center fw-bold text-primary mb-1">Votechain</h1>
-        <p className="text-center text-muted mb-4">Create your account</p>
-        
-        {error && <div className="alert alert-danger py-2 mb-4">{error}</div>}
-        
-        <form onSubmit={handleSubmit}>
-          <div className="row g-3 mb-3">
-            <div className="col-md-6">
-              <label htmlFor="firstName" className="form-label small fw-semibold">First Name</label>
+      <div className="flex justify-center items-center min-h-screen bg-light">
+        <div className="bg-white shadow-lg rounded-3 p-6 w-full max-w-md">
+          <h1 className="text-center text-2xl font-semibold text-primary mb-2">Votechain</h1>
+          <p className="text-center text-sm text-gray-500 mb-4">Create your account</p>
+
+          {error && <div className="alert alert-danger py-2 mb-4">{error}</div>}
+
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+                <input
+                    type="text"
+                    id="firstName"
+                    className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    disabled={isLoading}
+                    required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+                <input
+                    type="text"
+                    id="lastName"
+                    className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    disabled={isLoading}
+                    required
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
               <input
-                type="text"
-                id="firstName"
-                className="form-control py-2 bg-light border-0 shadow-sm"
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                disabled={isLoading}
-                required
+                  type="email"
+                  id="email"
+                  className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
+                  required
               />
             </div>
-            
-            <div className="col-md-6">
-              <label htmlFor="lastName" className="form-label small fw-semibold">Last Name</label>
+
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
               <input
-                type="text"
-                id="lastName"
-                className="form-control py-2 bg-light border-0 shadow-sm"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                disabled={isLoading}
-                required
+                  type="password"
+                  id="password"
+                  className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                  required
               />
             </div>
-          </div>
-          
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label small fw-semibold">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              className="form-control py-2 bg-light border-0 shadow-sm"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          
-          <div className="mb-4">
-            <label htmlFor="password" className="form-label small fw-semibold">Password</label>
-            <input
-              type="password"
-              id="password"
-              className="form-control py-2 bg-light border-0 shadow-sm"
-              placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            className="btn btn-primary w-100 py-2 shadow-sm rounded-pill mb-3" 
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Signing up...
-              </>
-            ) : "Sign up"}
-          </button>
-          
-          <p className="text-center text-muted mt-3 mb-0">
-            Already have an account? <Link to="/login" className="text-decoration-none fw-bold">Log in</Link>
-          </p>
-        </form>
+
+            <button
+                type="submit"
+                className="w-full py-2 bg-blue-500 text-white rounded-full mb-4 hover:bg-blue-600 transition"
+                disabled={isLoading}
+            >
+              {isLoading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                    Signing up...
+                  </>
+              ) : "Sign up"}
+            </button>
+
+            <p className="text-center text-sm text-gray-500">
+              Already have an account? <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">Log in</Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
   );
 };
 

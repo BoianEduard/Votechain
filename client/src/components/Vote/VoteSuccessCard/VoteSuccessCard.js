@@ -4,10 +4,10 @@ import { CheckCircle, Shield } from 'lucide-react';
 
 const VoteSuccessCard = ({ election, selectedCandidate }) => {
     return (
-        <div className="card border-0 shadow-sm text-center p-5" style={{ borderRadius: "12px" }}>
-            <div className="mb-4">
+        <div className="card border-0 shadow-sm text-center p-6 rounded-xl">
+            <div className="mb-6">
                 <div
-                    className="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                    className="rounded-full mx-auto d-flex items-center justify-center mb-4"
                     style={{
                         width: "80px",
                         height: "80px",
@@ -16,15 +16,15 @@ const VoteSuccessCard = ({ election, selectedCandidate }) => {
                 >
                     <CheckCircle size={40} className="text-success" />
                 </div>
-                <h3 className="h3 fw-bold">Vote Successfully Cast!</h3>
+                <h3 className="text-2xl font-bold">Vote Successfully Cast!</h3>
                 <p className="text-muted mb-4">
                     Your vote for <strong>{selectedCandidate.name}</strong> has been recorded securely.
                 </p>
             </div>
 
-            <div className="card mb-4 border-0 bg-light p-3">
+            <div className="card mb-6 border-0 bg-light p-6 rounded-lg">
                 <div className="card-body">
-                    <h5 className="fw-bold mb-3">Receipt Information</h5>
+                    <h5 className="font-bold text-lg mb-3">Receipt Information</h5>
                     <p className="mb-2">
                         <strong>Confirmation ID:</strong>{" "}
                         <span className="font-monospace">
@@ -38,28 +38,22 @@ const VoteSuccessCard = ({ election, selectedCandidate }) => {
                         <strong>Date & Time:</strong>{" "}
                         {new Date().toLocaleString()}
                     </p>
-                    <p className="small text-muted mb-0">
-                        <Shield size={14} className="me-1" />
+                    <p className="text-sm text-muted mb-0">
+                        <Shield size={14} className="mr-1" />
                         This receipt does not reveal your specific vote choice
                     </p>
                 </div>
             </div>
 
-            <div className="d-flex justify-content-center">
+            <div className="flex justify-center space-x-4">
                 <Link
                     to="/vote"
-                    className="btn btn-primary px-4 py-2 me-3"
-                    style={{
-                        borderRadius: "50px"
-                    }}
+                    className="btn btn-primary px-6 py-3 rounded-full"
                 >
                     Return to Elections
                 </Link>
                 <button
-                    className="btn btn-outline-secondary px-4 py-2"
-                    style={{
-                        borderRadius: "50px"
-                    }}
+                    className="btn btn-outline-secondary px-6 py-3 rounded-full"
                     onClick={() => window.print()}
                 >
                     Print Receipt

@@ -32,10 +32,10 @@ const QuickActionsSection = () => {
 
     return (
         <>
-            <h2 className="h4 fw-bold mb-4">Quick Actions</h2>
-            <div className="row g-4 mb-5">
+            <h2 className="text-2xl font-semibold mb-6">Quick Actions</h2>
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-5">
                 {navigateOptions.map((option, index) => (
-                    <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
+                    <div className="w-full" key={index}>
                         <ActionCard option={option} />
                     </div>
                 ))}

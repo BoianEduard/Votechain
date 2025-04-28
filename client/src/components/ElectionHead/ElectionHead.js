@@ -11,17 +11,13 @@ const ElectionHead = ({ election, expanded, toggleExpand }) => {
 
     return (
         <div
-            className={`card-header py-3 ${expanded ? "border-bottom-0" : ""} bg-primary-light`}
-            style={{
-                cursor: "pointer",
-                transition: "all 0.3s ease"
-            }}
+            className={`card-header py-3 ${expanded ? "border-b-0" : ""} bg-primary-light cursor-pointer transition-all duration-300 ease-in-out`}
             onClick={toggleExpand}
         >
-            <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center flex-grow-1">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center flex-grow">
                     <div
-                        className="rounded-circle me-3 d-flex align-items-center justify-content-center"
+                        className="rounded-full me-3 flex items-center justify-center"
                         style={{
                             width: "40px",
                             height: "40px",
@@ -31,36 +27,27 @@ const ElectionHead = ({ election, expanded, toggleExpand }) => {
                     >
                     </div>
                     <div>
-                        <h3 className="h5 mb-0 fw-bold">{election.title}</h3>
-                        <div className="d-flex align-items-center text-muted small mt-1">
+                        <h3 className="text-xl font-bold mb-0">{election.title}</h3>
+                        <div className="flex items-center text-muted text-sm mt-1">
                             <Calendar className="me-1" size={12} />
                             <span>{formatDate(election.startDate)} - {formatDate(election.endDate)}</span>
                         </div>
                     </div>
                 </div>
-                <div className="d-flex align-items-center">
-          <span
-              className={`badge rounded-pill me-3 ${
-                  daysRemaining > 0 ? "bg-success" : "bg-danger"
-              }`}
-              style={{
-                  padding: "0.5rem 0.75rem",
-                  fontSize: "0.75rem",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-              }}
-          >
-            <Clock size={12} className="me-1" />
-              {daysRemaining > 0 ? `${daysRemaining} days left` : "Closed"}
-          </span>
-                    <button
-                        className="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                <div className="flex items-center">
+                    <span
+                        className={`badge rounded-full me-3 ${daysRemaining > 0 ? "bg-green-500" : "bg-red-500"}`}
                         style={{
-                            width: "32px",
-                            height: "32px",
-                            background: "white",
-                            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                            border: "none"
+                            padding: "0.5rem 0.75rem",
+                            fontSize: "0.75rem",
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                         }}
+                    >
+                        <Clock size={12} className="me-1" />
+                        {daysRemaining > 0 ? `${daysRemaining} days left` : "Closed"}
+                    </span>
+                    <button
+                        className="btn btn-sm rounded-full flex items-center justify-center w-8 h-8 bg-white shadow-md border-none"
                         onClick={(e) => {
                             e.stopPropagation();
                             toggleExpand();
