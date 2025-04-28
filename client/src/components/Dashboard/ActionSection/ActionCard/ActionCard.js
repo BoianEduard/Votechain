@@ -8,27 +8,22 @@ const ActionCard = ({ option }) => {
 
     return (
         <div
-            className="card border-0 h-100 shadow"
-            style={{
-                borderRadius: "16px",
-                cursor: "pointer",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease"
-            }}
+            className="bg-white border-0 rounded-xl shadow-md transition-transform duration-200 ease-in-out cursor-pointer"
             onMouseOver={(e) => {
                 e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.1)";
+                e.currentTarget.style.boxShadow = "0 10px 25px rgba(0, 0, 0, 0.1)";
             }}
             onMouseOut={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 0.5rem 1rem rgba(0,0,0,0.15)";
+                e.currentTarget.style.boxShadow = "0 0.5rem 1rem rgba(0, 0, 0, 0.15)";
             }}
             onClick={() => navigate(option.path)}
         >
-            <div className="card-body p-4">
+            <div className="p-4">
                 <div
-                    className="rounded-circle mb-3 d-flex align-items-center justify-content-center"
+                    className="rounded-full mb-3 flex items-center justify-center"
                     style={{
-                        background: option.bgColor,
+                        backgroundColor: option.bgColor,
                         width: "64px",
                         height: "64px",
                         color: option.color
@@ -36,19 +31,16 @@ const ActionCard = ({ option }) => {
                 >
                     {option.icon}
                 </div>
-                <h3 className="h4 fw-bold mb-2">{option.title}</h3>
-                <p className="text-muted mb-4">{option.description}</p>
-                <div className="d-grid">
+                <h3 className="text-2xl font-semibold mb-2">{option.title}</h3>
+                <p className="text-gray-500 mb-4">{option.description}</p>
+                <div className="grid">
                     <button
-                        className="btn btn-sm rounded-pill"
+                        className="bg-blue-600 text-white py-2 px-6 rounded-full text-sm font-medium flex items-center justify-center"
                         style={{
                             backgroundColor: option.color,
-                            color: "white",
-                            padding: "0.5rem 1.5rem",
-                            fontWeight: "500"
                         }}
                     >
-                        Get Started <ChevronRight size={16} className="ms-1" />
+                        Get Started <ChevronRight size={16} className="ml-1" />
                     </button>
                 </div>
             </div>
