@@ -11,7 +11,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { errorMessage, loading } = useSelector((state) => state.auth);
+  const { errorMessage } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ const LoginPage = () => {
       await dispatch(authThunks.loginUser({ email, password }));
       setEmail('');
       setPassword('');
-      navigate('/dashboard')
+      navigate('/dashboard');
     } catch (err) {
       setError(errorMessage || 'Login failed. Please try again.');
     } finally {
@@ -37,63 +37,66 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card shadow-lg rounded-3 p-4" style={{ width: '380px' }}>
-        <h1 className="text-center fw-bold text-primary mb-2">Votechain</h1>
-        <p className="text-center text-muted mb-4">Welcome back! Please login to your account.</p>
-        
-        {error && <div className="alert alert-danger py-2 mb-4">{error}</div>}
-        
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="form-label small fw-semibold">Email address</label>
-            <input
-              type="email"
-              id="email"
-              className="form-control py-2 bg-light border-0 shadow-sm"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          
-          <div className="mb-4">
-            <label htmlFor="password" className="form-label small fw-semibold">Password</label>
-            <input
-              type="password"
-              id="password"
-              className="form-control py-2 bg-light border-0 shadow-sm"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            className="btn btn-primary w-100 py-2 shadow-sm rounded-pill mb-3" 
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Logging in...
-              </>
-            ) : 'Login'}
-          </button>
-        </form>
-        
-        <p className="text-center mt-3 mb-0">
-          Don't have an account? <Link to="/signup" className="text-decoration-none fw-bold">Sign up!</Link>
-        </p>
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="bg-white shadow-xl rounded-2xl p-8 w-96">
+          <h1 className="text-center text-3xl font-bold text-blue-600 mb-2">Votechain</h1>
+          <p className="text-center text-gray-500 mb-6">Welcome back! Please login to your account.</p>
+
+          {error && <div className="bg-red-100 text-red-700 text-sm rounded-md p-3 mb-4">{error}</div>}
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-semibold mb-1">Email address</label>
+              <input
+                  type="email"
+                  id="email"
+                  className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
+                  required
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-sm font-semibold mb-1">Password</label>
+              <input
+                  type="password"
+                  id="password"
+                  className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                  required
+              />
+            </div>
+
+            <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-full transition duration-200 flex items-center justify-center"
+                disabled={isLoading}
+            >
+              {isLoading ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    Logging in...
+                  </>
+              ) : 'Login'}
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-600 mt-6">
+            Don't have an account?{' '}
+            <Link to="/signup" className="text-blue-600 font-semibold hover:underline">Sign up!</Link>
+          </p>
+        </div>
       </div>
-    </div>
   );
 };
-
 
 export default LoginPage;

@@ -10,39 +10,44 @@ const CandidateSelectionCard = ({
                                 }) => {
     return (
         <>
-            <div className="alert alert-info d-flex align-items-start">
-                <Info size={24} className="me-3 flex-shrink-0 mt-1" />
+            <div className="flex items-start p-3 mb-3 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
+                <Info size={20} className="mr-2 flex-shrink-0 text-blue-500" />
                 <div>
-                    <h5 className="fw-bold">How to Vote</h5>
-                    <p className="mb-0">
-                        Review each candidate's information carefully. Click on a candidate card to select them, then confirm your vote on the next screen.
+                    <h5 className="font-medium text-blue-700 text-sm">How to Vote</h5>
+                    <p className="text-sm text-gray-600">
+                        Review candidates, select one by clicking their card, then confirm on the next screen.
                     </p>
                 </div>
             </div>
 
-            <h3 className="h4 fw-bold mb-3">Select a Candidate</h3>
+            <h3 className="text-lg font-semibold mb-3">Select a Candidate</h3>
 
-            <div className="row g-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
                 {election.candidates.map((candidate) => (
-                    <div className="col-lg-4" key={candidate.id}>
+                    <div key={candidate.id}>
                         <div
-                            className={`position-relative ${selectedCandidate?.id === candidate.id ? "border border-3 border-primary rounded-3" : ""}`}
+                            className={`relative transition-all duration-200 hover:shadow-md ${
+                                selectedCandidate?.id === candidate.id
+                                    ? "ring-2 ring-blue-500 rounded-lg shadow-md"
+                                    : "hover:ring-1 hover:ring-gray-200 rounded-lg"
+                            }`}
                             onClick={() => handleCandidateSelect(candidate)}
                             style={{ cursor: "pointer" }}
                         >
                             <CandidateCard candidate={candidate} />
 
                             <div
-                                className={`card-footer border-0 d-flex justify-content-between align-items-center ${
-                                    selectedCandidate?.id === candidate.id ? "bg-primary" : "bg-light"
+                                className={`flex justify-between items-center py-2 px-3 rounded-b-lg ${
+                                    selectedCandidate?.id === candidate.id
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-gray-50 text-gray-500"
                                 }`}
-                                style={{ borderRadius: "0 0 12px 12px" }}
                             >
-                                <span className={selectedCandidate?.id === candidate.id ? "text-white" : "text-muted"}>
-                                    {selectedCandidate?.id === candidate.id ? "Selected" : "Select to vote"}
+                                <span className="text-sm">
+                                    {selectedCandidate?.id === candidate.id ? "Selected" : "Select"}
                                 </span>
                                 {selectedCandidate?.id === candidate.id && (
-                                    <Check size={20} className="text-white" />
+                                    <Check size={16} className="text-white" />
                                 )}
                             </div>
                         </div>
@@ -50,21 +55,13 @@ const CandidateSelectionCard = ({
                 ))}
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mt-4">
-                <div className="text-muted">
-                    <Shield size={16} className="me-1" />
-                    <small>Your vote is secure and anonymous</small>
+            <div className="flex justify-center items-center mt-6">
+                <div className="text-xs text-gray-500 flex items-center">
                 </div>
                 <button
-                    className="btn btn-primary px-4 py-2"
+                    className="px-5 py-2 rounded-full bg-blue-600 text-white text-sm font-medium shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={!selectedCandidate}
                     onClick={handleConfirmVote}
-                    style={{
-                        borderRadius: "50px",
-                        boxShadow: selectedCandidate
-                            ? "0 4px 10px rgba(13, 110, 253, 0.25)"
-                            : "none"
-                    }}
                 >
                     Continue to Confirm
                 </button>
