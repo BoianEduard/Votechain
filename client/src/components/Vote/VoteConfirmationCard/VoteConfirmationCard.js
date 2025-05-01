@@ -10,56 +10,41 @@ const VoteConfirmationCard = ({
                                   handleSubmitVote
                               }) => {
     return (
-        <div className="card border-0 shadow-sm rounded-lg">
-            <div className="card-header bg-light py-3 border-0">
-                <h3 className="text-xl font-bold mb-0">Confirm Your Vote</h3>
+        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div className="bg-gray-50 py-3 px-4 border-b border-gray-100">
+                <h3 className="text-lg font-semibold">Confirm Your Vote</h3>
             </div>
-            <div className="card-body p-6">
-                <div className="alert alert-warning d-flex items-start mb-6">
-                    <AlertTriangle size={24} className="mr-3 flex-shrink-0 mt-1" />
+            <div className="p-4">
+                <div className="flex items-start p-3 mb-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                    <AlertTriangle size={18} className="mr-2 flex-shrink-0 text-amber-500" />
                     <div>
-                        <h5 className="font-bold">Please Review Carefully</h5>
-                        <p className="mb-0">
-                            Once submitted, your vote cannot be changed. Please verify your selection before confirming.
+                        <h5 className="font-medium text-amber-700 text-sm">Please Review Carefully</h5>
+                        <p className="text-sm text-amber-700">
+                            Once submitted, your vote cannot be changed. Verify your selection before confirming.
                         </p>
                     </div>
                 </div>
 
-                <div className="p-6 border rounded-3 mb-6">
-                    <h4 className="text-lg font-bold mb-3">You are voting for:</h4>
+                <div className="mb-4 border border-gray-100 rounded-lg p-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">You are voting for:</h4>
                     <CandidateCard candidate={selectedCandidate} />
                 </div>
 
-                <div className="p-6 bg-light rounded-3 mb-6">
-                    <h4 className="text-lg font-bold mb-3">Election Information</h4>
-                    <p className="mb-2">
-                        <strong>Title:</strong> {election.title}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Voting Period:</strong> {formatDate(election.startDate)} - {formatDate(election.endDate)}
-                    </p>
-                    <p className="mb-0">
-                        <strong>Eligibility:</strong> {election.eligibilityType}
-                    </p>
-                </div>
 
-                <div className="flex justify-between items-center">
+
+                <div className="flex justify-between items-center pt-2">
                     <button
-                        className="btn btn-outline-secondary d-flex items-center"
+                        className="flex items-center px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 transition"
                         onClick={handleStartOver}
                     >
-                        <ArrowLeft size={16} className="mr-2" />
+                        <ArrowLeft size={14} className="mr-1.5" />
                         Change Selection
                     </button>
                     <button
-                        className="btn btn-success px-6 py-3 d-flex items-center"
+                        className="flex items-center px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium shadow-sm hover:bg-green-700 transition"
                         onClick={handleSubmitVote}
-                        style={{
-                            borderRadius: "50px",
-                            boxShadow: "0 4px 10px rgba(25, 135, 84, 0.25)"
-                        }}
                     >
-                        <Check size={18} className="mr-2" />
+                        <Check size={15} className="mr-1.5" />
                         Confirm Vote
                     </button>
                 </div>

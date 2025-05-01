@@ -14,7 +14,7 @@ const ElectionBanner = ({ election, formatDate, daysRemaining }) => {
             </Link>
 
             <div
-                className="p-6 rounded-3xl mb-4"
+                className="p-3 rounded-3xl mb-2"
                 style={{
                     background: "linear-gradient(135deg, #f5f7ff 0%, #e9f0ff 100%)"
                 }}
@@ -43,12 +43,6 @@ const ElectionBanner = ({ election, formatDate, daysRemaining }) => {
                                 <Users className="mr-2 text-blue-600" size={16} />
                                 <span className="font-medium text-gray-700">
                                     {election.candidates.length} Candidates
-                                </span>
-                            </div>
-                            <div className="flex items-center">
-                                <Clock className="mr-2 text-blue-600" size={16} />
-                                <span className="font-medium text-gray-700">
-                                    Voting Method: {election.votingMethod}
                                 </span>
                             </div>
                         </div>
