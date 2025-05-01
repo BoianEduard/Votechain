@@ -1,67 +1,64 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Shield } from 'lucide-react';
+import { CheckCircle, Shield, Printer, Home } from 'lucide-react';
 
 const VoteSuccessCard = ({ election, selectedCandidate }) => {
     return (
-        <div className="card border-0 shadow-sm text-center p-5" style={{ borderRadius: "12px" }}>
-            <div className="mb-4">
+        <div className="bg-white shadow-sm rounded-xl p-5 text-center">
+            <div className="mb-5">
                 <div
-                    className="rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3"
+                    className="rounded-full mx-auto flex items-center justify-center mb-3"
                     style={{
-                        width: "80px",
-                        height: "80px",
-                        background: "rgba(25, 135, 84, 0.1)"
+                        width: "64px",
+                        height: "64px",
+                        background: "rgba(34, 197, 94, 0.1)"
                     }}
                 >
-                    <CheckCircle size={40} className="text-success" />
+                    <CheckCircle size={32} className="text-green-600" />
                 </div>
-                <h3 className="h3 fw-bold">Vote Successfully Cast!</h3>
-                <p className="text-muted mb-4">
+                <h3 className="text-xl font-bold text-gray-800 mb-1">Vote Successfully Cast!</h3>
+                <p className="text-gray-600 text-sm mb-0">
                     Your vote for <strong>{selectedCandidate.name}</strong> has been recorded securely.
                 </p>
             </div>
 
-            <div className="card mb-4 border-0 bg-light p-3">
-                <div className="card-body">
-                    <h5 className="fw-bold mb-3">Receipt Information</h5>
-                    <p className="mb-2">
-                        <strong>Confirmation ID:</strong>{" "}
-                        <span className="font-monospace">
-                            {Math.random().toString(36).substring(2, 15).toUpperCase()}
+            <div className="bg-gray-50 rounded-lg p-4 mb-5 text-left">
+                <h5 className="font-medium text-gray-700 text-sm mb-3">Receipt Information</h5>
+                <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Confirmation ID:</span>
+                        <span className="font-mono text-gray-800">
+                            {Math.random().toString(36).substring(2, 10).toUpperCase()}
                         </span>
-                    </p>
-                    <p className="mb-2">
-                        <strong>Election:</strong> {election.title}
-                    </p>
-                    <p className="mb-2">
-                        <strong>Date & Time:</strong>{" "}
-                        {new Date().toLocaleString()}
-                    </p>
-                    <p className="small text-muted mb-0">
-                        <Shield size={14} className="me-1" />
-                        This receipt does not reveal your specific vote choice
-                    </p>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Election:</span>
+                        <span className="text-gray-800">{election.title}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span className="text-gray-600">Date & Time:</span>
+                        <span className="text-gray-800">{new Date().toLocaleString()}</span>
+                    </div>
+                </div>
+                <div className="flex items-center mt-3 text-gray-500 text-xs border-t border-gray-200 pt-2">
+                    <Shield size={12} className="mr-1" />
+                    <span>This receipt does not reveal your specific vote choice</span>
                 </div>
             </div>
 
-            <div className="d-flex justify-content-center">
+            <div className="flex justify-center space-x-3">
                 <Link
                     to="/vote"
-                    className="btn btn-primary px-4 py-2 me-3"
-                    style={{
-                        borderRadius: "50px"
-                    }}
+                    className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
                 >
+                    <Home size={14} className="mr-1.5" />
                     Return to Elections
                 </Link>
                 <button
-                    className="btn btn-outline-secondary px-4 py-2"
-                    style={{
-                        borderRadius: "50px"
-                    }}
+                    className="flex items-center px-4 py-2 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition"
                     onClick={() => window.print()}
                 >
+                    <Printer size={14} className="mr-1.5" />
                     Print Receipt
                 </button>
             </div>

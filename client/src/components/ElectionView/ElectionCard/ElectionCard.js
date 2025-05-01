@@ -1,61 +1,58 @@
 import React, { useState } from "react";
 import { Users, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-import ElectionHead from '../../ElectionHead';
-import CandidateCard from '../CandidateCard';
+import CandidateCard from "../CandidateCard";
+import ElectionHead from "../../ElectionHead";
 
 const ElectionCard = ({ election }) => {
     const [expanded, setExpanded] = useState(false);
 
-    const toggleExpand = () => {
-        setExpanded(!expanded);
-    };
+    const toggleExpand = () => setExpanded((prev) => !prev);
 
     return (
-        <div
-            className="card shadow-sm mb-4 fade-in"
-            style={{ transition: "all 0.3s ease" }}
-        >
-            <ElectionHead
-                election={election}
-                expanded={expanded}
-                toggleExpand={toggleExpand}
-            />
+        <div className="w-full flex justify-center mb-6">
+            <div className="border rounded-2xl shadow-md bg-white w-full max-w-4xl transition-all duration-300 overflow-hidden">
+                <ElectionHead
+                    election={election}
+                    expanded={expanded}
+                    toggleExpand={toggleExpand}
+                />
 
-            {expanded && (
-                <div className="card-body p-4 fade-in">
-                    <div className="mb-4 p-3 rounded-3 bg-secondary-light">
-                        <p className="text-secondary mb-0">{election.description}</p>
+                <div
+                    className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                        expanded ? "max-h-[3000px] p-6 border-t" : "max-h-0 p-0"
+                    }`}
+                >
+                    <div className="mb-6 p-4 rounded-lg bg-gray-100">
+                        <p className="text-gray-700">{election.description}</p>
                     </div>
 
-                    <div className="d-flex align-items-center mb-3 pb-2 border-bottom">
-                        <Users className="text-primary me-2" size={18} />
-                        <span className="fw-medium">{election.candidates.length} Candidates</span>
+                    <div className="flex items-center mb-4 pb-3 border-b">
+                        <Users className="text-blue-600 mr-2" size={18} />
+                        <span className="font-semibold text-gray-700">
+                            {election.candidates.length} Candidates
+                        </span>
                     </div>
 
-                    <div className="row g-3 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         {election.candidates.map((candidate) => (
-                            <div key={candidate.id} className="col-md-6">
+                            <div key={candidate.id}>
                                 <CandidateCard candidate={candidate} />
                             </div>
                         ))}
                     </div>
 
-                    <div className="text-end">
+                    <div className="text-right">
                         <Link
                             to={`/elections/${election.id}/vote`}
-                            className="btn btn-primary px-4 py-2 d-inline-flex align-items-center"
-                            style={{
-                                borderRadius: "50px",
-                                boxShadow: "0 4px 10px rgba(67, 97, 238, 0.25)"
-                            }}
+                            className="inline-flex items-center px-5 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition"
                         >
                             View Details & Vote
-                            <ExternalLink size={16} className="ms-2" />
+                            <ExternalLink size={16} className="ml-2" />
                         </Link>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

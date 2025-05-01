@@ -1,14 +1,9 @@
 const DashboardHeader = () => {
     return (
-        <div className="py-4 mb-4" style={{
-            background: "linear-gradient(135deg, #1a237e 0%, #283593 100%)",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)"
-        }}>
-            <div className="container">
-                <div className="text-center text-white">
-                    <h1 className="display-5 fw-bold mb-2">Votechain Dashboard</h1>
-                    <p className="lead mb-0">Secure, transparent, and decentralized voting platform</p>
-                </div>
+        <div className="py-8 mb-6 bg-gradient-to-r from-indigo-800 to-indigo-600 shadow-lg">
+            <div className="container mx-auto text-center text-white">
+                <h1 className="text-4xl font-semibold mb-2">Votechain Dashboard</h1>
+                <p className="text-lg">Secure, transparent, and decentralized voting platform</p>
             </div>
         </div>
     );

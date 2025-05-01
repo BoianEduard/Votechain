@@ -1,56 +1,48 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Users, Clock, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import {Users, Clock} from "lucide-react";
-import { ArrowLeft } from 'lucide-react';
 
 const ElectionBanner = ({ election, formatDate, daysRemaining }) => {
     return (
         <>
             <Link
                 to="/vote"
-                className="btn btn-outline-secondary d-inline-flex align-items-center mb-3"
+                className="btn btn-outline-secondary inline-flex items-center mb-3 text-gray-600 border border-gray-300 rounded-full py-2 px-4 hover:bg-gray-100"
             >
-                <ArrowLeft size={16} className="me-2" />
+                <ArrowLeft size={16} className="mr-2" />
                 Back to Elections
             </Link>
 
             <div
-                className="p-4 rounded-4 mb-4"
+                className="p-3 rounded-3xl mb-2"
                 style={{
                     background: "linear-gradient(135deg, #f5f7ff 0%, #e9f0ff 100%)"
                 }}
             >
-                <div className="row align-items-center">
-                    <div className="col-md-8">
-                        <h1 className="h2 fw-bold mb-2">{election.title}</h1>
-                        <div className="d-flex align-items-center text-muted mb-3">
-                            <Calendar className="me-2" size={16} />
+                <div className="flex flex-col md:flex-row items-center md:items-start">
+                    <div className="md:w-2/3">
+                        <h1 className="text-3xl font-bold mb-2">{election.title}</h1>
+                        <div className="flex items-center text-gray-500 mb-3">
+                            <Calendar className="mr-2" size={16} />
                             <span>
                                 {formatDate(election.startDate)} - {formatDate(election.endDate)}
                             </span>
                             <span
-                                className={`badge ms-3 ${
-                                    daysRemaining > 0 ? "bg-success" : "bg-danger"
+                                className={`ml-3 inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                                    daysRemaining > 0 ? "bg-green-500 text-white" : "bg-red-500 text-white"
                                 }`}
                             >
                                 {daysRemaining > 0 ? `${daysRemaining} days left` : "Closed"}
                             </span>
                         </div>
-                        <p className="mb-0">{election.description}</p>
+                        <p className="mb-0 text-gray-700">{election.description}</p>
                     </div>
-                    <div className="col-md-4 text-md-end mt-3 mt-md-0">
-                        <div className="d-flex flex-column align-items-md-end">
-                            <div className="d-flex align-items-center mb-2">
-                                <Users className="me-2 text-primary" size={16} />
-                                <span className="fw-medium">
+                    <div className="md:w-1/3 text-right mt-4 md:mt-0">
+                        <div className="flex flex-col items-end">
+                            <div className="flex items-center mb-2">
+                                <Users className="mr-2 text-blue-600" size={16} />
+                                <span className="font-medium text-gray-700">
                                     {election.candidates.length} Candidates
-                                </span>
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <Clock className="me-2 text-primary" size={16} />
-                                <span className="fw-medium">
-                                    Voting Method: {election.votingMethod}
                                 </span>
                             </div>
                         </div>

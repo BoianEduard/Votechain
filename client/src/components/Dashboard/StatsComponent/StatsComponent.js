@@ -3,9 +3,9 @@ import StatCard from "./StatsCard";
 
 const StatsSection = ({ stats }) => {
     return (
-        <div className="row g-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
             {stats.map((stat, index) => (
-                <div className="col-lg-4 col-md-4 col-sm-12" key={index}>
+                <div className="col" key={index}>
                     <StatCard stat={stat} />
                 </div>
             ))}
