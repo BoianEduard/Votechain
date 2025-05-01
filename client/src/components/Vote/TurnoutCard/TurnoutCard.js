@@ -4,7 +4,7 @@ const TurnoutCard = ({ election }) => {
 
     return (
         <div
-            className="card border-0 mt-5 p-6 rounded-3xl"
+            className="card border-0 mt-3 p-6 rounded-3xl"
             style={{
                 background: "linear-gradient(135deg, #f1f9fe 0%, #dcf0fd 100%)"
             }}
