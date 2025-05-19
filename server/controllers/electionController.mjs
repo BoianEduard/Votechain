@@ -1,43 +1,56 @@
 import models from "../models/index.mjs";
+import { generateKeyPair } from "../middleware/cryptoUtils.mjs";
+import { encryptPrivateKey } from "../middleware/cryptoUtils.mjs";
 
-const createElection = async(req, res, next) => {
+const createElection = async (req, res) => {
     try {
+        const electionKeys = generateKeyPair();
+
+        const encryptedPrivateKey = encryptPrivateKey(electionKeys.privateKey);
+
         const election = await models.Election.create({
-            ...req.body
+            ...req.body,
+            publicKey: electionKeys.publicKey,
+            privateKey: encryptedPrivateKey,
         });
+
+        const electionData = election.toJSON();
+        delete electionData.privateKey;
 
         return res.status(201).json({
             message: "Election created successfully!",
-            id: election.id,
-            ...election.toJSON()
+            ...electionData,
         });
-    } catch(error) {
-        console.log(error)
-        res.status(500).json({error: error})
+    } catch (error) {
+        console.error("Error creating election:", error);
+        return res.status(500).json({
+            error: error.message || "Failed to create election",
+        });
     }
 };
 
-const getAllElections = async (req, res, next) => {
+const getAllElections = async (req, res) => {
     try {
         const userId = req.user.userId;
         const elections = await models.Election.findAll({
             include: [
                 {
                     model: models.VoterRegistration,
-                    where: { userId: userId },
+                    where: { userId },
                     required: true,
                 },
                 {
                     model: models.Candidate,
-                    as: 'candidates',
-                }
-            ]
+                    as: "candidates",
+                },
+            ],
+            attributes: { exclude: ["privateKey"] },
         });
 
         return res.status(200).json(elections);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Error fetching elections:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -45,6 +58,7 @@ const getElectionById = async (req, res) => {
     try {
         const userId = req.user.userId;
         const electionId = req.params.id;
+
         const election = await models.Election.findOne({
             where: { id: electionId },
             include: [
@@ -55,18 +69,52 @@ const getElectionById = async (req, res) => {
                 },
                 {
                     model: models.Candidate,
-                    as: 'candidates'
-                }
-            ]
+                    as: "candidates",
+                },
+            ],
+            attributes: { exclude: ["privateKey"] }
         });
+
         if (!election) {
             return res.status(404).json({ message: "Election not found or not eligible" });
         }
 
-        res.status(200).json(election);
+        return res.status(200).json(election);
     } catch (error) {
         console.error("Error fetching election:", error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+const deleteElection = async (req, res) => {
+    try {
+        const { electionId } = req.params;
+
+        if (!electionId) {
+            return res.status(400).json({ error: 'Missing electionId' });
+        }
+
+        await models.Candidate.destroy({
+            where: { electionId }
+        });
+
+        await models.VoterRegistration.destroy({
+            where: { electionId }
+        });
+
+        const deleted = await models.Election.destroy({
+            where: { id: electionId }
+        });
+
+        if (deleted === 0) {
+            return res.status(404).json({ error: 'Election not found' });
+        }
+
+        res.status(200).json({ message: 'Election and related data deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting election:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -74,4 +122,5 @@ export default {
     createElection,
     getAllElections,
     getElectionById,
-}
+    deleteElection
+};

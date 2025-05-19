@@ -103,3 +103,20 @@ export const fetchElectionDetails = (electionId) => async (dispatch) => {
         throw error;
     }
 }
+
+export const deleteElection = (electionId) => async (dispatch) => {
+    dispatch(electionSlice.deleteElectionStart());
+    try {
+        const data = await electionAPI.deleteElection(electionId);
+        dispatch(electionSlice.deleteElectionSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message: error.message || "Delete election failed",
+            code: error.code,
+            status: error.response?.status
+        }
+        dispatch(electionSlice.deleteElectionFail(serializedError));
+        throw error;
+    }
+}

@@ -6,7 +6,7 @@ import electionReducer from './slices/electionSlice';
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
-  election: electionReducer
+  election: electionReducer,
 });
 
 export default rootReducer

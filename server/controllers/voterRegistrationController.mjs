@@ -63,7 +63,7 @@ const addWhitelist = async (req, res, next) => {
 const addAll = async (req, res, next) => {
   try {
     const {electionId} = req.body;
-
+    console.log(electionId);
     if (!electionId) {
       return res.status(400).json({message: "Election ID is required"});
     }
@@ -76,6 +76,13 @@ const addAll = async (req, res, next) => {
 
     const users = await models.User.findAll();
 
+    // Add this debugging code at the beginning of your addAll function
+    const existingRegistrations = await models.VoterRegistration.findAll({
+      where: { electionId }
+    });
+    console.log(`Found ${existingRegistrations.length} existing registrations for election ${electionId}`);
+
+
     await Promise.all(
       users.map(user => models.VoterRegistration.create({
         electionId:electionId,
@@ -87,9 +94,21 @@ const addAll = async (req, res, next) => {
       message:"All voters added successfully"
     })
   } catch(error) {
+    console.error("Full error:", JSON.stringify(error, null, 2));
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    if (error.errors) {
+      console.error("Constraint errors:", error.errors.map(e => ({
+        message: e.message,
+        path: e.path,
+        value: e.value,
+        type: e.type
+      })));
+    }
+
     if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
-        message: "Some email addresses are already in the whitelist",
+        message: "Some users are already registered for this election",
       });
     }
     console.log(error)
@@ -98,5 +117,5 @@ const addAll = async (req, res, next) => {
 
 export default {
   addWhitelist,
-  addAll
+  addAll,
 };
