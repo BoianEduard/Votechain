@@ -58,5 +58,17 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
+    publicKey: {
+      type:DataTypes.TEXT,
+      allowNull:false
+    },
+    privateKey: {
+      type:DataTypes.TEXT,
+      allowNull:false
+    },
+    contractAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
 };

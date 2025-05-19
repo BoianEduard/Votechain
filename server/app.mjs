@@ -1,12 +1,18 @@
-import express from 'express'
-import cors from 'cors'
+import express from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import authRoutes from './routes/authRoutes.mjs'
-import electionRoutes from './routes/electionRoutes.mjs'
+import authRoutes from './routes/authRoutes.mjs';
+import electionRoutes from './routes/electionRoutes.mjs';
+import contractRoutes from './routes/contractRoutes.mjs';
+import publicKeyRoute from './routes/keyRoute.mjs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const app = express()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+
 const corsOptions = {
   origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -15,15 +21,17 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions))
-app.use(express.json({ limit: '10mb' }))
-app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+
 app.use('/uploads/candidates', express.static(path.join(__dirname, 'public', 'uploads', 'candidates')));
 app.use('/candidates', express.static(path.join(__dirname, 'public', 'uploads', 'candidates')));
-app.use(cookieParser())
-console.log(path.join(__dirname, 'public', 'uploads'));
 
-app.use("/api/auth", authRoutes)
-app.use("/api/election", electionRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/election', electionRoutes);
+app.use('/api/contract', contractRoutes);
+app.use('/api', publicKeyRoute);
 
-export default app
+export default app;

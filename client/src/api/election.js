@@ -77,11 +77,21 @@ const getElection = async (electionId) => {
     }
 }
 
+const deleteElection = async (electionId) => {
+    try {
+        await axiosInstance.delete(`${API_ENDPOINT}/${electionId}/delete-election`);
+        console.log(`Election data was deleted sucessfully for election ${electionId}`);
+    } catch (votersError) {
+            console.warn(`Failed to delete voter registrations for election ${electionId}:`, votersError);
+    }
+};
+
 export default {
     createElection,
     addCandidates,
     addWhitelist,
     addAll,
     getAllElections,
-    getElection
+    getElection,
+    deleteElection
 };

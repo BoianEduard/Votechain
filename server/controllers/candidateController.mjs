@@ -80,12 +80,10 @@ const createCandidates = async (req, res, next) => {
         console.warn("No imageUrl field found in candidate model!");
       }
 
-      console.log("Creating candidate with data:", candidateData);
       return models.Candidate.create(candidateData);
     });
 
     const createdCandidates = await Promise.all(candidatePromises);
-    console.log("Created candidates:", createdCandidates.map(c => c.toJSON()));
 
     return res.status(201).json({
       message: "Candidates created successfully!",
@@ -98,5 +96,5 @@ const createCandidates = async (req, res, next) => {
 };
 
 export default {
-  createCandidates
+  createCandidates,
 };

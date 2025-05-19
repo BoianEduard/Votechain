@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as electionThunk from "../../redux/thunks/electionThunks";
 import * as validator from "../../utils/validators";
+import * as contractThunk from "../../redux/thunks/contractThunks";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
 import './CreateElection.css'
 
@@ -21,15 +22,13 @@ const CreateElection = () => {
     ],
     eligibilityType: "all",
     whitelist: "",
-    annonymousResults: "",
-    realTimeResults: "",
+    realTimeResults: false,
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const userId = useSelector((state) => state.user.id);
-  console.log("uSER ID: " + userId);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -163,6 +162,7 @@ const CreateElection = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    let electionId = null;
 
     try {
       const electionData = {
@@ -171,31 +171,19 @@ const CreateElection = () => {
         startDate: form.startDate,
         endDate: form.endDate,
         eligibilityType: form.eligibilityType,
-        annonymousResults: form.annonymousResults,
         realTimeResults: form.realTimeResults,
         creatorId: userId,
       };
 
       const result = await dispatch(electionThunk.createElection(electionData));
+      if (!result?.id) throw new Error('Something went wrong creating the election');
+      electionId = result.id;
 
-      if (!result || !result.id) throw new Error('Something went wrong creating elections');
-
-      const electionId = result.id;
-
-      const candidatesWithImages = form.candidates.map(candidate => {
-        if (typeof candidate === 'object' && candidate !== null) {
-          return {
-            name: candidate.name,
-            image: candidate.imagePreview || null,
-            description: candidate.description || ""
-          };
-        }
-        return {
-          name: candidate,
-          image: null,
-          description: ""
-        };
-      });
+      const candidatesWithImages = form.candidates.map(candidate => ({
+        name: candidate.name || candidate,
+        image: candidate.imagePreview || null,
+        description: candidate.description || ""
+      }));
 
       const candidateResult = await dispatch(electionThunk.addCandidates({
         electionId,
@@ -208,17 +196,33 @@ const CreateElection = () => {
         const emails = validator.parseWhitelist(form.whitelist);
         if (emails.length > 0) {
           await dispatch(electionThunk.addWhitelist(electionId, emails));
+        } else {
+          throw new Error("Whitelist is empty or invalid");
         }
       } else {
         await dispatch(electionThunk.addAll(electionId));
       }
 
-      alert("Election created successfully.");
+      const deployResult = await dispatch(contractThunk.deployContract(electionId));
+      if (!deployResult?.contractAddress) throw new Error('Contract deployment failed');
+
+      alert(`Election created successfully. Contract deployed at: ${deployResult.contractAddress}`);
       navigate("/dashboard");
+
     } catch (error) {
-      console.error('Error creating election:', error);
-      setError(error.message || 'Failed to create election');
-      alert('Error: ' + (error.message || 'Failed to create election'));
+      console.error("Error creating election:", error);
+      setError(error.message || "Failed to create election");
+      alert("Error: " + (error.message || "Failed to create election"));
+
+      if (electionId) {
+        try {
+          await dispatch(electionThunk.deleteElection(electionId));
+          console.log(`Successfully rolled back election ${electionId}`);
+        } catch (rollbackError) {
+          console.error("Failed to rollback election:", rollbackError);
+          alert("Warning: Failed to clean up resources. Please contact an administrator.");
+        }
+      }
     } finally {
       setLoading(false);
     }

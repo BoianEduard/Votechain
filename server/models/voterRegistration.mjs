@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
       electionId: {
         type: DataTypes.UUID,
         allowNull: false,
+        primaryKey: true,
         references: {
           model: 'elections',
           key: 'id'
