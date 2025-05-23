@@ -12,6 +12,7 @@ const loginUser = (credentials) => async (dispatch) => {
     dispatch(setUserSuccess(data.user));
   } catch (error) {
     dispatch(loginFailure(error));
+    throw new Error(error.message);
   }
 };
 
@@ -49,16 +50,7 @@ const registerUser = (userData) => async (dispatch) => {
     return data;
 
   } catch (error) {
-    // Improved error handling
-    console.log('Registration error details:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      message: error.message
-    });
-
     const errorMessage = error.response?.data?.message || error.message || "Registration failed";
-
     dispatch(loginFailure(errorMessage));
     throw new Error(errorMessage);
   }
@@ -69,8 +61,6 @@ const logoutUser = () => async (dispatch) => {
     await authAPI.logout();
     dispatch(logout());
   } catch (error) {
-    console.error('Logout failed:', error);
-    // Chiar dacă apelul eșuează, putem totuși să facem logout local
     dispatch(logout());
   }
 };
@@ -91,7 +81,7 @@ const checkAuthStatus = () => async (dispatch) => {
     return data.authenticated;
   } catch (error) {
     dispatch(loginFailure(error));
-    return false;
+    throw new Error(errorMessage);
   }
 };
 
