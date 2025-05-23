@@ -16,12 +16,12 @@ export const deployContract = (electionId) => async (dispatch) => {
             status: error.response?.status
         };
         dispatch(contractSlice.deployContractFail(serializedError));
-        throw error;
+        throw new Error(serializedError.message);
     }
 };
 
 export const castVote = (electionId, candidateId, electionPublicKey, registeredAddress) => async (dispatch) => {
-    dispatch(contractSlice.deployContractStart());
+    dispatch(contractSlice.castVoteStart());
     try {
         const address = await getConnectedAddress();
 
@@ -50,7 +50,7 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
             address,
         });
 
-        dispatch(contractSlice.deployContractSuccess(data));
+        dispatch(contractSlice.castVoteSuccess(data));
         return data;
 
     } catch (error) {
@@ -59,7 +59,7 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
             code: error.code,
             status: error.response?.status,
         };
-        dispatch(contractSlice.deployContractFail(serializedError));
-        throw error;
+        dispatch(contractSlice.castVoteFail(serializedError));
+        throw new Error(serializedError.message);
     }
 };
