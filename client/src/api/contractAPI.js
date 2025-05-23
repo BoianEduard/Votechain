@@ -32,6 +32,16 @@ const deployContract = async (data) => {
     }
 };
 
+const castVote = async (data) => {
+    try {
+        const response = await axiosInstance.post(`${API_ENDPOINT}/cast-vote`, data);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Casting vote failed";
+    }
+};
+
 export default {
-    deployContract
+    deployContract,
+    castVote
 };

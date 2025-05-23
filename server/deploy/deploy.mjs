@@ -2,7 +2,6 @@ import solc from "solc";
 import fs from "fs";
 import path from "path";
 import { ethers } from "ethers";
-import crypto from "crypto";
 
 function findImports(importPath) {
     try {
@@ -16,31 +15,6 @@ function findImports(importPath) {
     } catch (error) {
         console.error(`Error resolving import ${importPath}:`, error);
         return { error: `File not found: ${importPath}` };
-    }
-}
-
-function pemPublicKeyToAddress(pemPublicKey) {
-    try {
-        let cleanPem = pemPublicKey;
-        if (cleanPem.startsWith("0x")) {
-            cleanPem = cleanPem.slice(2);
-        }
-        if (cleanPem.startsWith("04")) {
-            cleanPem = cleanPem.slice(2);
-        }
-
-        if (cleanPem.includes("-----BEGIN PUBLIC KEY-----")) {
-            const hash = ethers.keccak256(ethers.toUtf8Bytes(cleanPem));
-            return ethers.getAddress("0x" + hash.slice(-40));
-        } else {
-            if (!cleanPem.startsWith("0x")) {
-                cleanPem = "0x" + cleanPem;
-            }
-            return ethers.computeAddress(cleanPem);
-        }
-    } catch (error) {
-        const hash = ethers.keccak256(ethers.toUtf8Bytes(pemPublicKey));
-        return ethers.getAddress("0x" + hash.slice(-40));
     }
 }
 
@@ -67,7 +41,6 @@ export async function deployContract({ eligibleVoters }) {
     const compiledOutput = solc.compile(JSON.stringify(input), { import: findImports });
     const output = JSON.parse(compiledOutput);
 
-    // Check for compilation errors
     if (output.errors) {
         const hasError = output.errors.some(error => error.severity === 'error');
         if (hasError) {
@@ -78,12 +51,8 @@ export async function deployContract({ eligibleVoters }) {
         }
     }
 
-    // Debug the output structure
-    console.log("Compilation output keys:", Object.keys(output));
     if (output.contracts) {
-        console.log("Contract files:", Object.keys(output.contracts));
         if (output.contracts["ElectionContract.sol"]) {
-            console.log("Contracts in file:", Object.keys(output.contracts["ElectionContract.sol"]));
         } else {
             console.error("No contracts found in ElectionContract.sol");
         }
@@ -91,7 +60,6 @@ export async function deployContract({ eligibleVoters }) {
         console.error("No contracts in compilation output");
     }
 
-    // If we can't find the contract, try to use the first contract we find
     let contractName, abi, bytecode;
 
     if (output.contracts && output.contracts["ElectionContract.sol"]) {
@@ -102,19 +70,11 @@ export async function deployContract({ eligibleVoters }) {
         throw new Error("Could not find compiled contract");
     }
 
-    const addresses = eligibleVoters.map(voter => {
-        return pemPublicKeyToAddress(voter.publicKey);
-    });
-
     const provider = new ethers.JsonRpcProvider(process.env.BLOCKCHAIN_RPC_URL);
     const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-    console.log("Deploying contract from address:", wallet.address);
-    const balance = await provider.getBalance(wallet.address);
-    console.log("Current balance:", ethers.formatEther(balance), "MATIC");
-    console.log("Network:", (await provider.getNetwork()).name);
 
     const factory = new ethers.ContractFactory(abi, bytecode, wallet);
-    const contract = await factory.deploy(addresses);
+    const contract = await factory.deploy(eligibleVoters);
 
     await contract.waitForDeployment();
 

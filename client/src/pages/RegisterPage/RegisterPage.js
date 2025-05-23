@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // Add useSelector
 import { Link } from "react-router-dom";
 import authThunks from "../../redux/thunks/authThunks";
 
@@ -8,30 +8,45 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState(""); // Rename to formError to distinguish from Redux error
 
   const dispatch = useDispatch();
 
+  const { loading: isLoading, error } = useSelector(state => state.auth);
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!email) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
+
+    if (!password) errors.password = "Password is required";
+    else if (password.length < 8) errors.password = "Password must be at least 8 characters";
+
+    if (!firstName) errors.firstName = "First name is required";
+    if (!lastName) errors.lastName = "Last name is required";
+
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password || !firstName || !lastName) {
-      setError("All fields are required.");
+    const formErrors = validateForm();
+
+    if (Object.keys(formErrors).length > 0) {
+      setFormError(Object.values(formErrors).join(" "));
       return;
     }
 
-    setIsLoading(true);
-    setError("");
+    setFormError("");
 
     try {
       await dispatch(authThunks.registerUser({ email, password, firstName, lastName }));
-      alert("Registration successful!");
     } catch (err) {
-      setError("Registration failed. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  const displayError = formError || error;
 
   return (
       <div className="flex justify-center items-center min-h-screen bg-light">
@@ -39,8 +54,7 @@ const RegisterPage = () => {
           <h1 className="text-center text-2xl font-semibold text-primary mb-2">Votechain</h1>
           <p className="text-center text-sm text-gray-500 mb-4">Create your account</p>
 
-          {error && <div className="alert alert-danger py-2 mb-4">{error}</div>}
-
+          {displayError && <div className="alert alert-danger py-2 mb-4">{displayError}</div>}
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
@@ -106,10 +120,10 @@ const RegisterPage = () => {
                 disabled={isLoading}
             >
               {isLoading ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                    Signing up...
-                  </>
+                  <div className="flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    <span>Signing up...</span>
+                  </div>
               ) : "Sign up"}
             </button>
 

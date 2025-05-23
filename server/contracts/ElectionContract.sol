@@ -6,10 +6,6 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-/**
- * @title ElectionContract
- * @dev Contract pentru gestionarea înregistrării voturilor criptate
- */
 contract ElectionContract is ReentrancyGuard, Ownable {
     using ECDSA for bytes32;
 
@@ -21,14 +17,17 @@ contract ElectionContract is ReentrancyGuard, Ownable {
     event VoteSubmitted(address indexed voter, bytes encryptedVote);
 
     constructor(address[] memory eligibleVoters) Ownable(msg.sender) {
-        totalVoterCount = eligibleVoters.length;
+        totalVoterCount = 0;
         totalVotesCast = 0;
 
         for (uint i = 0; i < eligibleVoters.length; i++) {
             address voter = eligibleVoters[i];
+            require(voter != address(0), "Invalid voter address");
+            require(!isEligibleVoter[voter], "Duplicate voter address");
+
             hasVoted[voter] = false;
             isEligibleVoter[voter] = true;
-            require(voter != address(0), "Invalid voter address");
+            totalVoterCount++;
         }
     }
 
@@ -40,14 +39,25 @@ contract ElectionContract is ReentrancyGuard, Ownable {
         require(isEligibleVoter[voterAddress], "You are not eligible to vote");
         require(!hasVoted[voterAddress], "You have already voted");
 
-        bytes32 hash = keccak256(abi.encodePacked(voterAddress));
+        // Verify that the encrypted vote was signed by the voter
+        // First hash the encrypted vote data
+        bytes32 hash = keccak256(encryptedVote);
+
+        // Convert to Ethereum signed message format
         bytes32 ethHash = MessageHashUtils.toEthSignedMessageHash(hash);
+
+        // Recover the signer's address from the signature
         address recovered = ECDSA.recover(ethHash, signature);
 
+        // Verify the signature matches the voter's address
+        require(recovered == voterAddress, "Invalid signature");
+
+        // Emit event before state changes (best practice)
+        emit VoteSubmitted(voterAddress, encryptedVote);
+
+        // Update state after verification
         hasVoted[voterAddress] = true;
         totalVotesCast++;
-
-        emit VoteSubmitted(voterAddress, encryptedVote);
     }
 
     function getVotingStats() external view returns (uint256 eligibleVoters, uint256 votes, uint256 participationRate) {

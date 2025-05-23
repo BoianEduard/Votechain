@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.mjs';
 import electionRoutes from './routes/electionRoutes.mjs';
 import contractRoutes from './routes/contractRoutes.mjs';
 import publicKeyRoute from './routes/keyRoute.mjs';
+import userRoutes from './routes/userRoutes.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -32,6 +33,7 @@ app.use('/candidates', express.static(path.join(__dirname, 'public', 'uploads', 
 app.use('/api/auth', authRoutes);
 app.use('/api/election', electionRoutes);
 app.use('/api/contract', contractRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api', publicKeyRoute);
 
 export default app;

@@ -1,5 +1,5 @@
 import * as electionSlice from "../slices/electionSlice";
-import electionAPI from '../../api/election';
+import electionAPI from '../../api/electionAPI';
 
 export const createElection = (details) => async (dispatch) => {
     dispatch(electionSlice.createElectionStart());

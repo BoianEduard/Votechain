@@ -39,6 +39,14 @@ export default (sequelize, DataTypes, UUIDV4) => {
       publicKey: {
         type:DataTypes.TEXT,
         allowNull:false
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          is: /^0x[a-fA-F0-9]{40}$/
+        }
       }
     })
   }
