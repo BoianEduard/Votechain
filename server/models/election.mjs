@@ -69,6 +69,9 @@ export default (sequelize, DataTypes) => {
     contractAddress: {
       type: DataTypes.STRING,
       allowNull: true,
+      validate: {
+        is: /^0x[a-fA-F0-9]{40}$/,
+      },
     }
   });
 };

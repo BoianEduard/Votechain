@@ -1,50 +1,49 @@
+import { Calendar, ChevronDown, ChevronUp } from "lucide-react";
 import React from "react";
-import { Calendar, Clock, ChevronDown, ChevronUp } from "lucide-react";
-import { format, differenceInDays } from "date-fns";
 
 const ElectionHead = ({ election, expanded, toggleExpand }) => {
-    const formatDate = (dateString) => {
-        return format(new Date(dateString), "MMMM d, yyyy");
+    const getStatus = () => {
+        const now = new Date();
+        if (new Date(election.startDate) > now) return "Not Started";
+        if (new Date(election.endDate) < now) return "Closed";
+        return "Vote In Progress";
     };
 
-    const daysRemaining = differenceInDays(new Date(election.endDate), new Date());
+    const status = getStatus();
+    const statusClass =
+        status === "Vote In Progress"
+            ? "bg-green-100 text-green-800"
+            : status === "Not Started"
+                ? "bg-blue-100 text-blue-800"
+                : "bg-gray-100 text-gray-700";
 
     return (
-        <div
-            className={`p-5 bg-blue-50 cursor-pointer transition-all duration-300 ${expanded ? "border-b" : ""}`}
-            onClick={toggleExpand}
-        >
-            <div className="flex justify-between items-center">
-                <div className="flex flex-col">
-                    <h3 className="text-2xl font-bold text-gray-800">{election.title}</h3>
-                    <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <Calendar className="mr-2" size={14} />
-                        <span>
-                            {formatDate(election.startDate)} - {formatDate(election.endDate)}
-                        </span>
+        <div className="p-6 cursor-pointer" onClick={toggleExpand}>
+            <div className="flex justify-between items-start">
+                <div>
+                    <h3 className="text-xl font-semibold text-indigo-700 mb-2">
+                        {election.title}
+                    </h3>
+                    <div className="flex items-center text-gray-500">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        <span className="text-sm">
+              {new Date(election.startDate).toLocaleDateString()} - {new Date(election.endDate).toLocaleDateString()}
+            </span>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        daysRemaining > 0 ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                    }`}>
-                        <Clock size={12} className="inline-block mr-1" />
-                        {daysRemaining > 0 ? `${daysRemaining} days left` : "Closed"}
-                    </div>
-
+                <div className="flex items-center">
+          <span className={`px-3 py-1 text-sm rounded-full mr-3 ${statusClass}`}>
+            {status}
+          </span>
                     <button
-                        className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md border border-gray-300"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            toggleExpand();
-                        }}
-                        aria-expanded={expanded}
+                        className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                        aria-label={expanded ? "Collapse" : "Expand"}
                     >
                         {expanded ? (
-                            <ChevronUp size={18} className="text-blue-600" />
+                            <ChevronUp className="text-gray-500" size={20} />
                         ) : (
-                            <ChevronDown size={18} className="text-blue-600" />
+                            <ChevronDown className="text-gray-500" size={20} />
                         )}
                     </button>
                 </div>

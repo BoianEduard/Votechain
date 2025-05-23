@@ -1,12 +1,12 @@
-require("@nomicfoundation/hardhat-toolbox");
-
-/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.0",
+  solidity: "0.8.20",
   networks: {
-    amoy: {
-      url: "https://polygon-amoy.g.alchemy.com/v2/0ifhhxzg_dK5qwkez0TRRRq8XAM28H06",
-      accounts: ["5759b05efcb6fa5c8b28601d432808a50f3ce321ab2495746a42598e691a45c3"],  // Your private key
+    hardhat: {
+      chainId: 31337
+    },
+    development: {
+      url: process.env.BLOCKCHAIN_RPC_URL || "",
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     }
   }
 };

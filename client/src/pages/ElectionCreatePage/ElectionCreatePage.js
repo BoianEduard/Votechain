@@ -5,9 +5,9 @@ import * as electionThunk from "../../redux/thunks/electionThunks";
 import * as validator from "../../utils/validators";
 import * as contractThunk from "../../redux/thunks/contractThunks";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
-import './CreateElection.css'
+import './ElectionCreate.css'
 
-const CreateElection = () => {
+const ElectionCreatePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -253,4 +253,4 @@ const CreateElection = () => {
   );
 };
 
-export default CreateElection;
+export default ElectionCreatePage;
