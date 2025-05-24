@@ -1,6 +1,6 @@
 import models from "../models/index.mjs";
-import { generateKeyPair } from "../middleware/cryptoUtils.mjs";
-import { encryptPrivateKey } from "../middleware/cryptoUtils.mjs";
+import { generateKeyPair } from "../services/cryptoUtils.mjs";
+import { encryptPrivateKey } from "../services/cryptoUtils.mjs";
 
 const createElection = async (req, res) => {
     try {
@@ -118,9 +118,49 @@ const deleteElection = async (req, res) => {
     }
 };
 
+const getDashboardStats = async (req, res) => {
+    try {
+        const totalVotes = await models.Candidate.sum("votes");
+
+        const activeElectionsCount = await models.VoterRegistration.aggregate("electionId", "count", {
+            distinct: true
+        });
+
+        const participantCount = await models.VoterRegistration.aggregate("userId", "count", {
+            distinct: true
+        });
+
+        return res.status(200).json({
+            stats: [
+                {
+                    label: "Active Elections",
+                    value: activeElectionsCount,
+                    color: "#4361ee",
+                },
+                {
+                    label: "Votes Cast",
+                    value: totalVotes || 0,
+                    color: "#2ec4b6",
+                },
+                {
+                    label: "Participants",
+                    value: participantCount,
+                    color: "#e63946",
+                },
+            ],
+        });
+    } catch (error) {
+        console.error("Error fetching dashboard stats:", error);
+        return res.status(500).json({
+            message: "Failed to fetch dashboard stats",
+        });
+    }
+};
+
 export default {
     createElection,
     getAllElections,
     getElectionById,
-    deleteElection
+    deleteElection,
+    getDashboardStats
 };

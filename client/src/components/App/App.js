@@ -10,6 +10,7 @@ import ElectionViewPage from '../../pages/ElectionViewPage';
 import ElectionVotePage from '../../pages/ElectionVotePage/ElectionVotePage';
 import ElectionHistoryPage from '../../pages/ElectionHistoryPage/ElectionHistoryPage';
 import ElectionResultsPage from '../../pages/ElectionResultsPage/ElectionResultsPage';
+import Logout from "../Logout/Logout";
 import store from '../../redux/store';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,6 +38,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<RegisterPage />} />
               <Route element={<AuthGuard />}>
+                <Route path="/logout" element={<Logout />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/create-election" element={<ElectionCreatePage />} />
                 <Route path="/vote" element={<ElectionViewPage />} />

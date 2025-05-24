@@ -2,6 +2,7 @@ import * as contractSlice from "../slices/contractSlice";
 import contractAPI from '../../api/contractAPI';
 import {encryptVote,getConnectedAddress, preparePublicKey} from "../../utils/blockchain";
 import {ethers} from 'ethers';
+import {Buffer} from 'buffer';
 
 export const deployContract = (electionId) => async (dispatch) => {
     dispatch(contractSlice.deployContractStart());
@@ -29,24 +30,27 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
             throw new Error("Connected MetaMask address does not match registered address");
         }
 
-        // 1. Encrypt the vote
-        const encryptedVote = await encryptVote(candidateId.toString(), electionPublicKey);
+        // 1. Encrypt the vote (returns base64)
+        const encryptedVoteBase64 = await encryptVote(candidateId.toString(), electionPublicKey);
 
-        // 2. Convert to bytes and hash
-        const encryptedVoteBytes = ethers.toUtf8Bytes(encryptedVote);
-        const voteHash = ethers.keccak256(encryptedVoteBytes);
+        // 2. Convert base64 to bytes for blockchain storage
+        const encryptedVoteBuffer = Buffer.from(encryptedVoteBase64, 'base64');
+        const encryptedVoteHex = '0x' + encryptedVoteBuffer.toString('hex');
 
-        // 3. Sign the hash with MetaMask
+        // 3. Hash the encrypted data for signing
+        const voteHash = ethers.keccak256(encryptedVoteHex);
+
+        // 4. Sign the hash with MetaMask
         const signature = await window.ethereum.request({
             method: 'personal_sign',
             params: [voteHash, address],
         });
 
-        // 4. Send to backend - pass the hex-encoded values
+        // 5. Send to backend - pass the hex-encoded encrypted vote
         const data = await contractAPI.castVote({
             electionId,
-            encryptedVote: ethers.hexlify(encryptedVoteBytes), // Send hex-encoded bytes
-            signature,  // This is already a hex string from personal_sign
+            encryptedVote: encryptedVoteHex, // Send as hex string
+            signature,
             address,
         });
 
@@ -61,5 +65,19 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         };
         dispatch(contractSlice.castVoteFail(serializedError));
         throw new Error(serializedError.message);
+    }
+};
+
+export const fetchElectionResults = (electionId) => async (dispatch) => {
+    dispatch(contractSlice.fetchResultsStart());
+    try {
+        const result = await contractAPI.getElectionResults(electionId);
+        dispatch(contractSlice.fetchResultsSuccess({ electionId, result }));
+        console.log(result);
+        return result;
+    } catch (error) {
+        const errorMessage = error?.message || error || "Unknown error fetching results";
+        dispatch(contractSlice.fetchResultsFail(errorMessage));
+        throw error;
     }
 };

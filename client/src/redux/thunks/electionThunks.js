@@ -120,3 +120,20 @@ export const deleteElection = (electionId) => async (dispatch) => {
         throw error;
     }
 }
+
+export const getDashboardStats = () => async (dispatch) => {
+    dispatch(electionSlice.getDashboardStatsStart());
+    try {
+        const data = await electionAPI.getDashboardStats();
+        dispatch(electionSlice.getDashboardStatsSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message: error.message || "Fetching dashboard stats failed",
+            code: error.code,
+            status: error.response?.status,
+        };
+        dispatch(electionSlice.getDashboardStatsFail(serializedError));
+        throw error;
+    }
+};

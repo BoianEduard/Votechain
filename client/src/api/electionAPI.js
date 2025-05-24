@@ -86,6 +86,11 @@ const deleteElection = async (electionId) => {
     }
 };
 
+const getDashboardStats = async () => {
+    const response = await axiosInstance.get(`${API_ENDPOINT}/dashboard-stats`);
+    return response.data;
+};
+
 export default {
     createElection,
     addCandidates,
@@ -93,5 +98,6 @@ export default {
     addAll,
     getAllElections,
     getElection,
-    deleteElection
+    deleteElection,
+    getDashboardStats
 };
