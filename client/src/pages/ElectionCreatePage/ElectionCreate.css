@@ -1,7 +1,11 @@
 .create-election-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100vw;          /* full viewport width */
+  margin: 0;             /* no margin */
+  padding: 0 1.5rem;     /* horizontal padding */
+  position: relative;    /* if you want to layer or position elements */
+  top: 0;                /* stick to the top */
+  left: 0;               /* align left */
+  box-sizing: border-box;
 }
 
 .header {

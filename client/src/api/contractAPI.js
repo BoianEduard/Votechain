@@ -41,7 +41,21 @@ const castVote = async (data) => {
     }
 };
 
+
+const getElectionResults = async (electionId) => {
+    try {
+        const response = await axiosInstance.get(`${API_ENDPOINT}/${electionId}/results`);
+        return response.data;
+    } catch (error) {
+        const message = error.response?.data?.message || "Getting election results failed";
+        const customError = new Error(message);
+        customError.status = error.response?.status;
+        throw customError;
+    }
+};
+
 export default {
     deployContract,
-    castVote
+    castVote,
+    getElectionResults,
 };

@@ -1,16 +1,4 @@
-import { API_URL } from "../config/config"
-
-export const preparePublicKey = (publicKeyString) => {
-    if (publicKeyString.includes('-----BEGIN PUBLIC KEY-----')) {
-        return publicKeyString
-            .replace('-----BEGIN PUBLIC KEY-----', '')
-            .replace('-----END PUBLIC KEY-----', '')
-            .replace(/\s/g, '');
-    }
-
-    return publicKeyString;
-};
-
+// Helper functions
 const str2ab = (str) => {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -26,6 +14,16 @@ const ab2str = (buf) => {
 
 const ab2base64 = (buf) => {
     return btoa(ab2str(buf));
+};
+
+export const preparePublicKey = (publicKeyString) => {
+    if (publicKeyString.includes('-----BEGIN PUBLIC KEY-----')) {
+        return publicKeyString
+            .replace('-----BEGIN PUBLIC KEY-----', '')
+            .replace('-----END PUBLIC KEY-----', '')
+            .replace(/\s/g, '');
+    }
+    return publicKeyString;
 };
 
 const importPublicKey = async (keyString) => {
@@ -65,7 +63,6 @@ const importPublicKey = async (keyString) => {
             ['encrypt']
         );
     } catch (error) {
-        console.error('Error importing public key:', error);
         throw new Error('Failed to import public key');
     }
 };
@@ -85,7 +82,7 @@ const importPrivateKey = async (privateKeyString) => {
                 .replace(/\s/g, '');
         }
 
-        // 2. Eliminăm prefixul 0x dacă există (pentru chei în format hex)
+        // Remove 0x prefix if it exists
         if (cleanedKey.startsWith('0x')) {
             const hexWithout0x = cleanedKey.slice(2);
             const bytes = [];
@@ -94,6 +91,7 @@ const importPrivateKey = async (privateKeyString) => {
             }
             cleanedKey = btoa(String.fromCharCode.apply(null, bytes));
         }
+
         const isBase64 = /^[A-Za-z0-9+/=]+$/.test(cleanedKey);
 
         if (!isBase64) {
@@ -132,7 +130,8 @@ export const encryptVote = async (candidateId, electionPublicKeyString) => {
 
         const encryptedData = await window.crypto.subtle.encrypt(
             {
-                name: 'RSA-OAEP'
+                name: 'RSA-OAEP',
+                hash: 'SHA-256'
             },
             publicKey,
             voteData
@@ -142,6 +141,26 @@ export const encryptVote = async (candidateId, electionPublicKeyString) => {
     } catch (error) {
         console.error('Error encrypting vote:', error);
         throw new Error('Failed to encrypt vote');
+    }
+};
+
+// IMPORTANT: This backend decryption function needs to use SHA-256 to match frontend
+export const decryptVote = (encryptedVoteBase64, privateKeyPem) => {
+    try {
+        const buffer = Buffer.from(encryptedVoteBase64, 'base64');
+
+        const decrypted = crypto.privateDecrypt(
+            {
+                key: privateKeyPem,
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+                oaepHash: 'sha256' // Changed from 'sha1' to 'sha256' to match frontend
+            },
+            buffer
+        );
+
+        return JSON.parse(decrypted.toString('utf8')).candidateId;
+    } catch (error) {
+        throw new Error(`Failed to decrypt vote: ${error.message}`);
     }
 };
 

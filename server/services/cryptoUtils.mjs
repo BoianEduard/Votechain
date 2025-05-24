@@ -49,3 +49,25 @@ export function decryptPrivateKey(encrypted) {
     decrypted += decipher.final("utf8");
     return decrypted;
 }
+
+export const decryptVote = (encryptedVoteBase64, privateKeyPem) => {
+    try {
+        const buffer = Buffer.from(encryptedVoteBase64, 'base64');
+
+        const decrypted = crypto.privateDecrypt(
+            {
+                key: privateKeyPem,
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+                oaepHash: 'sha256',
+            },
+            buffer
+        );
+
+        const json = decrypted.toString('utf8');
+        const { candidateId } = JSON.parse(json);
+
+        return candidateId;
+    } catch (error) {
+        throw new Error(`Failed to decrypt vote: ${error.message}`);
+    }
+};

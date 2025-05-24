@@ -6,7 +6,7 @@ const initialState = {
     contractAddress: null,
     isDeployed: false,
     voteSubmitted: false,
-    results: null
+    results: {} // store results by electionId
 };
 
 const contractSlice = createSlice({
@@ -26,6 +26,7 @@ const contractSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
         fetchContractStatusStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -39,6 +40,7 @@ const contractSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
         castVoteStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -52,21 +54,22 @@ const contractSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
         fetchResultsStart: (state) => {
             state.loading = true;
             state.error = null;
         },
         fetchResultsSuccess: (state, action) => {
             state.loading = false;
-            state.results = action.payload;
+            const { electionId, result } = action.payload;
+            state.results[electionId] = result;
         },
         fetchResultsFail: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
-        resetContractState: (state) => {
-            return initialState;
-        }
+
+        resetContractState: () => initialState
     }
 });
 

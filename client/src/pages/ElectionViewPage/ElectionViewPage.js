@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
-import { AlertCircle, Search, Filter, HelpCircle } from 'lucide-react';
+import { AlertCircle, HelpCircle } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import ElectionCard from '../../components/ElectionView/ElectionCard';
 import { fetchAllElections } from "../../redux/thunks/electionThunks";
+import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
+import ElectionPageSearch from "../../components/Commons/ElectionPageSearch";
+import LoadingSpinner from "../../components/Commons/LoadingSpinner";
+import ErrorCard from "../../components/Commons/Error/ErrorCard";
 
 const ElectionViewPage = () => {
   const dispatch = useDispatch();
@@ -13,36 +17,29 @@ const ElectionViewPage = () => {
     dispatch(fetchAllElections());
   }, [dispatch]);
 
+  const handleFilterClick = () => {
+    console.log("Filter clicked");
+  };
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorCard message={error} />;
+
   return (
       <div className="min-h-screen bg-gradient-to-b from-indigo-700 to-indigo-500">
-        {/* Header Section */}
-        <div className="pt-10 pb-16 px-4">
-          <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold text-white mb-2">Upcoming Elections</h1>
-            <p className="text-indigo-100 max-w-2xl mx-auto">
-              Browse elections and cast a vote for your candidate.
-            </p>
-          </div>
-
-          {/* Search Bar */}
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-2 flex">
-            <div className="relative flex-grow">
-              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-indigo-400" />
-              </div>
-              <input
-                  type="text"
-                  className="block w-full pl-10 pr-3 py-2.5 border-0 rounded-lg focus:outline-none focus:ring-0"
-                  placeholder="Search elections..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center ml-2">
-              <Filter className="h-5 w-5 mr-2" />
-              Filter
-            </button>
-          </div>
+        <div className="pt-10 pb-10 px-4">
+          <ElectionPageHeader
+              title="Upcoming Elections"
+              description="Browse elections and cast a vote for your candidate."
+              backLink="/dashboard"
+              backLabel="Back to Dashboard"
+          />
+          <ElectionPageSearch
+              placeholder="Search elections..."
+              buttonLabel="Filter"
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              onFilterClick={handleFilterClick}
+          />
         </div>
 
         {/* Content Section */}

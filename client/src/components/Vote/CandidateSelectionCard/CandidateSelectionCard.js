@@ -9,7 +9,7 @@ const CandidateSelectionCard = ({
                                     handleConfirmVote
                                 }) => {
     return (
-        <div className="max-w-fit max-w-10xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+        <div className="max-w max-w-10xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm p-6">
             <div className="flex items-start p-4 mb-5 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg">
                 <Info size={20} className="mr-3 flex-shrink-0 text-indigo-500" />
                 <div>

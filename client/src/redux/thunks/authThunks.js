@@ -81,7 +81,7 @@ const checkAuthStatus = () => async (dispatch) => {
     return data.authenticated;
   } catch (error) {
     dispatch(loginFailure(error));
-    throw new Error(errorMessage);
+    throw new Error(error.message);
   }
 };
 

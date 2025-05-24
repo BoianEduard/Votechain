@@ -87,7 +87,19 @@ const electionSlice = createSlice({
         deleteElectionFail(state, action) {
             state.loading = false;
             state.error = action.payload;
-        }
+        },
+        getDashboardStatsStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getDashboardStatsSuccess: (state, action) => {
+            state.loading = false;
+            state.dashboardStats = action.payload;
+        },
+        getDashboardStatsFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
     }
 });
 
@@ -97,7 +109,8 @@ export const {
     addWhitelistStart, addWhitelistSuccess, addWhitelistFail,
     fetchElectionsStart, fetchElectionsSuccess, fetchElectionsFail,
     fetchElectionDetailsStart, fetchElectionDetailsSuccess, fetchElectionDetailsFail,
-    deleteElectionStart,deleteElectionSuccess,deleteElectionFail
+    deleteElectionStart,deleteElectionSuccess,deleteElectionFail,
+    getDashboardStatsStart,getDashboardStatsFail,getDashboardStatsSuccess
 } = electionSlice.actions;
 
 export default electionSlice.reducer;

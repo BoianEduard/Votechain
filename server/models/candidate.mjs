@@ -12,6 +12,11 @@ export default (sequelize, DataTypes, UUIDV4) => {
     position: {
       type: DataTypes.STRING,
     },
+    votes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.TEXT,
     },
