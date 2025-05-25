@@ -49,6 +49,15 @@ const addWhitelist = async (whitelistData) => {
     }
 };
 
+const addDomainWhitelist = async (domainData) => {
+    try {
+        const response = await axiosInstance.post(`${API_ENDPOINT}/set-domain-whitelist`, domainData);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Adding domain whitelist failed";
+    }
+};
+
 const addAll = async (electionId) => {
     try {
         const response = await axiosInstance.post(`${API_ENDPOINT}/set-whitelist-all`, { electionId });
@@ -108,6 +117,7 @@ export default {
     createElection,
     addCandidates,
     addWhitelist,
+    addDomainWhitelist,
     addAll,
     getAllElections,
     getElection,

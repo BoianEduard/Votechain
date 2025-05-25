@@ -43,7 +43,7 @@ export default (sequelize, DataTypes) => {
       },
     },
     eligibilityType: {
-      type: DataTypes.ENUM('all', 'id', 'whitelist'),
+      type: DataTypes.ENUM('all', 'id', 'whitelist','domain'),
       allowNull: false,
     },
     anonymousResults: { 

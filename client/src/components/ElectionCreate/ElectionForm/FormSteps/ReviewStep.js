@@ -63,12 +63,6 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
             <div className="max-w-4xl mx-auto flex flex-col max-h-fit">
                 <h2 className="text-2xl font-bold mb-6 text-center">Review Election Details</h2>
 
-                {/* Success/Error Messages */}
-                <div className="flex-shrink-0">
-                    {successMessage && <SuccessMessage message={successMessage} />}
-                    {error && <ErrorMessage error={error} />}
-                </div>
-
                 {/* Scrollable Section */}
                     {/* Basic Information */}
                     <section className="bg-gray-50 rounded-lg p-4">

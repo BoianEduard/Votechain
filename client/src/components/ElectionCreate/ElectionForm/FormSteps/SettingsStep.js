@@ -23,22 +23,49 @@ const SettingsStep = ({ formData, handleInputChange, nextStep, prevStep }) => {
                     }}
                 >
                     <option value="all">All Registered Users</option>
-                    <option value="whitelist">Specific Whitelist</option>
+                    <option value="whitelist">Specific Email Addresses</option>
+                    <option value="domain">Email Domain Whitelist</option>
                 </select>
             </div>
 
             {formData.eligibilityType === 'whitelist' && (
                 <div className="mb-8">
-                    <label htmlFor="whitelist" className="block text-lg font-medium mb-2">Email Addresses (one per line)</label>
+                    <label htmlFor="whitelist" className="block text-lg font-medium mb-2">
+                        Email Addresses (one per line)
+                    </label>
                     <textarea
                         id="whitelist"
                         name="whitelist"
                         value={formData.whitelist}
                         onChange={handleInputChange}
-                        placeholder="Enter email addresses, one per line"
+                        placeholder="Enter email addresses, one per line&#10;example@domain.com&#10;user@company.org"
                         rows="4"
                         className="w-full p-3 border border-gray-200 rounded-lg"
                     />
+                    <p className="text-sm text-gray-600 mt-2">
+                        Enter complete email addresses of users who can vote
+                    </p>
+                </div>
+            )}
+
+            {formData.eligibilityType === 'domain' && (
+                <div className="mb-8">
+                    <label htmlFor="domainWhitelist" className="block text-lg font-medium mb-2">
+                        Domain Names (one per line)
+                    </label>
+                    <textarea
+                        id="domainWhitelist"
+                        name="domainWhitelist"
+                        value={formData.domainWhitelist || ''}
+                        onChange={handleInputChange}
+                        placeholder="Enter domain names, one per line&#10;@company.com&#10;@university.edu&#10;@organization.org"
+                        rows="4"
+                        className="w-full p-3 border border-gray-200 rounded-lg"
+                    />
+                    <p className="text-sm text-gray-600 mt-2">
+                        Users with email addresses from these domains will be eligible to vote.
+                        Include the @ symbol (e.g., @company.com)
+                    </p>
                 </div>
             )}
 

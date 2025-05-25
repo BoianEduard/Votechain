@@ -16,6 +16,8 @@ router.post('/set-candidates', auth, candidateController.createCandidates);
 
 router.post('/set-whitelist', auth, voterRegistrationController.addWhitelist);
 router.post('/set-whitelist-all',auth, voterRegistrationController.addAll)
+router.post('/set-domain-whitelist', auth, voterRegistrationController.addDomainWhitelist);
+
 
 router.delete('/:electionId/delete-election', auth,electionController.deleteElection);
 
