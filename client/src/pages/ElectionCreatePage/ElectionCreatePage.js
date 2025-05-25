@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as electionThunk from "../../redux/thunks/electionThunks";
 import * as validator from "../../utils/validators";
 import * as contractThunk from "../../redux/thunks/contractThunks";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
-import './ElectionCreate.css'
+import Error from "../../components/Commons/Error";
+import SuccessMessage from "../../components/Commons/Success";
 import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
+import './ElectionCreate.css'
 
 const ElectionCreatePage = () => {
   const navigate = useNavigate();
@@ -23,13 +25,26 @@ const ElectionCreatePage = () => {
     ],
     eligibilityType: "all",
     whitelist: "",
+    domainWhitelist: "",
     realTimeResults: false,
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [step, setStep] = useState(1);
   const userId = useSelector((state) => state.user.id);
+
+  // Clear success message after 5 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess("");
+        navigate("/dashboard");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -41,24 +56,18 @@ const ElectionCreatePage = () => {
 
   const handleCandidateChange = (index, field, value) => {
     const updatedCandidates = [...form.candidates];
-
     if (typeof field === 'string' && value !== undefined) {
       updatedCandidates[index] = {
         ...updatedCandidates[index],
         [field]: value
       };
     } else {
-      const value = field;
       updatedCandidates[index] = {
         ...updatedCandidates[index],
-        name: value
+        name: field
       };
     }
-
-    setForm({
-      ...form,
-      candidates: updatedCandidates,
-    });
+    setForm({ ...form, candidates: updatedCandidates });
   };
 
   const handleCandidateImageChange = (index, file) => {
@@ -71,10 +80,7 @@ const ElectionCreatePage = () => {
           image: file,
           imagePreview: reader.result
         };
-        setForm({
-          ...form,
-          candidates: updatedCandidates
-        });
+        setForm({ ...form, candidates: updatedCandidates });
       };
       reader.readAsDataURL(file);
     } else {
@@ -84,10 +90,7 @@ const ElectionCreatePage = () => {
         image: null,
         imagePreview: ""
       };
-      setForm({
-        ...form,
-        candidates: updatedCandidates
-      });
+      setForm({ ...form, candidates: updatedCandidates });
     }
   };
 
@@ -111,7 +114,6 @@ const ElectionCreatePage = () => {
       if (!dateValidation.isValid) {
         setError(dateValidation.error);
         setLoading(false);
-        alert("Error: " + dateValidation.error);
         return false;
       }
 
@@ -119,38 +121,39 @@ const ElectionCreatePage = () => {
       if (!titleAndDescValidation.isValid) {
         setError(titleAndDescValidation.error);
         setLoading(false);
-        alert("Error: " + titleAndDescValidation.error);
         return false;
       }
-    }
-    else if (step === 2) {
-      const candidateNames = form.candidates.map(candidate =>
-          typeof candidate === 'string' ? candidate : candidate.name
-      );
+    } else if (step === 2) {
+      const candidateNames = form.candidates.map(c => typeof c === 'string' ? c : c.name);
       const candidateValidation = validator.validateCandidates(candidateNames);
       if (!candidateValidation.isValid) {
         setError(candidateValidation.error);
         setLoading(false);
-        alert("Error: " + candidateValidation.error);
         return false;
       }
-    }
-    else if (step === 4 && form.eligibilityType === 'whitelist') {
-      const whitelistValidation = validator.validateWhitelist(form.whitelist);
-      if (!whitelistValidation.isValid) {
-        setError(whitelistValidation.error);
-        setLoading(false);
-        alert("Error: " + whitelistValidation.error);
-        return false;
+    } else if (step === 4) {
+      if (form.eligibilityType === 'whitelist') {
+        const whitelistValidation = validator.validateWhitelist(form.whitelist);
+        if (!whitelistValidation.isValid) {
+          setError(whitelistValidation.error);
+          setLoading(false);
+          return false;
+        }
+      } else if (form.eligibilityType === 'domain') {
+        const domainValidation = validator.validateDomainWhitelist(form.domainWhitelist);
+        if (!domainValidation.isValid) {
+          setError(domainValidation.error);
+          setLoading(false);
+          return false;
+        }
       }
     }
-
+    setError("");
     return true;
   };
 
   const nextStep = () => {
     if (validateStep()) {
-      setError(null);
       setStep(step + 1);
     }
   };
@@ -195,11 +198,12 @@ const ElectionCreatePage = () => {
 
       if (form.eligibilityType === "whitelist") {
         const emails = validator.parseWhitelist(form.whitelist);
-        if (emails.length > 0) {
-          await dispatch(electionThunk.addWhitelist(electionId, emails));
-        } else {
-          throw new Error("Whitelist is empty or invalid");
-        }
+        if (emails.length === 0) throw new Error("Whitelist is empty or invalid");
+        await dispatch(electionThunk.addWhitelist(electionId, emails));
+      } else if (form.eligibilityType === "domain") {
+        const domains = validator.parseDomainWhitelist(form.domainWhitelist);
+        if (domains.length === 0) throw new Error("Domain whitelist is empty or invalid");
+        await dispatch(electionThunk.addDomainWhitelist(electionId, domains));
       } else {
         await dispatch(electionThunk.addAll(electionId));
       }
@@ -207,21 +211,13 @@ const ElectionCreatePage = () => {
       const deployResult = await dispatch(contractThunk.deployContract(electionId));
       if (!deployResult?.contractAddress) throw new Error('Contract deployment failed');
 
-      alert(`Election created successfully. Contract deployed at: ${deployResult.contractAddress}`);
-      navigate("/dashboard");
-
+      setSuccess(`Election created successfully. Contract deployed at: ${deployResult.contractAddress}`);
     } catch (error) {
-      console.error("Error creating election:", error);
       setError(error.message || "Failed to create election");
-      alert("Error: " + (error.message || "Failed to create election"));
-
       if (electionId) {
         try {
           await dispatch(electionThunk.deleteElection(electionId));
-          console.log(`Successfully rolled back election ${electionId}`);
-        } catch (rollbackError) {
-          console.error("Failed to rollback election:", rollbackError);
-          alert("Warning: Failed to clean up resources. Please contact an administrator.");
+        } catch {
         }
       }
     } finally {
@@ -230,14 +226,19 @@ const ElectionCreatePage = () => {
   };
 
   return (
-      <div className=" bg-gradient-to-b from-indigo-700 to-indigo-500" style={{ maxHeight: 'calc(100vh - 630px)' }}>
+      <div className="bg-gradient-to-b from-indigo-700 to-indigo-500" style={{ maxHeight: 'calc(100vh - 630px)' }}>
         <div className="pt-10 pb-10 px-4">
-            <ElectionPageHeader
-                title="Create new election"
-                description="Set up a secure election process"
-                backLink="/dashboard"
-                backLabel="Back to Dashboard"
-            />
+          <ElectionPageHeader
+              title="Create new election"
+              description="Set up a secure election process"
+              backLink="/dashboard"
+              backLabel="Back to Dashboard"
+          />
+        </div>
+
+        <div className="px-4">
+          {error && <Error error={error} />}
+          {success && <SuccessMessage message={success} />}
         </div>
 
         <ElectionForm

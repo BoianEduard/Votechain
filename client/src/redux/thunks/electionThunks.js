@@ -53,6 +53,23 @@ export const addWhitelist = (whitelistData) => async (dispatch) => {
 
 };
 
+export const addDomainWhitelist = (electionId, domains) => async (dispatch) => {
+    dispatch(electionSlice.addWhitelistStart()); // Reuse existing slice actions
+    try {
+        const data = await electionAPI.addDomainWhitelist({ electionId, domains });
+        dispatch(electionSlice.addWhitelistSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message: error.message || "Adding domain whitelist failed",
+            code: error.code,
+            status: error.response?.status
+        };
+        dispatch(electionSlice.addWhitelistFail(serializedError));
+        throw error;
+    }
+};
+
 export const addAll = (electionId) => async (dispatch) => {
     dispatch(electionSlice.addWhitelistStart()); 
     try {
