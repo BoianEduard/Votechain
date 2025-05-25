@@ -137,3 +137,20 @@ export const getDashboardStats = () => async (dispatch) => {
         throw error;
     }
 };
+
+export const getVoterTurnout = (electionId) => async (dispatch) => {
+    dispatch(electionSlice.getVoterTurnoutStart());
+    try {
+        const data = await electionAPI.getVoterTurnout(electionId);
+        dispatch(electionSlice.getVoterTurnoutSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = {
+            message: error.message || "Fetching voter turnout failed",
+            code: error.code,
+            status: error.response?.status
+        };
+        dispatch(electionSlice.getVoterTurnoutFail(serializedError));
+        throw error;
+    }
+};

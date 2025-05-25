@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NavigationButton from "../../../Commons/NavigationButton";
 
 const BasicInfoStep = ({ formData, handleInputChange, nextStep }) => {
     return (
@@ -62,12 +63,11 @@ const BasicInfoStep = ({ formData, handleInputChange, nextStep }) => {
             </div>
 
             <div className="flex justify-end sticky-bottom">
-                <button
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                <NavigationButton
+                    title="Next: Add Candidates"
+                    direction="right"
                     onClick={nextStep}
-                >
-                    Next: Add Candidates <i className="bi bi-arrow-right ml-2"></i>
-                </button>
+                />
             </div>
         </div>
     );

@@ -10,6 +10,7 @@ router.post('/create-election', auth, electionController.createElection)
 router.get('/elections', auth, electionController.getAllElections)
 router.get("/elections/:id", auth, electionController.getElectionById);
 router.get('/dashboard-stats', auth, electionController.getDashboardStats);
+router.get('/:electionId/turnout', electionController.getTurnout);
 
 router.post('/set-candidates', auth, candidateController.createCandidates);
 

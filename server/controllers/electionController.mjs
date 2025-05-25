@@ -1,6 +1,6 @@
 import models from "../models/index.mjs";
-import { generateKeyPair } from "../services/cryptoUtils.mjs";
-import { encryptPrivateKey } from "../services/cryptoUtils.mjs";
+import { generateKeyPair, encryptPrivateKey } from "../services/cryptoUtils.mjs";
+import * as contractUtils from "../services/contractUtils.mjs";
 
 const createElection = async (req, res) => {
     try {
@@ -157,10 +157,41 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
+const getTurnout = async (req, res) => {
+    try {
+        const { electionId } = req.params;
+        if (!electionId) {
+            return res.status(400).json({ message: "Election ID is required" });
+        }
+
+        const election = await models.Election.findByPk(electionId);
+        if (!election) {
+            return res.status(404).json({ message: "Election not found" });
+        }
+        if (!election.contractAddress) {
+            return res
+                .status(400)
+                .json({ message: "Election contract not deployed yet" });
+        }
+
+        const contract = contractUtils.getProviderContract(election.contractAddress);
+        const { totalEligible, totalCast } = await contractUtils.fetchVotingStats(contract);
+
+        return res.status(200).json({
+            totalVoters: totalEligible,
+            currentTurnout: totalCast
+        });
+    } catch (err) {
+        console.error("Error fetching voter turnout:", err);
+        return res.status(500).json({ message: "Failed to fetch voter turnout" });
+    }
+};
+
 export default {
     createElection,
     getAllElections,
     getElectionById,
     deleteElection,
-    getDashboardStats
+    getDashboardStats,
+    getTurnout
 };

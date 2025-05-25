@@ -6,6 +6,7 @@ import * as validator from "../../utils/validators";
 import * as contractThunk from "../../redux/thunks/contractThunks";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
 import './ElectionCreate.css'
+import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
 
 const ElectionCreatePage = () => {
   const navigate = useNavigate();
@@ -229,10 +230,14 @@ const ElectionCreatePage = () => {
   };
 
   return (
-      <div className="create-election-container">
-        <div className="header">
-          <h1 className="title">Create new election</h1>
-          <p className="subtitle">Set up a secure election process</p>
+      <div className=" bg-gradient-to-b from-indigo-700 to-indigo-500" style={{ maxHeight: 'calc(100vh - 630px)' }}>
+        <div className="pt-10 pb-10 px-4">
+            <ElectionPageHeader
+                title="Create new election"
+                description="Set up a secure election process"
+                backLink="/dashboard"
+                backLabel="Back to Dashboard"
+            />
         </div>
 
         <ElectionForm

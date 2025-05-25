@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NavigationButton from "../../../Commons/NavigationButton";
 
 const CandidateDetailsStep = ({
                                   formData,
@@ -9,8 +10,8 @@ const CandidateDetailsStep = ({
                                   prevStep
                               }) => {
     return (
-        <div className="bg-white rounded-lg p-5">
-            <h2 className="text-xl font-semibold mb-3">Candidate Details</h2>
+        <div className="bg-white rounded-lg p-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 400px)' }}>
+            <h2 className="text-2xl font-semibold mb-1.5">Candidate Details</h2>
 
             {formData.candidates.map((candidate, index) => (
                 <div key={index} className="mb-4 p-3 bg-gray-50 rounded-md border border-gray-200">
@@ -80,19 +81,16 @@ const CandidateDetailsStep = ({
             ))}
 
             <div className="flex justify-between mt-4">
-                <button
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                <NavigationButton
+                    title="Back: Complete candidates info"
+                    direction="left"
                     onClick={prevStep}
-                >
-                    Back: Complete candidates info
-                </button>
-                <button
-                    type="button"
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                />
+                <NavigationButton
+                    title="Next: Settings"
+                    direction="right"
                     onClick={nextStep}
-                >
-                    Next →
-                </button>
+                />
             </div>
         </div>
     );

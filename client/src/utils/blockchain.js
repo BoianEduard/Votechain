@@ -1,4 +1,3 @@
-// Helper functions
 const str2ab = (str) => {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -144,7 +143,6 @@ export const encryptVote = async (candidateId, electionPublicKeyString) => {
     }
 };
 
-// IMPORTANT: This backend decryption function needs to use SHA-256 to match frontend
 export const decryptVote = (encryptedVoteBase64, privateKeyPem) => {
     try {
         const buffer = Buffer.from(encryptedVoteBase64, 'base64');

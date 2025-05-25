@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NavigationButton from "../../../Commons/NavigationButton";
 
 const CandidatesStep = ({
                             formData,
@@ -10,14 +11,16 @@ const CandidatesStep = ({
                             prevStep
                         }) => {
     return (
-        <div className="form-step">
-            <h2 className="text-2xl font-semibold mb-3">Candidates</h2>
-            <p className="text-sm text-gray-600 mb-5">Add at least two candidates for your election.</p>
+        <div className="form-step bg-white rounded-lg p-4 max-h-[70vh] overflow-y-auto">
+            <h2 className="text-2xl font-semibold mb-1">Candidates</h2>
+            <p className="text-sm text-gray-600 mb-4">Add at least two candidates for your election.</p>
 
             {formData.candidates.map((candidate, index) => (
                 <div key={index} className="flex items-center mb-4">
-                    <div className="w-full mr-4">
-                        <label htmlFor={`candidate-${index}`} className="block text-sm font-medium mb-1">Candidate {index + 1}</label>
+                    <div className="w-full">
+                        <label htmlFor={`candidate-${index}`} className="block text-sm font-medium mb-1">
+                            Candidate {index + 1}
+                        </label>
                         <input
                             type="text"
                             id={`candidate-${index}`}
@@ -31,7 +34,7 @@ const CandidatesStep = ({
 
                     <button
                         type="button"
-                        className="text-red-500 ml-2 hover:text-red-700"
+                        className="text-red-500 ml-3 mt-6 hover:text-red-700 disabled:opacity-30"
                         onClick={() => removeCandidate(index)}
                         disabled={formData.candidates.length <= 2}
                     >
@@ -40,29 +43,29 @@ const CandidatesStep = ({
                 </div>
             ))}
 
-            <button
-                type="button"
-                className="px-4 py-2 mt-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onClick={addCandidate}
-            >
-                + Add Another Candidate
-            </button>
+            <div className="mt-3 mb-6">
+                <button
+                    type="button"
+                    onClick={addCandidate}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+                >
+                    + Add Another Candidate
+                </button>
+            </div>
 
-            <div className="flex justify-between mt-6">
-                <button
+            <div className="flex justify-between">
+                <NavigationButton
                     type="button"
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    title="Back: Basic Info"
+                    direction="left"
                     onClick={prevStep}
-                >
-                    Back: Basic Info <i className="bi bi-arrow-left ml-2"></i>
-                </button>
-                <button
+                />
+                <NavigationButton
                     type="button"
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    title="Next: Candidate Details"
+                    direction="right"
                     onClick={nextStep}
-                >
-                    Next: Candidate Details <i className="bi bi-arrow-right ml-2"></i>
-                </button>
+                />
             </div>
         </div>
     );

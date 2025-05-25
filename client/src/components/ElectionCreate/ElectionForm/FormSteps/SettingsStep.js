@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NavigationButton from "../../../Commons/NavigationButton";
 
 const SettingsStep = ({ formData, handleInputChange, nextStep, prevStep }) => {
     return (
@@ -59,18 +60,17 @@ const SettingsStep = ({ formData, handleInputChange, nextStep, prevStep }) => {
             </div>
 
             <div className="flex justify-between mt-10">
-                <button
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                <NavigationButton
+                    title="Back: Add candidates"
+                    direction="left"
                     onClick={prevStep}
-                >
-                    Back: Add candidates
-                </button>
-                <button
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                />
+
+                <NavigationButton
+                    title="Next: Review"
+                    direction="right"
                     onClick={nextStep}
-                >
-                    Next: Review
-                </button>
+                />
             </div>
         </div>
     );

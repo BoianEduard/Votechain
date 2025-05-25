@@ -8,7 +8,7 @@ const ElectionStatsCard =({ stats }) => {
                     <div className="w-full">
                         <Users className="text-blue-600 mx-auto mb-1" size={18} />
                         <p className="text-xs text-gray-600 mb-1">Eligible Voters</p>
-                        <p className="text-lg font-bold text-gray-800">{stats.totalEligibleVoters}</p>
+                        <p className="text-lg font-bold text-gray-800">{stats.totalEligible}</p>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@ const ElectionStatsCard =({ stats }) => {
                     <div className="w-full">
                         <BarChart2 className="text-green-600 mx-auto mb-1" size={18} />
                         <p className="text-xs text-gray-600 mb-1">Votes Cast</p>
-                        <p className="text-lg font-bold text-gray-800">{stats.totalVotesCast}</p>
+                        <p className="text-lg font-bold text-gray-800">{stats.totalCast}</p>
                     </div>
                 </div>
             </div>
