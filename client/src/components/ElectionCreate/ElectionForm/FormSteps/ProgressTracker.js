@@ -12,7 +12,7 @@ const ProgressTracker = ({ currentStep }) => {
     ];
 
     return (
-        <div className="flex items-center justify-center mb-8 px-4">
+        <div className="flex items-center justify-center mb-4 px-100">
             <div className="flex items-center space-x-2 md:space-x-4 overflow-x-auto">
                 {steps.map((step, index) => (
                     <React.Fragment key={step.number}>

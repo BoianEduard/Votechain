@@ -100,6 +100,19 @@ const electionSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        getVoterTurnoutStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        getVoterTurnoutSuccess(state, action) {
+            state.loading = false;
+            state.voterTurnout = action.payload;
+            state.error = null;
+        },
+        getVoterTurnoutFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        }
     }
 });
 
@@ -110,7 +123,8 @@ export const {
     fetchElectionsStart, fetchElectionsSuccess, fetchElectionsFail,
     fetchElectionDetailsStart, fetchElectionDetailsSuccess, fetchElectionDetailsFail,
     deleteElectionStart,deleteElectionSuccess,deleteElectionFail,
-    getDashboardStatsStart,getDashboardStatsFail,getDashboardStatsSuccess
+    getDashboardStatsStart,getDashboardStatsFail,getDashboardStatsSuccess,
+    getVoterTurnoutStart,getVoterTurnoutSuccess,getVoterTurnoutFail
 } = electionSlice.actions;
 
 export default electionSlice.reducer;

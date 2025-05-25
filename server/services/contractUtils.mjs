@@ -1,10 +1,8 @@
-// services/contractService/contractUtils.js
 import { ethers } from "ethers";
-import ElectionContractABI from "../../../artifacts/contracts/ElectionContract.sol/ElectionContract.json"
-assert { type: "json" };
-import { getProvider, getSigner } from "../../ethers.mjs";
-import { deployContract } from "../../../deploy/deploy.mjs";
-import { decryptPrivateKey, decryptVote } from "../cryptoUtils.mjs";
+import ElectionContractABI from '../artifacts/contracts/ElectionContract.sol/ElectionContract.json' assert { type: 'json' };
+import { getProvider, getSigner } from "./ethers.mjs";
+import { deployContract } from "../deploy/deploy.mjs";
+import { decryptPrivateKey, decryptVote } from "./cryptoUtils.mjs";
 
 export async function deployElectionOnChain(eligibleVoters) {
     return await deployContract({ eligibleVoters });
@@ -65,9 +63,10 @@ export async function tallyEncryptedVotes(
     candidateIds.forEach((id) => {
         voteCounts[id] = 0;
     });
-    for (const { args } of events) {
+
+    for (const event of events) {
         try {
-            const hex = args.encryptedVote;
+            const hex = event.args.encryptedVote;
             const buf = Buffer.from(hex.slice(2), "hex");
             const base64 = buf.toString("base64");
             const candidateId = await decryptVote(base64, privateKey);
@@ -78,6 +77,7 @@ export async function tallyEncryptedVotes(
             console.error(`Error decrypting vote: ${err.message}`);
         }
     }
+
     return voteCounts;
 }
 

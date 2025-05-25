@@ -13,9 +13,7 @@ const ElectionResultPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-    const election = useSelector((state) =>
-        state.election.elections.find((e) => e.id === id)
-    );
+    const election = useSelector((state) => state.election.selectedElection);
     const result = useSelector((state) => state.contract.results?.[id] ?? null);
     const [error, setError] = useState(null);
 

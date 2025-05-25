@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AlertCircle } from "lucide-react";
-import ElectionBanner from "../../components/Vote/ElectionBanner";
+import { useParams }                 from "react-router-dom";
+import { useDispatch, useSelector }  from "react-redux";
+import { AlertCircle }               from "lucide-react";
+import ElectionBanner       from "../../components/Vote/ElectionBanner";
 import CandidateSelectionCard from "../../components/Vote/CandidateSelectionCard";
-import VoteConfirmationCard from "../../components/Vote/VoteConfirmationCard";
-import VoteSuccessCard from "../../components/Vote/VoteSuccessCard";
-import TurnoutCard from "../../components/Vote/TurnoutCard";
-import FooterCard from "../../components/Commons/FooterCard";
-import * as contractThunks from "../../redux/thunks/contractThunks";
-import { fetchElectionDetails } from "../../redux/thunks/electionThunks";
-import * as userThunks from "../../redux/thunks/userThunks";
+import VoteConfirmationCard  from "../../components/Vote/VoteConfirmationCard";
+import VoteSuccessCard       from "../../components/Vote/VoteSuccessCard";
+import TurnoutCard           from "../../components/Vote/TurnoutCard";
+import FooterCard            from "../../components/Commons/FooterCard";
+import * as contractThunks   from "../../redux/thunks/contractThunks";
+import { fetchElectionDetails, getVoterTurnout }
+    from "../../redux/thunks/electionThunks";
+import * as userThunks       from "../../redux/thunks/userThunks";
 
 const ElectionVotePage = () => {
     const { electionId } = useParams();
-    const user = useSelector((state) => state.user.userData);
-    const election = useSelector((state) => state.election.selectedElection);
+    const dispatch       = useDispatch();
+
+    const user           = useSelector(s => s.user.userData);
+    const election       = useSelector(s => s.election.selectedElection);
+    const voterTurnout   = useSelector(s => s.election.voterTurnout);
+
     const [selectedCandidate, setSelectedCandidate] = useState(null);
-    const [votingStep, setVotingStep] = useState("select");
-    const [isLoading, setIsLoading] = useState(true);
+    const [votingStep, setVotingStep]    = useState("select");
+    const [isLoading, setIsLoading]      = useState(true);
     const [showBiography, setShowBiography] = useState(null);
-    const [error, setError] = useState(null);
-    const [eligibility, setEligibility] = useState(null);
-    const dispatch = useDispatch();
+    const [error, setError]              = useState(null);
+    const [eligibility, setEligibility]  = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,43 +35,39 @@ const ElectionVotePage = () => {
                 await dispatch(fetchElectionDetails(electionId));
 
                 if (user?.id) {
-                    const eligibilityResponse = await dispatch(
-                        userThunks.checkEligibility(electionId)
-                    );
-                    setEligibility(eligibilityResponse);
+                    const resp = await dispatch(userThunks.checkEligibility(electionId));
+                    setEligibility(resp);
                 }
+
+                await dispatch(getVoterTurnout(electionId));
             } catch (err) {
-                console.error("Failed to fetch data:", err);
-                setError("Failed to load election or eligibility data");
+                console.error("Failed to load election page:", err);
+                setError("Failed to load data. Please try again.");
             } finally {
                 setIsLoading(false);
             }
         };
+
         fetchData();
     }, [electionId, user, dispatch]);
 
-    const formatDate = (dateString) =>
-        new Date(dateString).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
+    // util
+    const formatDate = (d) =>
+        new Date(d).toLocaleDateString("en-US", {
+            month: "long", day: "numeric", year: "numeric"
         });
 
     const daysRemaining = election
         ? Math.ceil(
-            (new Date(election.endDate) - new Date()) / (1000 * 60 * 60 * 24)
+            (new Date(election.endDate) - new Date()) / (1000 *60*60*24)
         )
         : 0;
 
-    const handleCandidateSelect = (candidate) => {
-        setSelectedCandidate(candidate);
-    };
+    // selecție candidat
+    const handleCandidateSelect = (c) => setSelectedCandidate(c);
 
-    const handleConfirmVote = () => {
-        setVotingStep("confirm");
-    };
-
-    const handleStartOver = () => {
+    const handleConfirmVote = () => setVotingStep("confirm");
+    const handleStartOver   = () => {
         setSelectedCandidate(null);
         setVotingStep("select");
     };
@@ -86,24 +86,21 @@ const ElectionVotePage = () => {
             setVotingStep("success");
         } catch (err) {
             console.error("Failed to submit vote:", err);
-            setError("Failed to submit your vote. Please try again.");
+            setError("Failed to submit vote. Please try again.");
         }
     };
 
-    const toggleBiography = (candidateId) => {
-        if (showBiography === candidateId) {
-            setShowBiography(null);
-        } else {
-            setShowBiography(candidateId);
-        }
-    };
+    const toggleBiography = (candId) =>
+        setShowBiography(showBiography === candId ? null : candId);
 
     if (isLoading) {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-                    <p className="mt-4 text-indigo-600 font-medium">Loading election details...</p>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto" />
+                    <p className="mt-4 text-indigo-600 font-medium">
+                        Loading election details...
+                    </p>
                 </div>
             </div>
         );
@@ -114,11 +111,13 @@ const ElectionVotePage = () => {
             <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
                 <div className="bg-white rounded-lg shadow-md p-6 max-w-md w-full text-center">
                     <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-                    <h2 className="text-xl font-bold text-gray-800 mb-2">Something went wrong</h2>
+                    <h2 className="text-xl font-bold text-gray-800 mb-2">
+                        Something went wrong
+                    </h2>
                     <p className="text-gray-600 mb-4">{error}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
                     >
                         Try Again
                     </button>
@@ -138,7 +137,6 @@ const ElectionVotePage = () => {
             )}
 
             <div className="max-w-4xl mx-auto px-4">
-
                 <div className="mb-6">
                     {votingStep === "select" && election && (
                         <CandidateSelectionCard
@@ -173,7 +171,10 @@ const ElectionVotePage = () => {
 
                 {election && votingStep !== "success" && (
                     <div className="mb-6">
-                        <TurnoutCard election={election} />
+                        <TurnoutCard
+                            totalVoters={voterTurnout.totalVoters}
+                            currentTurnout={voterTurnout.currentTurnout}
+                        />
                     </div>
                 )}
 

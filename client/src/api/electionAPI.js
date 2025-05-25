@@ -91,6 +91,19 @@ const getDashboardStats = async () => {
     return response.data;
 };
 
+const getVoterTurnout = async (electionId) => {
+    try {
+        const response = await axiosInstance.get(
+            `${API_ENDPOINT}/${electionId}/turnout`
+        );
+        return response.data;
+    } catch (error) {
+        throw (
+            error.response?.data?.message || "Fetching voter turnout failed"
+        );
+    }
+};
+
 export default {
     createElection,
     addCandidates,
@@ -99,5 +112,6 @@ export default {
     getAllElections,
     getElection,
     deleteElection,
-    getDashboardStats
+    getDashboardStats,
+    getVoterTurnout
 };
