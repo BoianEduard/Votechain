@@ -25,6 +25,7 @@
     "sequelize": "^6.37.5",
     "solc": "^0.8.20",
     "solidity": "^0.0.1",
+    "stripe": "^18.1.1",
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
