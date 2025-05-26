@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import NavigationButton from '../../../Commons/NavigationButton';
 import LoadingSpinner from '../../../Commons/LoadingSpinner';
-import ErrorMessage from '../../../Commons/Error';
-import SuccessMessage from '../../../Commons/Success';
 
-const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
+const ReviewStep = ({ formData, prevStep, nextStep }) => {
     const [expandedSections, setExpandedSections] = useState({});
 
     const toggleSection = (section) => {
@@ -53,19 +51,13 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
     return (
         <div className="flex-1 overflow-y-auto pr-2 space-y-4" style={{ maxHeight: 'calc(100vh - 350px)' }}>
         <div className="form-step flex flex-col max-h-fit">
-            {/* Loading Overlay */}
-            {loading && (
-                <div className="absolute inset-0 bg-white bg-opacity-80 z-10 flex items-center justify-center rounded-lg">
-                    <LoadingSpinner message="Creating election..." />
-                </div>
-            )}
 
             <div className="max-w-4xl mx-auto flex flex-col max-h-fit">
-                <h2 className="text-2xl font-bold mb-6 text-center">Review Election Details</h2>
+                <h2 className="text-2xl font-bold mb-4 text-center">Review Election Details</h2>
 
                 {/* Scrollable Section */}
                     {/* Basic Information */}
-                    <section className="bg-gray-50 rounded-lg p-4">
+                    <section className="bg-gray-50 rounded-lg p-3">
                         <h3 className="text-lg font-semibold mb-3">📋 Basic Information</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                             <div>
@@ -80,7 +72,7 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                             </div>
                         </div>
                         {formData.description && (
-                            <div className="mt-3">
+                            <div className="mt-1">
                                 <p className="font-medium text-gray-700">Description:</p>
                                 <p className="text-gray-900 mt-1">
                                     {expandedSections.description
@@ -100,7 +92,7 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                     </section>
 
                     {/* Candidates */}
-                    <section className="bg-gray-50 rounded-lg p-4">
+                    <section className="bg-gray-50 rounded-lg p-3">
                         <div className="flex justify-between items-center mb-3">
                             <h3 className="text-lg font-semibold">🗳️ Candidates ({formData.candidates.length})</h3>
                             {formData.candidates.length > 2 && (
@@ -126,10 +118,10 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                     </section>
 
                     {/* Settings */}
-                    <section className="bg-gray-50 rounded-lg p-4">
-                        <h3 className="text-lg font-semibold mb-3">⚙️ Settings</h3>
+                    <section className="bg-gray-50 rounded-lg p-3">
+                        <h3 className="text-lg font-semibold mb-2">⚙️ Settings</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-3">
                                 <span className="w-2 h-2 bg-blue-500 rounded-full" />
                                 <span className="font-medium">Eligibility:</span>
                                 <span className="text-gray-700">
@@ -137,7 +129,7 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                                 </span>
                             </div>
                             {formData.eligibilityType === 'whitelist' && formData.whitelist && (
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-3">
                                     <span className="w-2 h-2 bg-green-500 rounded-full" />
                                     <span className="font-medium">Whitelisted:</span>
                                     <span className="text-gray-700">
@@ -149,7 +141,7 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                                     </span>
                                 </div>
                             )}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-3">
                                 <span
                                     className={`w-2 h-2 rounded-full ${
                                         formData.realTimeResults ? 'bg-green-500' : 'bg-gray-400'
@@ -178,17 +170,7 @@ const ReviewStep = ({ formData, loading, error, successMessage, prevStep }) => {
                 {/* Action Buttons */}
                 <div className="form-actions mt-4 flex justify-between items-center bg-white py-4 border-t">
                     <NavigationButton title="Back: Settings" direction="left" onClick={prevStep} />
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`flex items-center px-8 py-3 rounded-md font-medium transition-all duration-200 ${
-                            loading
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg transform hover:-translate-y-0.5'
-                        } text-white`}
-                    >
-                        {loading ? 'Creating...' : 'Create Election'}
-                    </button>
+                    <NavigationButton title="Next: Payment" direction="right" onClick={nextStep} />
                 </div>
             </div>
         </div>

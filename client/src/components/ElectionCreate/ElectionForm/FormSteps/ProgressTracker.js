@@ -8,12 +8,13 @@ const ProgressTracker = ({ currentStep }) => {
         { number: 2, label: 'Candidate Names' },
         { number: 3, label: 'Candidate Details' },
         { number: 4, label: 'Settings' },
-        { number: 5, label: 'Review' }
+        { number: 5, label: 'Review' },
+        { number: 6, label: "Payment"},
     ];
 
     return (
         <div className="flex items-center justify-center mb-4 px-100">
-            <div className="flex items-center space-x-2 md:space-x-4 overflow-x-auto">
+            <div className="flex items-center space-x-1 md:space-x-1 ">
                 {steps.map((step, index) => (
                     <React.Fragment key={step.number}>
                         <div className="flex flex-col items-center min-w-0 flex-shrink-0">

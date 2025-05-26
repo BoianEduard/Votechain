@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider, useDispatch } from 'react-redux';
 import AuthGuard from '../AuthGuard';
@@ -29,6 +30,10 @@ const AuthChecker = ({ children }) => {
   return children;
 };
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+console.log("Stripe key (should be string):", process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY); // nu Promise
+console.log("Stripe key: " + stripePromise)
+
 function App() {
   return (
       <Provider store={store}>
@@ -40,7 +45,12 @@ function App() {
               <Route element={<AuthGuard />}>
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/create-election" element={<ElectionCreatePage />} />
+                <Route path="/create-election"
+                       element={<Elements stripe={stripePromise}>
+                                    <ElectionCreatePage />
+                                </Elements>
+                                }
+                />
                 <Route path="/vote" element={<ElectionViewPage />} />
                 <Route path="/elections/:electionId/vote" element={<ElectionVotePage />} />
                 <Route path="/" element={<Navigate to="/login" replace />} />
