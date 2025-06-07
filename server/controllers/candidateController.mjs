@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const saveImage = (imageData, candidateName) => {
   if (!imageData) return null;
+
   try {
     if (typeof imageData === 'string' && imageData.startsWith('data:image/')) {
       const matches = imageData.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);

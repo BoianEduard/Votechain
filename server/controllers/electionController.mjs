@@ -44,7 +44,7 @@ const getAllElections = async (req, res) => {
                     as: "candidates",
                 },
             ],
-            attributes: { exclude: ["privateKey"] },
+            attributes: { exclude: ["privateKey"] }, // obvious
         });
 
         return res.status(200).json(elections);
@@ -86,7 +86,8 @@ const getElectionById = async (req, res) => {
     }
 };
 
-
+//this will only ever be called when there is an issue in deploying the contract, but candidates and voter registration will already
+// be populated
 const deleteElection = async (req, res) => {
     try {
         const { electionId } = req.params;
@@ -157,6 +158,8 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
+
+//TODO implement new field to also store turnover in database to not alwasy call the contract.
 const getTurnout = async (req, res) => {
     try {
         const { electionId } = req.params;

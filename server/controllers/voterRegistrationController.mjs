@@ -6,7 +6,7 @@ const addDomainWhitelist = async (req, res, next) => {
     const { electionId, domains } = req.body;
 
     if (!electionId) {
-      return res.status(400).json({ message: "Election ID is required" });
+      return res.status(400).json({ message: "Election Id not provided" });
     }
 
     if (!domains || !Array.isArray(domains) || domains.length === 0) {
@@ -20,22 +20,8 @@ const addDomainWhitelist = async (req, res, next) => {
       return res.status(404).json({ message: "Election not found" });
     }
 
-    // Clean and validate domains
-    const cleanedDomains = domains.map(domain => {
-      let cleaned = domain.trim().toLowerCase();
-      // Ensure domain starts with @
-      if (!cleaned.startsWith('@')) {
-        cleaned = '@' + cleaned;
-      }
-      return cleaned;
-    }).filter(domain => domain.length > 1); // Remove empty domains
-
-    if (cleanedDomains.length === 0) {
-      return res.status(400).json({ message: "No valid domains provided" });
-    }
-
     // Create SQL LIKE patterns for each domain
-    const domainPatterns = cleanedDomains.map(domain => `%${domain}`);
+    const domainPatterns = domains.map(domain => `%${domain}`);
 
     // Find all users whose email ends with any of these domains
     const users = await models.User.findAll({
@@ -51,7 +37,7 @@ const addDomainWhitelist = async (req, res, next) => {
     if (users.length === 0) {
       return res.status(400).json({
         message: "No registered users found with the specified domain(s)",
-        domains: cleanedDomains,
+        domains: domains,
       });
     }
 
@@ -68,7 +54,7 @@ const addDomainWhitelist = async (req, res, next) => {
     return res.status(201).json({
       message: "Domain whitelist added successfully",
       count: whitelistEntries.length,
-      domains: cleanedDomains,
+      domains: domains,
       matchedUsers: users.length,
       whitelist: whitelistEntries.map(entry => entry.toJSON()),
     });

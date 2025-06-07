@@ -23,11 +23,11 @@ const registerUser = (userData) => async (dispatch) => {
     await authAPI.checkEmail({ email: userData.email });
 
     if (!window.ethereum) {
-      throw new Error("MetaMask is not installed. Please install MetaMask to continue.");
+      throw new Error("MetaMask is not installed. You need a wallet to enter this site. ");
     }
 
     const address = await connectToMetaMask();
-    const message = `Register with Votechain: ${userData.email} at ${new Date().toISOString()}`;
+    const message = `Register with Arbi1Vote: ${userData.email} at ${new Date().toISOString()}`;
     const signature = await signWithMetaMask(address, message);
 
     const publicKey = await window.ethereum.request({

@@ -147,7 +147,7 @@ export const validateDomainWhitelist = (domainWhitelist) => {
     };
   }
 
-  // Validate each domain format
+  // validate domain format
   for (const domain of domains) {
     const trimmedDomain = domain.trim();
 
@@ -156,13 +156,13 @@ export const validateDomainWhitelist = (domainWhitelist) => {
       continue;
     }
 
-    // Check if domain starts with @ (optional, will be added automatically)
+    // check if domain starts with @ before adding it
     let cleanDomain = trimmedDomain;
     if (!cleanDomain.startsWith('@')) {
       cleanDomain = '@' + cleanDomain;
     }
 
-    // Basic domain validation
+    // basic domain regex validation
     const domainRegex = /^@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     if (!domainRegex.test(cleanDomain)) {
@@ -188,12 +188,16 @@ export const parseDomainWhitelist = (domainWhitelist) => {
       .trim()
       .split('\n')
       .map(domain => {
-        const trimmed = domain.trim().toLowerCase();
-        // Ensure domain starts with @
+        let trimmed = domain.trim().toLowerCase();
+
+        // elimină toate aparițiile lui % pentru a previne erori in backend
+        trimmed = trimmed.replace(/%/g, '');
+
+        // ne asiguram ca incepe cu @
         if (trimmed && !trimmed.startsWith('@')) {
-          return '@' + trimmed;
+          trimmed = '@' + trimmed;
         }
         return trimmed;
       })
-      .filter(domain => domain.length > 1); // Remove empty domains
+      .filter(domain => domain.length > 1); //stergem liniile goale
 };

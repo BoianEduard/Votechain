@@ -31,11 +31,13 @@ export const usePaymentFlow = () => {
         setProcessingPayment(false);
     };
 
+    const isBusy = processingPayment || paymentCompleted;
     return {
         paymentId,
         paymentCompleted,
         paymentError,
         processingPayment,
+        isBusy,
         handlePaymentStart,
         handlePaymentSuccess,
         handlePaymentError,

@@ -25,7 +25,6 @@ const auth = (req, res, next) => {
     if (error.name === 'TokenExpiredError') {
       res.clearCookie('token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         path: '/'
       });
@@ -35,7 +34,6 @@ const auth = (req, res, next) => {
     if (error.name === 'JsonWebTokenError') {
       res.clearCookie('token', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         path: '/'
       });

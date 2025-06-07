@@ -84,9 +84,7 @@ const castVote = async (req, res) => {
         }
 
         // apelăm helper-ele prin contractUtils
-        const contract = contractUtils.getSignableContract(
-            election.contractAddress
-        );
+        const contract = contractUtils.getSignableContract(election.contractAddress);
         if (await contractUtils.hasAlreadyVoted(contract, userAddress)) {
             return res
                 .status(400)
@@ -104,6 +102,7 @@ const castVote = async (req, res) => {
             message: "Vote cast successfully",
             transactionHash: txHash
         });
+
     } catch (error) {
         console.error("Error casting vote:", error);
         return res
@@ -119,24 +118,15 @@ const getElectionResults = async (req, res) => {
         if (!election) {
             return res.status(404).json({ message: "Election not found" });
         }
-        if (
-            !election.realTimeResults &&
-            new Date() < new Date(election.endDate)
-        ) {
+
+        if ( !election.realTimeResults && new Date() < new Date(election.endDate)) {
             return res.status(403).json({
                 message:
                     "Election has not ended yet and real-time results are not enabled"
             });
         }
-        if (!election.contractAddress) {
-            return res
-                .status(400)
-                .json({ message: "Election contract not deployed" });
-        }
 
-        const contract = contractUtils.getProviderContract(
-            election.contractAddress
-        );
+        const contract = contractUtils.getProviderContract(election.contractAddress);
         const stats = await contractUtils.fetchVotingStats(contract);
         const events = await contractUtils.fetchVoteEvents(contract);
 
@@ -144,6 +134,7 @@ const getElectionResults = async (req, res) => {
             where: { electionId },
             attributes: ["id", "name", "description", "imageUrl", "votes"]
         });
+
         if (!candidates.length) {
             return res
                 .status(404)
@@ -151,26 +142,22 @@ const getElectionResults = async (req, res) => {
         }
 
         const candidateIds = candidates.map(c => c.id);
-        const voteCounts = await contractUtils.tallyEncryptedVotes(
+        const voteCounts = await contractUtils.countVotes(
             events,
             election.privateKey,
             candidateIds
         );
 
-        // Persist counts back to DB
+        // save counts to db to not have to fetch them from the contract every time a user asks for them
         await Promise.all(
-            candidates.map(c =>
-                c
-                    .update({ votes: voteCounts[c.id] || 0 })
-                    .catch(err =>
-                        console.error(`Error updating candidate ${c.id}:`, err)
-                    )
+            candidates.map(c => c.update({ votes: voteCounts[c.id] || 0 })
+                .catch(err => console.error(`Error updating candidate ${c.id}:`, err))
             )
         );
 
         const { winnerId } = contractUtils.determineWinner(voteCounts);
 
-        // Close election and store result if needed
+        // close election / store result
         if (
             new Date() > new Date(election.endDate) &&
             election.status !== "closed"

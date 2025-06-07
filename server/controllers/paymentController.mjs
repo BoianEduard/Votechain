@@ -1,3 +1,6 @@
+//TODO dummy first version
+// IN PROGRESS, will be moved to another branch
+
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -10,7 +13,7 @@ const createPaymentIntent = async (req, res) => {
 
         if (!amount || amount < 50) {
             return res.status(400).json({
-                error: 'Invalid amount. Minimum charge is $0.50'
+                error: 'Invalid amount. Minimum charge is $0.50' // failsafe
             });
         }
 

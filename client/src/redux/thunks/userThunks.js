@@ -16,9 +16,9 @@ export const checkEligibility = (electionId) => async (dispatch) => {
     try {
         const data = await userAPI.checkEligibility(electionId);
         dispatch(setEligibilitySuccess(data));
-        return data;  // opțional, dacă vrei să folosești rezultatul imediat
+        return data;
     } catch (error) {
         dispatch(setEligibilityFailure(error.message || 'Failed to check eligibility'));
-        throw error; // dacă vrei să lași să treacă mai departe eroarea
+        throw error;
     }
 };
