@@ -1,52 +1,25 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; // Add useSelector
-import { Link } from "react-router-dom";
-import authThunks from "../../redux/thunks/authThunks";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useRegisterForm, useRegister } from '../../hooks/RegisterHook';
 
 const RegisterPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [formError, setFormError] = useState(""); // rename to formError to distinguish from Redux error
-
-  const dispatch = useDispatch();
-
-  const { loading: isLoading, error } = useSelector(state => state.auth);
-
-  const validateForm = () => {
-    const errors = {};
-
-    if (!email) errors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
-
-    if (!password) errors.password = "Password is required";
-    else if (password.length < 8) errors.password = "Password must be at least 8 characters";
-
-    if (!firstName) errors.firstName = "First name is required";
-    if (!lastName) errors.lastName = "Last name is required";
-
-    return errors;
-  };
+  const { formData, updateField, resetForm, validateForm } = useRegisterForm();
+  const { register, error, isLoading } = useRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formErrors = validateForm();
 
-    if (Object.keys(formErrors).length > 0) {
-      setFormError(Object.values(formErrors).join(" "));
+    const validation = validateForm();
+    if (!validation.isValid) {
+      //TODO sa afisam erorile mai frumos..
       return;
     }
 
-    setFormError("");
-
-    try {
-      await dispatch(authThunks.registerUser({ email, password, firstName, lastName }));
-    } catch (err) {
+    const result = await register(formData);
+    if (result.success) {
+      resetForm();
     }
   };
-
-  const displayError = formError || error;
 
   return (
       <div className="flex justify-center items-center min-h-screen bg-light">
@@ -54,32 +27,39 @@ const RegisterPage = () => {
           <h1 className="text-center text-3xl font-bold text-indigo-700 mb-2">Arbi1Vote</h1>
           <p className="text-center text-sm text-gray-500 mb-4">Create your account</p>
 
-          {displayError && <div className="alert alert-danger py-2 mb-4">{displayError}</div>}
+          {error && (
+              <div className="alert alert-danger py-2 mb-4">{error}</div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  First Name
+                </label>
                 <input
                     type="text"
                     id="firstName"
                     className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
                     placeholder="First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    value={formData.firstName}
+                    onChange={(e) => updateField('firstName', e.target.value)}
                     disabled={isLoading}
                     required
                 />
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  Last Name
+                </label>
                 <input
                     type="text"
                     id="lastName"
                     className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
                     placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    value={formData.lastName}
+                    onChange={(e) => updateField('lastName', e.target.value)}
                     disabled={isLoading}
                     required
                 />
@@ -87,28 +67,32 @@ const RegisterPage = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
               <input
                   type="email"
                   id="email"
                   className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
                   placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={(e) => updateField('email', e.target.value)}
                   disabled={isLoading}
                   required
               />
             </div>
 
             <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <input
                   type="password"
                   id="password"
                   className="w-full p-2 mt-1 border rounded-md shadow-sm bg-light"
                   placeholder="Create a password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={(e) => updateField('password', e.target.value)}
                   disabled={isLoading}
                   required
               />
@@ -128,7 +112,10 @@ const RegisterPage = () => {
             </button>
 
             <p className="text-center text-sm text-gray-500">
-              Already have an account? <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">Log in</Link>
+              Already have an account?{' '}
+              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">
+                Log in
+              </Link>
             </p>
           </form>
         </div>

@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
 import { AlertCircle, HelpCircle } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useElectionData, useElectionSearch } from "../../hooks/ElectionViewHook";
 import ElectionCard from '../../components/ElectionView/ElectionCard';
-import { fetchAllElections } from "../../redux/thunks/electionThunks";
 import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
 import ElectionPageSearch from "../../components/Commons/ElectionPageSearch";
 import LoadingSpinner from "../../components/Commons/LoadingSpinner";
 import ErrorCard from "../../components/Commons/Error/ErrorCard";
 
 const ElectionViewPage = () => {
-  const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState('');
-  const { elections, loading, error } = useSelector(state => state.election);
-
-  useEffect(() => {
-    dispatch(fetchAllElections());
-  }, [dispatch]);
+  const { elections, loading, error } = useElectionData();
+  const { searchTerm, setSearchTerm, filteredElections } = useElectionSearch(elections);
 
   const handleFilterClick = () => {
     console.log("Filter clicked");
@@ -46,13 +39,9 @@ const ElectionViewPage = () => {
         <div className="bg-white min-h-screen rounded-t-3xl px-4 py-8">
           <div className="max-w-3xl mx-auto">
             {elections.length > 0 ? (
-                elections
-                    .filter(election =>
-                        election.title.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((election) => (
-                        <ElectionCard key={election.id} election={election} />
-                    ))
+                filteredElections.map((election) => (
+                    <ElectionCard key={election.id} election={election} />
+                ))
             ) : (
                 <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 text-center mb-8">
                   <AlertCircle className="text-indigo-500 mx-auto mb-3" size={48} />

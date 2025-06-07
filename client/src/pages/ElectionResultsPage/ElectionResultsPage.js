@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchElectionDetails } from "../../redux/thunks/electionThunks";
-import { fetchElectionResults } from "../../redux/thunks/contractThunks";
+import {useElectionDetails, useElectionResults, useElectionStatus } from "../../hooks/ElectionResultsHook";
 import ElectionHeader from "../../components/ElectionResults/ElectionHeaderCard";
 import ElectionNotFound from "../../components/ElectionResults/ElectionNotFoundCard";
 import LoadingSpinner from "../../components/Commons/LoadingSpinner";
@@ -11,42 +9,27 @@ import ErrorMessage from "../../components/Commons/Error";
 
 const ElectionResultPage = () => {
     const { id } = useParams();
-    const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
-    const election = useSelector((state) => state.election.selectedElection);
-    const result = useSelector((state) => state.contract.results?.[id] ?? null);
-    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const loadElection = async () => {
-            setLoading(true);
-            try {
-                await dispatch(fetchElectionDetails(id));
-                await dispatch(fetchElectionResults(id));
-            } catch (err) {
-                const errorMessage = err?.message || err || "Failed to load results. Please try again later.";
-                setError(errorMessage);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const {
+        election,
+        loading: electionLoading,
+        error: electionError
+    } = useElectionDetails(id);
 
-        loadElection();
-    }, [dispatch, id]);
+    const {
+        result,
+        loading: resultsLoading,
+        error: resultsError
+    } = useElectionResults(id);
 
-    const getStatus = () => {
-        if (!election) return "Unknown";
+    const { getStatus } = useElectionStatus();
 
-        const now = new Date();
-        if (new Date(election.startDate) > now) return "Not Started";
-        if (new Date(election.endDate) < now) return "Closed";
-        return "Vote In Progress";
-    };
+    const loading = electionLoading || resultsLoading;
+    const error = electionError || resultsError;
+    const status = useMemo(() => getStatus(election), [election, getStatus]);
 
     if (loading) return <LoadingSpinner message="Loading election results..." />;
     if (!election) return <ElectionNotFound />;
-
-    const status = getStatus();
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-indigo-700 to-indigo-500">

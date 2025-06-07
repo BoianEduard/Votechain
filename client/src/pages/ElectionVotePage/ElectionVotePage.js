@@ -1,97 +1,82 @@
-import React, { useState, useEffect } from "react";
-import { useParams }                 from "react-router-dom";
-import { useDispatch, useSelector }  from "react-redux";
-import { AlertCircle }               from "lucide-react";
-import ElectionBanner       from "../../components/Vote/ElectionBanner";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AlertCircle } from "lucide-react";
+
+import ElectionBanner from "../../components/Vote/ElectionBanner";
 import CandidateSelectionCard from "../../components/Vote/CandidateSelectionCard";
-import VoteConfirmationCard  from "../../components/Vote/VoteConfirmationCard";
-import VoteSuccessCard       from "../../components/Vote/VoteSuccessCard";
-import TurnoutCard           from "../../components/Vote/TurnoutCard";
-import FooterCard            from "../../components/Commons/FooterCard";
-import * as contractThunks   from "../../redux/thunks/contractThunks";
-import { fetchElectionDetails, getVoterTurnout } from "../../redux/thunks/electionThunks";
-import * as userThunks       from "../../redux/thunks/userThunks";
+import VoteConfirmationCard from "../../components/Vote/VoteConfirmationCard";
+import VoteSuccessCard from "../../components/Vote/VoteSuccessCard";
+import TurnoutCard from "../../components/Vote/TurnoutCard";
+import FooterCard from "../../components/Commons/FooterCard";
+import {
+    useElectionDetails,
+    useSelectCandidate,
+    useUserEligibility,
+    useVoterTurnout,
+    useVoteSubmit,
+    useElectionUtils } from "../../hooks/ElectionVoteHook";
 
 const ElectionVotePage = () => {
     const { electionId } = useParams();
-    const dispatch       = useDispatch();
+    const user = useSelector(s => s.user.userData);
 
-    const user           = useSelector(s => s.user.userData);
-    const election       = useSelector(s => s.election.selectedElection);
-    const voterTurnout   = useSelector(s => s.election.voterTurnout);
+    const {
+        election,
+        loading: electionLoading,
+        error: electionError
+    } = useElectionDetails(electionId);
 
-    const [selectedCandidate, setSelectedCandidate] = useState(null);
-    const [votingStep, setVotingStep]    = useState("select");
-    const [isLoading, setIsLoading]      = useState(true);
-    const [showBiography, setShowBiography] = useState(null);
-    const [error, setError]              = useState(null);
-    const [eligibility, setEligibility]  = useState(null);
+    const {
+        selectedCandidate,
+        votingStep,
+        showBiography,
+        handleCandidateSelect,
+        handleConfirmVote,
+        handleStartOver,
+        handleVoteSuccess,
+        toggleBiography
+    } = useSelectCandidate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setIsLoading(true);
-                await dispatch(fetchElectionDetails(electionId));
+    const {
+        error: voteError,
+        isSubmitting,
+        submitVote
+    } = useVoteSubmit();
 
-                if (user?.id) {
-                    const resp = await dispatch(userThunks.checkEligibility(electionId));
-                    setEligibility(resp);
-                }
+    const {
+        voterTurnout,
+        loading: turnoutLoading,
+        error: turnoutError
+    } = useVoterTurnout(electionId);
 
-                await dispatch(getVoterTurnout(electionId));
-            } catch (err) {
-                console.error("Failed to load election page:", err); //debug
-                setError("Failed to load data. Please try again.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const {
+        eligibility,
+        loading: eligibilityLoading,
+        error: eligibilityError
+    } = useUserEligibility(electionId);
 
-        fetchData();
-    }, [electionId, user, dispatch]);
+    const { formatDate, calculateDaysRemaining } = useElectionUtils();
+    const daysRemaining = election ? calculateDaysRemaining(election.endDate) : 0;
 
-    // util
-    const formatDate = (d) =>
-        new Date(d).toLocaleDateString("en-US", {
-            month: "long", day: "numeric", year: "numeric"
-        });
-
-    const daysRemaining = election
-        ? Math.ceil(
-            (new Date(election.endDate) - new Date()) / (1000 *60*60*24)
-        )
-        : 0;
-
-    //set the selected the candidate
-    const handleCandidateSelect = (c) => setSelectedCandidate(c);
-
-    const handleConfirmVote = () => setVotingStep("confirm");
-    const handleStartOver   = () => {
-        setSelectedCandidate(null);
-        setVotingStep("select");
-    };
+    // combined loading and error states
+    const isLoading = electionLoading || turnoutLoading || eligibilityLoading;
+    const error = electionError || voteError || turnoutError || eligibilityError;
 
     const handleSubmitVote = async () => {
-        try {
-            setError(null);
-            await dispatch(
-                contractThunks.castVote(
-                    electionId,
-                    selectedCandidate.id,
-                    election.publicKey,
-                    user.address
-                )
-            );
-            setVotingStep("success");
-        } catch (err) {
-            console.error("Failed to submit vote:", err);
-            setError("Failed to submit vote. Please try again.");
+        const result = await submitVote(
+            electionId,
+            selectedCandidate.id,
+            election.publicKey,
+            user.address
+        );
+
+        if (result.success) {
+            handleVoteSuccess();
         }
     };
 
-    const toggleBiography = (candId) => setShowBiography(showBiography === candId ? null : candId);
-
-    if (isLoading) {
+    if (isLoading && !election) {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="text-center">
@@ -155,7 +140,8 @@ const ElectionVotePage = () => {
                             formatDate={formatDate}
                             handleStartOver={handleStartOver}
                             handleSubmitVote={handleSubmitVote}
-                            error={error}
+                            error={voteError}
+                            isSubmitting={isSubmitting}
                         />
                     )}
 
@@ -170,8 +156,8 @@ const ElectionVotePage = () => {
                 {election && votingStep !== "success" && (
                     <div className="mb-6">
                         <TurnoutCard
-                            totalVoters={voterTurnout.totalVoters}
-                            currentTurnout={voterTurnout.currentTurnout}
+                            totalVoters={voterTurnout?.totalVoters}
+                            currentTurnout={voterTurnout?.currentTurnout}
                         />
                     </div>
                 )}

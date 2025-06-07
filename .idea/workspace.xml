@@ -4,7 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="" />
+    <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/DashboardHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionData.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionSearch.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionStatus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionDetails.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionResults.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionViewHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useElectionUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useSelectCandidate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoteSubmit.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoterTurnout.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useAuthForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/RegisterHook/useRegisterForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionVotePage/ElectionVotePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionVotePage/ElectionVotePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -133,7 +161,7 @@
       <workItem from="1749301602170" duration="47000" />
       <workItem from="1749301649258" duration="32000" />
       <workItem from="1749301682161" duration="312000" />
-      <workItem from="1749303925973" duration="10100000" />
+      <workItem from="1749303925973" duration="13125000" />
     </task>
     <servers />
   </component>
@@ -160,10 +188,9 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/middleware/errorMiddleware.mjs</url>
-          <line>10</line>
+          <url>file://$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js</url>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="9" />
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
