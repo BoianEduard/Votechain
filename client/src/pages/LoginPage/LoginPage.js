@@ -39,7 +39,7 @@ const LoginPage = () => {
   return (
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <div className="bg-white shadow-xl rounded-2xl p-8 w-96">
-          <h1 className="text-center text-3xl font-bold text-blue-600 mb-2">Arbi1Vote</h1>
+          <h1 className="text-center text-3xl font-bold text-indigo-700 mb-2">Arbi1Vote</h1>
           <p className="text-center text-gray-500 mb-6">Welcome back! Please login to your account.</p>
 
           {error && <div className="bg-red-100 text-red-700 text-sm rounded-md p-3 mb-4">{error}</div>}

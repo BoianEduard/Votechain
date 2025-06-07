@@ -20,10 +20,8 @@ const addDomainWhitelist = async (req, res, next) => {
       return res.status(404).json({ message: "Election not found" });
     }
 
-    // Create SQL LIKE patterns for each domain
     const domainPatterns = domains.map(domain => `%${domain}`);
 
-    // Find all users whose email ends with any of these domains
     const users = await models.User.findAll({
       where: {
         email: {
@@ -41,7 +39,6 @@ const addDomainWhitelist = async (req, res, next) => {
       });
     }
 
-    // Create voter registrations for all matching users
     const whitelistEntries = await Promise.all(
         users.map(user =>
             models.VoterRegistration.create({
@@ -64,10 +61,8 @@ const addDomainWhitelist = async (req, res, next) => {
         message: "Some users are already registered for this election",
       });
     }
-    console.error("Error adding domain whitelist:", error);
-    return res.status(500).json({
-      message: "Internal server error while adding domain whitelist",
-    });
+
+   next(error);
   }
 };
 

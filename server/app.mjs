@@ -7,6 +7,7 @@ import contractRoutes from './routes/contractRoutes.mjs';
 import publicKeyRoute from './routes/keyRoute.mjs';
 import userRoutes from './routes/userRoutes.mjs';
 import paymentRoutes from './routes/paymentRoutes.mjs';
+import errorMiddleware from "./middleware/errorMiddleware.mjs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -37,5 +38,6 @@ app.use('/api/contract', contractRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', publicKeyRoute);
+app.use(errorMiddleware);
 
 export default app;

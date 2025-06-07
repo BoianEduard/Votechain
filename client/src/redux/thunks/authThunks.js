@@ -1,7 +1,8 @@
 import { loginStart, loginSuccess, loginFailure, logout } from "../slices/authSlice";
 import authAPI from "../../api/authAPI";
 import { setUserSuccess } from "../slices/userSlice";
-import {connectToMetaMask, signWithMetaMask} from "../../utils/metamask";
+import { connectToMetaMask, signWithMetaMask } from "../../utils/metamask";
+import serializeError from '../../utils/serializeError';
 
 const loginUser = (credentials) => async (dispatch) => {
   dispatch(loginStart());
@@ -10,9 +11,11 @@ const loginUser = (credentials) => async (dispatch) => {
     const data = await authAPI.login(credentials);
     dispatch(loginSuccess(data.token));
     dispatch(setUserSuccess(data.user));
+    return data;
   } catch (error) {
-    dispatch(loginFailure(error));
-    throw new Error(error.message);
+    const serializedError = serializeError(error, "Login failed");
+    dispatch(loginFailure(serializedError));
+    throw error;
   }
 };
 
@@ -23,7 +26,7 @@ const registerUser = (userData) => async (dispatch) => {
     await authAPI.checkEmail({ email: userData.email });
 
     if (!window.ethereum) {
-      throw new Error("MetaMask is not installed. You need a wallet to enter this site. ");
+      throw new Error("MetaMask is not installed. You need a wallet to enter this site.");
     }
 
     const address = await connectToMetaMask();
@@ -50,9 +53,9 @@ const registerUser = (userData) => async (dispatch) => {
     return data;
 
   } catch (error) {
-    const errorMessage = error.response?.data?.message || error.message || "Registration failed";
-    dispatch(loginFailure(errorMessage));
-    throw new Error(errorMessage);
+    const serializedError = serializeError(error, "Registration failed");
+    dispatch(loginFailure(serializedError));
+    throw error;
   }
 };
 
@@ -61,7 +64,9 @@ const logoutUser = () => async (dispatch) => {
     await authAPI.logout();
     dispatch(logout());
   } catch (error) {
-    dispatch(logout());
+    const serializedError = serializeError(error, "Logout failed");
+    dispatch(loginFailure(serializedError));
+    // aici nu mai aruncam eroarea, logoutul ar trebui sa se execute oricum
   }
 };
 
@@ -80,8 +85,9 @@ const checkAuthStatus = () => async (dispatch) => {
 
     return data.authenticated;
   } catch (error) {
-    dispatch(loginFailure(error));
-    throw new Error(error.message);
+    const serializedError = serializeError(error, "Auth verification failed");
+    dispatch(loginFailure(serializedError));
+    throw error;
   }
 };
 

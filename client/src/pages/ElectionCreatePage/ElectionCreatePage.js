@@ -14,7 +14,6 @@ import './ElectionCreate.css';
 const ElectionCreatePage = () => {
   const navigate = useNavigate();
 
-  // Custom hooks
   const {
     form,
     handleInputChange,
@@ -105,7 +104,7 @@ const ElectionCreatePage = () => {
 
   const handlePaymentSuccess = async (paymentIntentId) => {
     try {
-      // First, call the payment success hook
+      // first, call the payment success hook
       onPaymentSuccessHook(paymentIntentId);
 
       // Then create the election using our custom hook
@@ -119,7 +118,7 @@ const ElectionCreatePage = () => {
     }
   };
 
-  // Combine all errors for display
+  // combine all errors for display
   const allErrors = [
     error,
     paymentError,

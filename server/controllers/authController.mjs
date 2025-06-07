@@ -70,13 +70,10 @@ const verifyAuth = async (req, res) => {
                 });
             }
 
-            // Opțional, poți regenera token-ul pentru a extinde sesiunea
-            // const newToken = generateToken(user);
-            // setCookieToken(res, newToken);
+           //TODO refresh tokens
 
             return res.status(200).json({
                 authenticated: true,
-                // token: newToken, // Opțional, dacă regenerezi token-ul
                 user: {
                     id: user.id,
                     email: user.email,
@@ -87,7 +84,7 @@ const verifyAuth = async (req, res) => {
                 }
             });
         } catch (error) {
-            // Token invalid sau expirat
+            // jwt invalid sau expirat
             res.clearCookie('token', {
                 httpOnly: true,
                 sameSite: 'strict',
@@ -138,8 +135,7 @@ const login = async (req, res, next) => {
             },
         });
     } catch (error) {
-        console.error('Login error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+        next(error);
     }
 };
 
@@ -194,8 +190,7 @@ const register = async (req, res, next) => {
             },
         });
     } catch (error) {
-        console.error('Register error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+        next(error);
     }
 };
 

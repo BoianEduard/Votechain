@@ -1,8 +1,9 @@
 import * as contractSlice from "../slices/contractSlice";
 import contractAPI from '../../api/contractAPI';
-import {encryptVote,getConnectedAddress, preparePublicKey} from "../../utils/blockchain";
+import {encryptVote,getConnectedAddress, prepareVote} from "../../utils/blockchain";
 import {ethers} from 'ethers';
-import {Buffer} from 'buffer';
+import serializeError from '../../utils/serializeError';
+import {signWithMetaMask} from "../../utils/metamask";
 
 export const deployContract = (electionId) => async (dispatch) => {
     dispatch(contractSlice.deployContractStart());
@@ -11,13 +12,9 @@ export const deployContract = (electionId) => async (dispatch) => {
         dispatch(contractSlice.deployContractSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Deploying contract failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Deploying contract failed");
         dispatch(contractSlice.deployContractFail(serializedError));
-        throw new Error(serializedError.message);
+        throw error;
     }
 };
 
@@ -30,21 +27,12 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
             throw new Error("Connected MetaMask address does not match registered address");
         }
 
-        // 1. Encrypt the vote (returns base64)
         const encryptedVoteBase64 = await encryptVote(candidateId.toString(), electionPublicKey);
+        const encryptedVoteHex = prepareVote(encryptedVoteBase64);
 
-        // 2. Convert base64 to bytes for blockchain storage
-        const encryptedVoteBuffer = Buffer.from(encryptedVoteBase64, 'base64');
-        const encryptedVoteHex = '0x' + encryptedVoteBuffer.toString('hex');
-
-        // 3. Hash the encrypted data for signing
+        //hash the vote before signing
         const voteHash = ethers.keccak256(encryptedVoteHex);
-
-        // 4. Sign the hash with MetaMask
-        const signature = await window.ethereum.request({
-            method: 'personal_sign',
-            params: [voteHash, address],
-        });
+        const signature = await signWithMetaMask(voteHash);
 
         // 5. Send to backend - pass the hex-encoded encrypted vote
         const data = await contractAPI.castVote({
@@ -58,13 +46,9 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         return data;
 
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Casting vote failed",
-            code: error.code,
-            status: error.response?.status,
-        };
+        const serializedError = serializeError(error, "Casting vote failed");
         dispatch(contractSlice.castVoteFail(serializedError));
-        throw new Error(serializedError.message);
+        throw error;
     }
 };
 
@@ -76,8 +60,8 @@ export const fetchElectionResults = (electionId) => async (dispatch) => {
         console.log(result);
         return result;
     } catch (error) {
-        const errorMessage = error?.message || error || "Unknown error fetching results";
-        dispatch(contractSlice.fetchResultsFail(errorMessage));
+        const serializedError = serializeError(error, "Fetching election results failed");
+        dispatch(contractSlice.castVoteFail(serializedError));
         throw error;
     }
 };

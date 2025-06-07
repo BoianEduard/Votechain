@@ -91,7 +91,6 @@ const createCandidates = async (req, res, next) => {
       candidates: createdCandidates
     });
   } catch (error) {
-    console.error("Error creating candidates:", error);
     next(error);
   }
 };

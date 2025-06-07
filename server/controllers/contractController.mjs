@@ -1,7 +1,7 @@
 import models from "../models/index.mjs";
 import * as contractUtils from "../services/contractUtils.mjs";
 
-const deployElectionContract = async (req, res) => {
+const deployElectionContract = async (req, res, next) => {
     try {
         const { electionId } = req.body;
         if (!electionId) {
@@ -11,6 +11,7 @@ const deployElectionContract = async (req, res) => {
         const regs = await models.VoterRegistration.findAll({
             where: { electionId }
         });
+
         const userIds = regs.map(r => r.userId);
         const users = await models.User.findAll({
             where: { id: userIds },
@@ -19,9 +20,8 @@ const deployElectionContract = async (req, res) => {
         const eligibleVoters = users.map(u => u.address);
 
         // folosim namespace‐importul
-        const contractAddress = await contractUtils.deployElectionOnChain(
-            eligibleVoters
-        );
+        const contractAddress = await contractUtils.deployElectionOnChain(eligibleVoters);
+
         await models.Election.update(
             { contractAddress },
             { where: { id: electionId } }
@@ -32,15 +32,13 @@ const deployElectionContract = async (req, res) => {
             contractAddress
         });
     } catch (error) {
-        console.error("Error deploying election contract:", error);
-        return res.status(500).json({ message: "Failed to deploy contract" });
+        next(error);
     }
 };
 
-const castVote = async (req, res) => {
+const castVote = async (req, res, next) => {
     try {
-        const { electionId, encryptedVote, signature, address: userAddress } =
-            req.body;
+        const { electionId, encryptedVote, signature, address: userAddress } = req.body;
         const userId = req.user?.userId;
         if (!electionId || !encryptedVote || !signature) {
             return res.status(400).json({ message: "Missing required fields" });
@@ -50,23 +48,17 @@ const castVote = async (req, res) => {
         if (!election) {
             return res.status(404).json({ message: "Election not found" });
         }
-        if (!election.contractAddress) {
-            return res
-                .status(400)
-                .json({ message: "Election contract not found" });
-        }
 
         const now = new Date();
-        if (
-            now < new Date(election.startDate) ||
-            now > new Date(election.endDate)
-        ) {
+        if (now < new Date(election.startDate) || now > new Date(election.endDate))
+        {
             return res.status(400).json({ message: "Election is not active" });
         }
 
         const voterReg = await models.VoterRegistration.findOne({
             where: { electionId, userId, status: "registered" }
         });
+
         if (!voterReg) {
             return res
                 .status(403)
@@ -104,16 +96,14 @@ const castVote = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error casting vote:", error);
-        return res
-            .status(500)
-            .json({ message: "Failed to cast vote", error: error.message });
+        next(error);
     }
 };
 
-const getElectionResults = async (req, res) => {
+const getElectionResults = async (req, res, next) => {
     try {
         const { electionId } = req.params;
+
         const election = await models.Election.findByPk(electionId);
         if (!election) {
             return res.status(404).json({ message: "Election not found" });
@@ -214,11 +204,7 @@ const getElectionResults = async (req, res) => {
                     : null
         });
     } catch (error) {
-        console.error("Error fetching election results:", error);
-        return res.status(500).json({
-            message: "Failed to fetch election results",
-            error: error.message
-        });
+       next(error);
     }
 };
 

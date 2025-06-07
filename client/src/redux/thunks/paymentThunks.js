@@ -1,7 +1,6 @@
-//TODO
-
 import * as paymentSlice from "../slices/paymentSlice";
 import paymentAPI from "../../api/paymentAPI";
+import serializeError from '../../utils/serializeError';
 
 export const createPaymentIntent = (paymentDetails) => async (dispatch) => {
     dispatch(paymentSlice.createPaymentStart());
@@ -10,11 +9,7 @@ export const createPaymentIntent = (paymentDetails) => async (dispatch) => {
         dispatch(paymentSlice.createPaymentSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Payment intent creation failed",
-            code: error.code,
-            status: error.response?.status,
-        };
+        const serializedError = serializeError(error, "Payment intent creation failed");
         dispatch(paymentSlice.createPaymentFail(serializedError));
         throw error;
     }
@@ -27,11 +22,7 @@ export const verifyPayment = (paymentIntentId) => async (dispatch) => {
         dispatch(paymentSlice.verifyPaymentSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Payment verification failed",
-            code: error.code,
-            status: error.response?.status,
-        };
+        const serializedError = serializeError(error, "Payment verification failed");
         dispatch(paymentSlice.verifyPaymentFail(serializedError));
         throw error;
     }
@@ -44,11 +35,7 @@ export const refundPayment = (refundData) => async (dispatch) => {
         dispatch(paymentSlice.refundPaymentSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Refund processing failed",
-            code: error.code,
-            status: error.response?.status,
-        };
+        const serializedError = serializeError(error, "Refund processing failed");
         dispatch(paymentSlice.refundPaymentFail(serializedError));
         throw error;
     }

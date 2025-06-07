@@ -8,7 +8,7 @@ const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_AMOY_URL);
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
 sequelize
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(() => {
         console.log("Database connected and synchronized");
         app.listen(PORT, () => {

@@ -1,5 +1,6 @@
 import * as electionSlice from "../slices/electionSlice";
 import electionAPI from '../../api/electionAPI';
+import serializeError from '../../utils/serializeError';
 
 export const createElection = (details) => async (dispatch) => {
     dispatch(electionSlice.createElectionStart());
@@ -8,11 +9,7 @@ export const createElection = (details) => async (dispatch) => {
         dispatch(electionSlice.createElectionSuccess(data));
         return data; 
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Creating election failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Creating election failed");
         dispatch(electionSlice.createElectionFail(serializedError));
         throw error;
     }
@@ -25,11 +22,7 @@ export const addCandidates = (candidateData) => async (dispatch) => {
         dispatch(electionSlice.addCandidatesSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Adding candidates failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Adding candidates failed");
         dispatch(electionSlice.addCandidatesFail(serializedError));
         throw error;
     }
@@ -42,11 +35,7 @@ export const addWhitelist = (whitelistData) => async (dispatch) => {
         dispatch(electionSlice.addWhitelistSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Adding whitelist failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Populating whitelist failed");
         dispatch(electionSlice.addWhitelistFail(serializedError));
         throw error;
     }
@@ -54,17 +43,13 @@ export const addWhitelist = (whitelistData) => async (dispatch) => {
 };
 
 export const addDomainWhitelist = (electionId, domains) => async (dispatch) => {
-    dispatch(electionSlice.addWhitelistStart()); // Reuse existing slice actions
+    dispatch(electionSlice.addWhitelistStart());
     try {
         const data = await electionAPI.addDomainWhitelist({ electionId, domains });
         dispatch(electionSlice.addWhitelistSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Adding domain whitelist failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Populating whitelist domain failed");
         dispatch(electionSlice.addWhitelistFail(serializedError));
         throw error;
     }
@@ -77,11 +62,7 @@ export const addAll = (electionId) => async (dispatch) => {
         dispatch(electionSlice.addWhitelistSuccess(data));
         return data;
     } catch (error){
-        const serializedError = {
-            message: error.message || "Adding whitelist failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Populating whitelist failed");
         dispatch(electionSlice.addWhitelistFail(serializedError));
         throw error;
     }
@@ -94,11 +75,7 @@ export const fetchAllElections = () => async (dispatch) => {
         dispatch(electionSlice.fetchElectionsSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Fetching elections failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Fetching elections failed");
         dispatch(electionSlice.fetchElectionsFail(serializedError));
         throw error;
     }
@@ -111,11 +88,7 @@ export const fetchElectionDetails = (electionId) => async (dispatch) => {
         dispatch(electionSlice.fetchElectionDetailsSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message:error.message || "Fetching election details failed",
-            code: error.code,
-            status: error.response?.status
-        }
+        const serializedError = serializeError(error, "Fetching election details failed");
         dispatch(electionSlice.fetchElectionDetailsFail(serializedError));
         throw error;
     }
@@ -128,11 +101,7 @@ export const deleteElection = (electionId) => async (dispatch) => {
         dispatch(electionSlice.deleteElectionSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Delete election failed",
-            code: error.code,
-            status: error.response?.status
-        }
+        const serializedError = serializeError(error, "Deleting election failed");
         dispatch(electionSlice.deleteElectionFail(serializedError));
         throw error;
     }
@@ -145,11 +114,7 @@ export const getDashboardStats = () => async (dispatch) => {
         dispatch(electionSlice.getDashboardStatsSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Fetching dashboard stats failed",
-            code: error.code,
-            status: error.response?.status,
-        };
+        const serializedError = serializeError(error, "Fetching dashboard stats failed");
         dispatch(electionSlice.getDashboardStatsFail(serializedError));
         throw error;
     }
@@ -162,11 +127,7 @@ export const getVoterTurnout = (electionId) => async (dispatch) => {
         dispatch(electionSlice.getVoterTurnoutSuccess(data));
         return data;
     } catch (error) {
-        const serializedError = {
-            message: error.message || "Fetching voter turnout failed",
-            code: error.code,
-            status: error.response?.status
-        };
+        const serializedError = serializeError(error, "Fetching voter turnout failed");
         dispatch(electionSlice.getVoterTurnoutFail(serializedError));
         throw error;
     }

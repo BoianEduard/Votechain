@@ -2,10 +2,9 @@ import models from "../models/index.mjs";
 import { generateKeyPair, encryptPrivateKey } from "../services/cryptoUtils.mjs";
 import * as contractUtils from "../services/contractUtils.mjs";
 
-const createElection = async (req, res) => {
+const createElection = async (req, res, next) => {
     try {
         const electionKeys = generateKeyPair();
-
         const encryptedPrivateKey = encryptPrivateKey(electionKeys.privateKey);
 
         const election = await models.Election.create({
@@ -22,14 +21,11 @@ const createElection = async (req, res) => {
             ...electionData,
         });
     } catch (error) {
-        console.error("Error creating election:", error);
-        return res.status(500).json({
-            error: error.message || "Failed to create election",
-        });
+        next(error);  // Propaghezi eroarea mai departe
     }
 };
 
-const getAllElections = async (req, res) => {
+const getAllElections = async (req, res, next) => {
     try {
         const userId = req.user.userId;
         const elections = await models.Election.findAll({
@@ -49,12 +45,11 @@ const getAllElections = async (req, res) => {
 
         return res.status(200).json(elections);
     } catch (error) {
-        console.error("Error fetching elections:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        next(error);
     }
 };
 
-const getElectionById = async (req, res) => {
+const getElectionById = async (req, res, next) => {
     try {
         const userId = req.user.userId;
         const electionId = req.params.id;
@@ -81,8 +76,7 @@ const getElectionById = async (req, res) => {
 
         return res.status(200).json(election);
     } catch (error) {
-        console.error("Error fetching election:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        next(error);
     }
 };
 
@@ -114,12 +108,11 @@ const deleteElection = async (req, res) => {
 
         res.status(200).json({ message: 'Election and related data deleted successfully' });
     } catch (error) {
-        console.error('Error deleting election:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        next(error);
     }
 };
 
-const getDashboardStats = async (req, res) => {
+const getDashboardStats = async (req, res, next) => {
     try {
         const totalVotes = await models.Candidate.sum("votes");
 
@@ -151,16 +144,13 @@ const getDashboardStats = async (req, res) => {
             ],
         });
     } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
-        return res.status(500).json({
-            message: "Failed to fetch dashboard stats",
-        });
+        next(error);
     }
 };
 
 
 //TODO implement new field to also store turnover in database to not alwasy call the contract.
-const getTurnout = async (req, res) => {
+const getTurnout = async (req, res, next) => {
     try {
         const { electionId } = req.params;
         if (!electionId) {
@@ -171,11 +161,6 @@ const getTurnout = async (req, res) => {
         if (!election) {
             return res.status(404).json({ message: "Election not found" });
         }
-        if (!election.contractAddress) {
-            return res
-                .status(400)
-                .json({ message: "Election contract not deployed yet" });
-        }
 
         const contract = contractUtils.getProviderContract(election.contractAddress);
         const { totalEligible, totalCast } = await contractUtils.fetchVotingStats(contract);
@@ -184,9 +169,8 @@ const getTurnout = async (req, res) => {
             totalVoters: totalEligible,
             currentTurnout: totalCast
         });
-    } catch (err) {
-        console.error("Error fetching voter turnout:", err);
-        return res.status(500).json({ message: "Failed to fetch voter turnout" });
+    } catch (error) {
+        next(error);
     }
 };
 

@@ -1,7 +1,8 @@
 import models from "../models/index.mjs";
 
-const fetchUserData = async (req, res) => {
+const fetchUserData = async (req, res, next) => {
     try {
+
         const userId = req.user.userId;
         const user = await models.user.findByPk(userId, {
             attributes: ['id', 'email', 'firstName', 'lastName', 'publicKey', 'address']
@@ -11,15 +12,13 @@ const fetchUserData = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-
        return res.status(200).json(user);
     } catch (error) {
-        console.error('fetchUserData error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+       next(error);
     }
 };
 
-export const checkEligibility = async (req, res) => {
+export const checkEligibility = async (req, res, next) => {
     try {
         const { electionId } = req.params;
         const userId = req.user.userId;
@@ -69,8 +68,7 @@ export const checkEligibility = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error checking eligibility:', error);
-        return res.status(500).json({ message: error.message || 'Error checking eligibility' });
+        next(error);
     }
 };
 

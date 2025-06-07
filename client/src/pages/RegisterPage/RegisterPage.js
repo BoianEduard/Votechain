@@ -8,7 +8,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [formError, setFormError] = useState(""); // Rename to formError to distinguish from Redux error
+  const [formError, setFormError] = useState(""); // rename to formError to distinguish from Redux error
 
   const dispatch = useDispatch();
 
@@ -51,7 +51,7 @@ const RegisterPage = () => {
   return (
       <div className="flex justify-center items-center min-h-screen bg-light">
         <div className="bg-white shadow-lg rounded-3 p-6 w-full max-w-md">
-          <h1 className="text-center text-2xl font-semibold text-primary mb-2">Arbi1Vote</h1>
+          <h1 className="text-center text-3xl font-bold text-indigo-700 mb-2">Arbi1Vote</h1>
           <p className="text-center text-sm text-gray-500 mb-4">Create your account</p>
 
           {displayError && <div className="alert alert-danger py-2 mb-4">{displayError}</div>}
