@@ -74,7 +74,7 @@ const DashboardSidebar = () => {
                     <div className="space-y-4 text-sm">
                         <div>
                             <p className="font-medium text-gray-700">Email Support</p>
-                            <p className="text-indigo-600">support@votechain.com</p>
+                            <p className="text-indigo-600">support@arbi1vote.com</p>
                         </div>
                         <div>
                             <p className="font-medium text-gray-700">Emergency Hotline</p>

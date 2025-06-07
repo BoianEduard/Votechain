@@ -55,8 +55,12 @@ const ElectionCreatePage = () => {
     success,
     electionId,
     createElection,
-    clearMessages
+    clearMessages,
+    clearFinalizing,
+    finalizing
   } = useElectionCreation();
+
+  const isBusy = loading || finalizing || processingPayment;
 
   useEffect(() => {
     if (success) {
@@ -72,6 +76,10 @@ const ElectionCreatePage = () => {
       clearMessages();
     }
   }, [form, error, clearMessages]);
+
+  useEffect(() => {
+    clearFinalizing();
+  }, [success, error, clearFinalizing]);
 
   const handleStepValidation = () => {
     clearValidationErrors();
@@ -152,7 +160,7 @@ const ElectionCreatePage = () => {
             addCandidate={addCandidate}
             removeCandidate={removeCandidate}
             handleSubmit={handleFormSubmit}
-            loading={loading}
+            loading={isBusy}
             error={error}
             step={step}
             nextStep={handleNextStep}
@@ -169,6 +177,7 @@ const ElectionCreatePage = () => {
             onPaymentSuccess={handlePaymentSuccess}
             onPaymentError={handlePaymentError}
             resetPayment={resetPayment}
+            success={success}
         />
       </div>
   );

@@ -18,7 +18,6 @@ const generateToken = (user) => {
 const setCookieToken = (res, token) => {
     res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000,
         path: '/',
@@ -37,7 +36,7 @@ const checkEmail = async (req, res) => {
     });
 
     if (existingUser) {
-        return res.status(409).json({ message: 'Email already in use' });
+        return res.status(409).json({ message: 'Email is already in use' });
     }
 
     return res.status(200).json({ message: 'Email is available' });
@@ -91,7 +90,6 @@ const verifyAuth = async (req, res) => {
             // Token invalid sau expirat
             res.clearCookie('token', {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict',
                 path: '/',
             });

@@ -1,14 +1,3 @@
-/**
- * Define the 'results' entity in which election results will be stored
- * 
- * @param {object} sequelize - the Sequelize instance used to define the model.
- * @param {object} DataTypes - A collection of the DataTypes supported by Sequelize
- * @returns {object}  - a Sequelize model representing the 'result' entity
- * 
- * @property {string} electionWinner - the winner of the elections.
- * @property {float} voterTurnout - the total turnout of voters' in the elections calculated as a %.
- */
-
 export default (sequelize, DataTypes) => {
     return sequelize.define('result', {
       id: {

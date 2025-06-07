@@ -7,6 +7,8 @@ import NavigationButton from "../../../Commons/NavigationButton";
 import PaymentForm from "../PaymentForm";
 import LoadingSpinner from "../../../Commons/LoadingSpinner";
 import * as paymentThunks from "../../../../redux/thunks/paymentThunks";
+import Error from "../../../Commons/Error";
+import SuccessMessage from "../../../Commons/Success";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -24,12 +26,12 @@ const PaymentStep = ({
                          onPaymentSuccessHook,
                          onPaymentError,
                          resetPayment,
-                         setPaymentError
+                         setPaymentError,
+                         success
                      }) => {
     const dispatch = useDispatch();
     const { verifyPayment: verifyPaymentState = {} } = useSelector(state => state.payment || {});
 
-    const [creatingElection, setCreatingElection] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
     const maxRetries = 3;
 
@@ -37,16 +39,12 @@ const PaymentStep = ({
     useEffect(() => {
         resetPayment();
         setRetryCount(0);
-        setCreatingElection(false);
     }, [formData.title, resetPayment]);
 
     const handlePaymentSuccess = async (paymentIntentId) => {
         try {
             // Update payment flow state
             onPaymentSuccessHook(paymentIntentId);
-
-            // Start election creation
-            setCreatingElection(true);
 
             // Verify payment first
             const verificationResult = await dispatch(paymentThunks.verifyPayment(paymentIntentId));
@@ -61,7 +59,6 @@ const PaymentStep = ({
             console.error("Election creation failed:", error);
             const errorMessage = error.message || "Failed to create election after payment";
             setPaymentError(errorMessage);
-            setCreatingElection(false);
 
             // Offer retry option
             if (retryCount < maxRetries) {
@@ -78,7 +75,6 @@ const PaymentStep = ({
     const handleRetryElectionCreation = async () => {
         if (!paymentId || retryCount >= maxRetries) return;
 
-        setCreatingElection(true);
         setPaymentError("");
 
         try {
@@ -93,7 +89,6 @@ const PaymentStep = ({
         } catch (error) {
             console.error("Retry failed:", error);
             setPaymentError(error.message || "Retry failed");
-            setCreatingElection(false);
             setRetryCount(prev => prev + 1);
         }
     };
@@ -101,14 +96,13 @@ const PaymentStep = ({
     const handleResetPayment = () => {
         resetPayment();
         setRetryCount(0);
-        setCreatingElection(false);
     };
 
     return (
         <div className="form-step">
             <div className="max-w-2xl mx-auto">
                 {/* Loading Overlay for Election Creation */}
-                {creatingElection && (
+                {(!success && (processingPayment || loading)) && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                         <div className="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
                             <div className="text-4xl mb-4">🗳️</div>
@@ -136,7 +130,6 @@ const PaymentStep = ({
                     </div>
                 </div>
 
-                {/* Payment Form or Success/Error State */}
                 {!paymentCompleted ? (
                     <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
                         <Elements stripe={stripePromise}>
@@ -155,20 +148,12 @@ const PaymentStep = ({
                             <div className="flex items-start">
                                 <span className="text-yellow-500 text-xl mr-3 mt-1">⚠️</span>
                                 <div className="flex-1">
-                                    <h3 className="text-lg font-bold text-yellow-800 mb-2">
-                                        Payment Successful, Election Creation Failed
-                                    </h3>
-                                    <p className="text-yellow-700 mb-3">
-                                        Your payment was processed successfully, but there was an issue creating your election.
-                                    </p>
+                                    <Error message={paymentError} />
                                     <div className="bg-white rounded p-2 mb-3">
                                         <p className="font-mono text-xs text-gray-600">
                                             Payment ID: {paymentId}
                                         </p>
                                     </div>
-                                    <p className="text-sm text-yellow-700 mb-3">
-                                        Error: {paymentError}
-                                    </p>
 
                                     {retryCount < maxRetries ? (
                                         <div className="flex space-x-3">
@@ -206,21 +191,12 @@ const PaymentStep = ({
                 ) : (
                     /* Payment and election creation successful */
                     <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center mb-6 shadow-sm">
-                        <div className="text-4xl mb-3">✅</div>
-                        <h3 className="text-xl font-bold text-green-800 mb-3">
-                            Payment Successful!
-                        </h3>
+                        <SuccessMessage message="Payment Successful! Your election is being deployed." />
                         <div className="bg-white rounded p-3 mb-3 inline-block shadow-sm">
                             <p className="font-mono text-sm text-green-700">
                                 Payment ID: {paymentId}
                             </p>
                         </div>
-                        <p className="text-green-700 font-medium">
-                            Your election is being deployed!
-                        </p>
-                        <p className="text-sm text-green-600 mt-2">
-                            You will be redirected to your dashboard shortly.
-                        </p>
                     </div>
                 )}
 
@@ -261,13 +237,13 @@ const PaymentStep = ({
                         title="Back"
                         direction="left"
                         onClick={prevStep}
-                        disabled={paymentCompleted || creatingElection || processingPayment}
+                        disabled={paymentCompleted || processingPayment}
                     />
 
-                    {paymentCompleted && !creatingElection && !paymentError && (
+                    {paymentCompleted && !paymentError && (
                         <div className="text-green-600 font-medium flex items-center">
                             <span className="text-xl mr-2">🎉</span>
-                            Complete!
+                            <SuccessMessage message="Payment Successful! Your election is being deployed." />
                         </div>
                     )}
                 </div>
@@ -296,6 +272,7 @@ PaymentStep.propTypes = {
     onPaymentError: PropTypes.func.isRequired,
     resetPayment: PropTypes.func.isRequired,
     setPaymentError: PropTypes.func.isRequired,
+    success: PropTypes.string,
 };
 
 export default PaymentStep;

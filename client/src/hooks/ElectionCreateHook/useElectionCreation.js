@@ -12,10 +12,17 @@ export const useElectionCreation = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [electionId, setElectionId] = useState(null);
+    const [finalizing, setFinalizing] = useState(false);
+
+    const isBusy = loading || finalizing;
 
     const clearMessages = () => {
         setError("");
         setSuccess("");
+    };
+
+    const clearFinalizing = () => {
+        setFinalizing(false);
     };
 
     const cleanupFailedElection = async (electionId) => {
@@ -45,17 +52,13 @@ export const useElectionCreation = () => {
     };
 
     const createElection = async (formData) => {
+        setFinalizing(false);
         setLoading(true);
         setError("");
         setSuccess("");
         let currentElectionId = null;
 
         try {
-            console.log('=== ELECTION CREATION START ===');
-            console.log('Form data:', formData);
-
-            // Step 1: Create base election
-
             const electionData = {
                 title: formData.title,
                 description: formData.description,
@@ -160,6 +163,7 @@ export const useElectionCreation = () => {
 
         } finally {
             setLoading(false);
+            setFinalizing(true);
         }
     };
 
@@ -168,8 +172,11 @@ export const useElectionCreation = () => {
         error,
         success,
         electionId,
+        finalizing,
+        isBusy,
         createElection,
         clearMessages,
+        clearFinalizing,
         setError,
         setSuccess
     };

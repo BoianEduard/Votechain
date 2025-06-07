@@ -9,8 +9,7 @@ import VoteSuccessCard       from "../../components/Vote/VoteSuccessCard";
 import TurnoutCard           from "../../components/Vote/TurnoutCard";
 import FooterCard            from "../../components/Commons/FooterCard";
 import * as contractThunks   from "../../redux/thunks/contractThunks";
-import { fetchElectionDetails, getVoterTurnout }
-    from "../../redux/thunks/electionThunks";
+import { fetchElectionDetails, getVoterTurnout } from "../../redux/thunks/electionThunks";
 import * as userThunks       from "../../redux/thunks/userThunks";
 
 const ElectionVotePage = () => {
@@ -41,7 +40,7 @@ const ElectionVotePage = () => {
 
                 await dispatch(getVoterTurnout(electionId));
             } catch (err) {
-                console.error("Failed to load election page:", err);
+                console.error("Failed to load election page:", err); //debug
                 setError("Failed to load data. Please try again.");
             } finally {
                 setIsLoading(false);
@@ -63,7 +62,7 @@ const ElectionVotePage = () => {
         )
         : 0;
 
-    // selecție candidat
+    //set the selected the candidate
     const handleCandidateSelect = (c) => setSelectedCandidate(c);
 
     const handleConfirmVote = () => setVotingStep("confirm");
@@ -90,8 +89,7 @@ const ElectionVotePage = () => {
         }
     };
 
-    const toggleBiography = (candId) =>
-        setShowBiography(showBiography === candId ? null : candId);
+    const toggleBiography = (candId) => setShowBiography(showBiography === candId ? null : candId);
 
     if (isLoading) {
         return (

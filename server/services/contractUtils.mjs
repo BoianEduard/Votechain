@@ -39,8 +39,7 @@ export async function submitVoteToContract(
 export async function fetchVotingStats(contract) {
     const [totalEligible, totalCast, participation] =
         await contract.getVotingStats();
-    const toNumber = (bn) =>
-        typeof bn.toNumber === "function" ? bn.toNumber() : Number(bn);
+    const toNumber = (bn) => typeof bn.toNumber === "function" ? bn.toNumber() : Number(bn);
     return {
         totalEligible: toNumber(totalEligible),
         totalCast: toNumber(totalCast),
@@ -53,11 +52,7 @@ export async function fetchVoteEvents(contract) {
     return await contract.queryFilter(filter);
 }
 
-export async function tallyEncryptedVotes(
-    events,
-    encryptedPrivateKey,
-    candidateIds
-) {
+export async function countVotes(events, encryptedPrivateKey, candidateIds) {
     const privateKey = decryptPrivateKey(encryptedPrivateKey);
     const voteCounts = {};
     candidateIds.forEach((id) => {

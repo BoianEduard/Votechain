@@ -50,6 +50,7 @@ export function decryptPrivateKey(encrypted) {
     return decrypted;
 }
 
+//decrypt contract votes
 export const decryptVote = (encryptedVoteBase64, privateKeyPem) => {
     try {
         const buffer = Buffer.from(encryptedVoteBase64, 'base64');
