@@ -3,7 +3,7 @@ const errorMiddleware = (err, req, res, next) => {
 
     const statusCode = err.status || 500;
     const message = err.message || "Internal Server Error";
-    const code = err.code || null; // optional, dacă ai coduri custom
+    const code = err.code || null;
 
     res.status(statusCode).json({
         error: {

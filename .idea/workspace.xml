@@ -4,31 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/utils/serializeError.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/middleware/errorMiddleware.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Arbi1Vote.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/rcb-settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/authThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/authThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/userThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/userThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/blockchain.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/blockchain.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/authController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/authController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/candidateController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/candidateController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/contractController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/contractController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/electionController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/electionController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/userController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/userController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.mjs" afterDir="false" />
-    </list>
+    <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,7 +133,7 @@
       <workItem from="1749301602170" duration="47000" />
       <workItem from="1749301649258" duration="32000" />
       <workItem from="1749301682161" duration="312000" />
-      <workItem from="1749303925973" duration="9789000" />
+      <workItem from="1749303925973" duration="10100000" />
     </task>
     <servers />
   </component>
