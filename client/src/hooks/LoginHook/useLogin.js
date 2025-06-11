@@ -14,9 +14,8 @@ export const useLogin = () => {
     const login = async (credentials) => {
         const { email, password } = credentials;
 
-        // Validation
         if (!email || !password) {
-            setError('Please enter both email and password');
+            setError('Please enter your email and password!');
             return { success: false };
         }
 

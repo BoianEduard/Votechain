@@ -1,6 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useAuthForm, useLogin } from '../../hooks/LoginHook';
+import ErrorMessage from '../../components/Commons/Error';
+import AuthContainer from '../../components/Auth/AuthContainer';
+import AuthHead from '../../components/Auth/AuthHead';
+import AuthInput from '../../components/Auth/AuthInput';
+import AuthButton from '../../components/Auth/AuthButton';
+import AuthFooter from '../../components/Auth/AuthFooter';
+import LoadingSpinner from "../../components/Commons/LoadingSpinner";
 
 const LoginPage = () => {
   const { formData, updateField, resetForm } = useAuthForm();
@@ -15,76 +21,59 @@ const LoginPage = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+        <AuthContainer>
+          <LoadingSpinner message="Logging into account..." />
+        </AuthContainer>
+    );
+  }
+
   return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white shadow-xl rounded-2xl p-8 w-96">
-          <h1 className="text-center text-3xl font-bold text-indigo-700 mb-2">Arbi1Vote</h1>
-          <p className="text-center text-gray-500 mb-6">Welcome back! Please login to your account.</p>
+      <AuthContainer>
+        <AuthHead subtitle="Welcome back! Please sign in to your account." />
 
-          {error && (
-              <div className="bg-red-100 text-red-700 text-sm rounded-md p-3 mb-4">
-                {error}
-              </div>
-          )}
+        {error && <ErrorMessage error={error} />}
 
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-semibold mb-1">
-                Email address
-              </label>
-              <input
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) => updateField('email', e.target.value)}
-                  disabled={isLoading}
-                  required
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <AuthInput
+              id="email"
+              type="email"
+              label="Email address"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={(e) => updateField('email', e.target.value)}
+              disabled={isLoading}
+              required
+          />
 
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-semibold mb-1">
-                Password
-              </label>
-              <input
-                  type="password"
-                  id="password"
-                  className="w-full px-4 py-2 rounded-md bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={(e) => updateField('password', e.target.value)}
-                  disabled={isLoading}
-                  required
-              />
-            </div>
+          <AuthInput
+              id="password"
+              type="password"
+              label="Password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) => updateField('password', e.target.value)}
+              disabled={isLoading}
+              required
+          />
 
-            <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-full transition duration-200 flex items-center justify-center"
-                disabled={isLoading}
-            >
-              {isLoading ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                    </svg>
-                    Logging in...
-                  </>
-              ) : 'Login'}
-            </button>
-          </form>
+          <AuthButton
+              type="submit"
+              disabled={isLoading}
+              isLoading={isLoading}
+              loadingText="Signing in..."
+          >
+            Sign in
+          </AuthButton>
+        </form>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Don't have an account?{' '}
-            <Link to="/signup" className="text-blue-600 font-semibold hover:underline">
-              Sign up!
-            </Link>
-          </p>
-        </div>
-      </div>
+        <AuthFooter
+            text="Don't have an account?"
+            linkText="Sign up"
+            linkTo="/signup"
+        />
+      </AuthContainer>
   );
 };
 

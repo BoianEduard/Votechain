@@ -5,33 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/DashboardHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionData.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionSearch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionStatus.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionDetails.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionResults.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionViewHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useElectionUtils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useSelectCandidate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoteSubmit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoterTurnout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useAuthForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/hooks/RegisterHook/useRegisterForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthContainer/AuthContainer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthContainer/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionVotePage/ElectionVotePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionVotePage/ElectionVotePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,34 +54,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.CandidateCard.js.executor": "Run",
-    "Node.js.app.mjs.executor": "Debug",
-    "Node.js.index.js.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dev",
-    "javascript.nodejs.core.library.configured.version": "20.18.0",
-    "javascript.nodejs.core.library.typings.version": "20.19.0",
-    "last_opened_file_path": "/Users/eduardboian/programare/LICENTA/MVP/Arbi1Vote",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.React Buddy Preview.executor": "Run",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.CandidateCard.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.app.mjs.executor&quot;: &quot;Debug&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.18.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.19.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/eduardboian/programare/LICENTA/MVP/Arbi1Vote&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.React Buddy Preview.executor&quot;: &quot;Run&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -161,7 +149,8 @@
       <workItem from="1749301602170" duration="47000" />
       <workItem from="1749301649258" duration="32000" />
       <workItem from="1749301682161" duration="312000" />
-      <workItem from="1749303925973" duration="13125000" />
+      <workItem from="1749303925973" duration="14860000" />
+      <workItem from="1749626704471" duration="2398000" />
     </task>
     <servers />
   </component>
@@ -189,7 +178,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
