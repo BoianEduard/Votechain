@@ -15,8 +15,7 @@ const DashboardPage = () => {
     if (error) return <ErrorCard message={error} />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
-            {/* Header Section */}
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800">
             <div className="pt-10 pb-2 px-4">
                 <ElectionPageHeader
                     title="Arbi1Vote Dashboard"

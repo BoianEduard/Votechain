@@ -19,7 +19,7 @@ const ElectionHistoryPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
+        <div className="min-h-screen bg-gradient-to-b from-red-500 via-purple-800 to-indigo-400">
             <div className="pt-10 pb-6 px-4">
                 <ElectionPageHeader
                     title="History"

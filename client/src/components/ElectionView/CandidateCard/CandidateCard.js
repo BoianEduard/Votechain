@@ -24,7 +24,7 @@ const CandidateCard = ({ candidate }) => {
                 <div>
                     <h5 className="mb-1 font-semibold">{candidate.name}</h5>
                     <p className="text-gray-500 text-sm mb-2">{candidate.position || "Candidate"}</p>
-                    <p className="text-gray-600 text-sm mb-0">{candidate.description || "No description provided"}</p>
+                    <p className="text-gray-600 text-sm mb-0 max-h-fit">{candidate.description || "Description unavailable"}</p>
                 </div>
             </div>
         </div>

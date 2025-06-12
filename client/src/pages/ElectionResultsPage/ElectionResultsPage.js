@@ -26,13 +26,16 @@ const ElectionResultPage = () => {
 
     const loading = electionLoading || resultsLoading;
     const error = electionError || resultsError;
-    const status = useMemo(() => getStatus(election), [election, getStatus]);
+
+    const status = useMemo(() => {
+        return election ? getStatus(election) : 'Loading...';
+    }, [election, getStatus]);
 
     if (loading) return <LoadingSpinner message="Loading election results..." />;
     if (!election) return <ElectionNotFound />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
+        <div className="min-h-screen bg-gradient-to-b from-red-500 via-purple-800 to-indigo-400">
             <ElectionHeader election={election} status={status} />
 
             {error && <ErrorMessage error={error} />}

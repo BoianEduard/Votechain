@@ -10,5 +10,7 @@ export const useElectionData = () => {
         dispatch(fetchAllElections());
     }, [dispatch]);
 
+    console.log('Fetched election:', elections);
+
     return { elections };
 };

@@ -10,15 +10,6 @@ const CandidateSelectionCard = ({
                                 }) => {
     return (
         <div className="max-w max-w-10xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-            <div className="flex items-start p-4 mb-5 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg">
-                <Info size={20} className="mr-3 flex-shrink-0 text-indigo-500" />
-                <div>
-                    <h5 className="font-medium text-indigo-700 text-sm mb-1">How to Vote</h5>
-                    <p className="text-sm text-gray-600">
-                        Review candidates, select one by clicking their card, then confirm on the next screen.
-                    </p>
-                </div>
-            </div>
 
             <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                 <Shield className="text-indigo-600 mr-2" size={20} />
@@ -31,8 +22,8 @@ const CandidateSelectionCard = ({
                         <div
                             className={`relative transition-all duration-200 ${
                                 selectedCandidate?.id === candidate.id
-                                    ? "ring-2 ring-indigo-500 rounded-lg shadow-md"
-                                    : "border border-gray-200 hover:border-indigo-200 rounded-lg hover:shadow-md"
+                                    ? "ring-2 ring-indigo-500 rounded-3xl shadow-md"
+                                    : "border border-gray-200 hover:border-indigo-200 rounded-3xl hover:shadow-md"
                             }`}
                             onClick={() => handleCandidateSelect(candidate)}
                             style={{ cursor: "pointer" }}
@@ -40,15 +31,12 @@ const CandidateSelectionCard = ({
                             <CandidateCard candidate={candidate} />
 
                             <div
-                                className={`flex justify-between items-center py-2.5 px-4 rounded-b-lg ${
+                                className={`flex justify-between items-center py-2.5 px-4 rounded-b-3xl ${
                                     selectedCandidate?.id === candidate.id
                                         ? "bg-indigo-600 text-white"
                                         : "bg-gray-50 text-gray-500"
                                 }`}
                             >
-                <span className={`text-sm font-medium ${selectedCandidate?.id === candidate.id ? "text-white" : "text-gray-600"}`}>
-                  {selectedCandidate?.id === candidate.id ? "Selected" : "Select"}
-                </span>
                                 {selectedCandidate?.id === candidate.id && (
                                     <Check size={16} className="text-white" />
                                 )}

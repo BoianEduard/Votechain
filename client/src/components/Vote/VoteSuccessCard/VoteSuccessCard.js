@@ -1,64 +1,96 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { CheckCircle, Shield, Printer, Home } from 'lucide-react';
+import { CheckCircle, Home, Printer, ExternalLink } from 'lucide-react';
 
 const VoteSuccessCard = ({ election, selectedCandidate }) => {
+    const formatDate = (date) => {
+        return new Date(date).toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    };
+
+    const truncateAddress = (address) => {
+        if (!address) return 'N/A';
+        return `${address.slice(0, 6)}...${address.slice(-4)}`;
+    };
+
+    const openArbiExplorer = (address) => {
+        const explorerUrl = `https://arbiscan.io/address/${address}`;
+        window.open(explorerUrl, '_blank');
+    };
+
     return (
-        <div className="bg-white shadow-sm rounded-xl p-5 text-center">
-            <div className="mb-5">
-                <div
-                    className="rounded-full mx-auto flex items-center justify-center mb-3"
-                    style={{
-                        width: "64px",
-                        height: "64px",
-                        background: "rgba(34, 197, 94, 0.1)"
-                    }}
-                >
-                    <CheckCircle size={32} className="text-green-600" />
+        <div className="max-w-2xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm p-8">
+            <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-1">Vote Successfully Cast!</h3>
-                <p className="text-gray-600 text-sm mb-0">
-                    Your vote for <strong>{selectedCandidate.name}</strong> has been recorded securely.
+
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    Vote Successfully Cast!
+                </h2>
+
+                <p className="text-gray-600">
+                    Your vote for <span className="font-semibold text-indigo-600">{selectedCandidate?.name}</span> has been recorded securely on the blockchain.
                 </p>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-4 mb-5 text-left">
-                <h5 className="font-medium text-gray-700 text-sm mb-3">Receipt Information</h5>
-                <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Confirmation ID:</span>
-                        <span className="font-mono text-gray-800">
-                            {Math.random().toString(36).substring(2, 10).toUpperCase()}
+            <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                    Transaction Information
+                </h3>
+
+                <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Contract Address:</span>
+                        <div className="flex items-center space-x-2">
+                            <span className="font-mono text-sm text-gray-800">
+                                {truncateAddress(election?.contractAddress)}
+                            </span>
+                            {election?.contractAddress && (
+                                <button
+                                    onClick={() => openArbiExplorer(election.contractAddress)}
+                                    className="text-indigo-600 hover:text-indigo-800 transition-colors"
+                                    title="View on block explorer"
+                                >
+                                    <ExternalLink size={16} />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Election:</span>
+                        <span className="font-medium text-gray-800">{election?.title}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Date & Time:</span>
+                        <span className="font-medium text-gray-800">
+                            {formatDate(new Date())}
                         </span>
                     </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Election:</span>
-                        <span className="text-gray-800">{election.title}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Date & Time:</span>
-                        <span className="text-gray-800">{new Date().toLocaleString()}</span>
-                    </div>
-                </div>
-                <div className="flex items-center mt-3 text-gray-500 text-xs border-t border-gray-200 pt-2">
-                    <Shield size={12} className="mr-1" />
-                    <span>This receipt does not reveal your specific vote choice</span>
                 </div>
             </div>
 
-            <div className="flex justify-center space-x-3">
-                <Link
-                    to="/vote"
-                    className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"
-                >
-                    <Home size={14} className="mr-1.5" />
-                    Return to Elections
-                </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                    className="flex items-center px-4 py-2 border border-gray-300 text-gray-600 rounded-full text-sm hover:bg-gray-50 transition"
-                    onClick={() => window.print()}
+                    onClick={() => window.location.href = '/dashboard'}
+                    className="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
                 >
-                    <Printer size={14} className="mr-1.5" />
+                    <Home size={18} className="mr-2" />
+                    Home
+                </button>
+
+                <button
+                    onClick={() => window.print()}
+                    className="flex items-center justify-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium border border-gray-300"
+                >
+                    <Printer size={18} className="mr-2" />
                     Print Receipt
                 </button>
             </div>
