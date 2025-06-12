@@ -8,7 +8,7 @@ const AuthFooter = ({ text, linkText, linkTo }) => {
                 {text}{' '}
                 <Link
                     to={linkTo}
-                    className="text-purple-600 hover:text-purple-500 font-semibold hover:underline transition-colors duration-200"
+                    className="text-indigo-500 hover:text-blue-500 font-semibold hover:underline transition-colors duration-200"
                 >
                     {linkText}
                 </Link>

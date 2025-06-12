@@ -12,7 +12,7 @@ const AuthButton = ({
         <button
             type={type}
             onClick={onClick}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-500 hover:brightness-110 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-200 flex items-center justify-center disabled:opacity-50"
             disabled={disabled}
         >
             {isLoading ? (

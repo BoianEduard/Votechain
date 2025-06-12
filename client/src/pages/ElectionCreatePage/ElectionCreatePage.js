@@ -6,6 +6,7 @@ import { useFormNavigation } from "../../hooks/ElectionCreateHook/useFormNavigat
 import { usePaymentFlow } from "../../hooks/ElectionCreateHook/useElectionPayment";
 import { useElectionCreation } from "../../hooks/ElectionCreateHook/useElectionCreation";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
+import ProgressTracker from "../../components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker";
 import Error from "../../components/Commons/Error";
 import SuccessMessage from "../../components/Commons/Success";
 import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
@@ -126,7 +127,8 @@ const ElectionCreatePage = () => {
   ].filter(Boolean);
 
   return (
-      <div className="bg-gradient-to-b from-indigo-700 to-indigo-500" style={{ maxHeight: 'calc(100vh - 630px)' }}>
+      <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
+        {/* Header Section */}
         <div className="pt-10 pb-10 px-4">
           <ElectionPageHeader
               title="Create New Election"
@@ -134,50 +136,58 @@ const ElectionCreatePage = () => {
               backLink="/dashboard"
               backLabel="Back to Dashboard"
           />
+           <ProgressTracker currentStep={step} />
         </div>
 
-        <div className="px-4 pb-8">
-          {allErrors.length > 0 && (
-              <div className="mb-6 space-y-2">
-                {allErrors.map((errorMsg, index) => (
-                    <Error key={index} error={errorMsg} />
-                ))}
-              </div>
-          )}
-          {success && (
-              <div className="mb-6">
-                <SuccessMessage message={success} />
-              </div>
-          )}
+        {/* Main Content Section */}
+        <div className="bg-white dark:bg-gray-900 min-h-screen rounded-t-3xl px-4 py-4 transition-colors duration-200">
+          <div className="max-w-4xl mx-auto">
+            {/* Error Messages */}
+            {allErrors.length > 0 && (
+                <div className="mb-6 space-y-2">
+                  {allErrors.map((errorMsg, index) => (
+                      <Error key={index} error={errorMsg} />
+                  ))}
+                </div>
+            )}
+
+            {/* Success Message */}
+            {success && (
+                <div className="mb-6">
+                  <SuccessMessage message={success} />
+                </div>
+            )}
+
+            {/* Election Form */}
+            <ElectionForm
+                formData={form}
+                handleInputChange={handleInputChange}
+                handleCandidateChange={handleCandidateChange}
+                handleCandidateImageChange={handleCandidateImageChange}
+                addCandidate={addCandidate}
+                removeCandidate={removeCandidate}
+                handleSubmit={handleFormSubmit}
+                loading={isBusy}
+                error={error}
+                step={step}
+                nextStep={handleNextStep}
+                prevStep={prevStep}
+                onReset={handleReset}
+                electionId={electionId}
+
+                // Payment flow props
+                paymentId={paymentId}
+                paymentCompleted={paymentCompleted}
+                paymentError={paymentError}
+                processingPayment={processingPayment}
+                onPaymentStart={handlePaymentStart}
+                onPaymentSuccess={handlePaymentSuccess}
+                onPaymentError={handlePaymentError}
+                resetPayment={resetPayment}
+                success={success}
+            />
+          </div>
         </div>
-
-        <ElectionForm
-            formData={form}
-            handleInputChange={handleInputChange}
-            handleCandidateChange={handleCandidateChange}
-            handleCandidateImageChange={handleCandidateImageChange}
-            addCandidate={addCandidate}
-            removeCandidate={removeCandidate}
-            handleSubmit={handleFormSubmit}
-            loading={isBusy}
-            error={error}
-            step={step}
-            nextStep={handleNextStep}
-            prevStep={prevStep}
-            onReset={handleReset}
-            electionId={electionId}
-
-            // Payment flow props
-            paymentId={paymentId}
-            paymentCompleted={paymentCompleted}
-            paymentError={paymentError}
-            processingPayment={processingPayment}
-            onPaymentStart={handlePaymentStart}
-            onPaymentSuccess={handlePaymentSuccess}
-            onPaymentError={handlePaymentError}
-            resetPayment={resetPayment}
-            success={success}
-        />
       </div>
   );
 };

@@ -34,22 +34,6 @@ const DashboardSidebar = () => {
 
     const sections = [
         {
-            id: "profile",
-            title: "Profile Settings",
-            icon: Settings,
-            content: (
-                <div className="bg-white p-6 rounded-lg border">
-                    <p className="text-gray-600 mb-4">Manage your account settings, security preferences, and personal information.</p>
-                    <button
-                        onClick={() => window.location.href = '/profile'}
-                        className="bg-indigo-600 text-white py-2 px-6 rounded-md hover:bg-indigo-700 transition-colors font-medium"
-                    >
-                        Go to Profile Settings
-                    </button>
-                </div>
-            )
-        },
-        {
             id: "faq",
             title: "FAQ",
             icon: HelpCircle,

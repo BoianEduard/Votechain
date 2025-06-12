@@ -19,7 +19,7 @@ const AuthInput = ({
             <input
                 type={type}
                 id={id}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}

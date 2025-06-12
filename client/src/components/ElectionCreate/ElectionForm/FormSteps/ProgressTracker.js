@@ -13,18 +13,18 @@ const ProgressTracker = ({ currentStep }) => {
     ];
 
     return (
-        <div className="flex items-center justify-center mb-4 px-100">
-            <div className="flex items-center space-x-1 md:space-x-1 ">
+        <div className="flex items-center justify-center px-4">
+            <div className="flex items-center w-full max-w-4xl">
                 {steps.map((step, index) => (
                     <React.Fragment key={step.number}>
-                        <div className="flex flex-col items-center min-w-0 flex-shrink-0">
+                        <div className="flex flex-col items-center flex-1">
                             <div className={`
-                                w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-medium text-sm md:text-base transition-all duration-200
+                                w-10 h-10 rounded-full flex items-center justify-center font-medium text-sm transition-all duration-200 relative z-10
                                 ${currentStep > step.number
-                                ? 'bg-indigo-600 text-white shadow-md'
+                                ? 'bg-white text-purple-600 shadow-md border-2 border-white'
                                 : currentStep === step.number
-                                    ? 'bg-indigo-600 text-white shadow-md ring-4 ring-indigo-100'
-                                    : 'bg-gray-200 text-gray-500'
+                                    ? 'bg-white text-purple-600 shadow-lg ring-4 ring-white/30 border-2 border-white'
+                                    : 'bg-purple-400/30 text-white/70 border-2 border-purple-400/50'
                             }
                             `}>
                                 {currentStep > step.number ? (
@@ -34,8 +34,8 @@ const ProgressTracker = ({ currentStep }) => {
                                 )}
                             </div>
                             <p className={`
-                                mt-2 text-xs md:text-sm font-medium text-center whitespace-nowrap transition-colors duration-200
-                                ${currentStep >= step.number ? 'text-indigo-600' : 'text-gray-500'}
+                                mt-2 text-xs font-medium text-center whitespace-nowrap transition-colors duration-200
+                                ${currentStep >= step.number ? 'text-white' : 'text-white/60'}
                             `}>
                                 {step.label}
                             </p>
@@ -43,8 +43,8 @@ const ProgressTracker = ({ currentStep }) => {
 
                         {index < steps.length - 1 && (
                             <div className={`
-                                h-0.5 w-8 md:w-12 transition-colors duration-200 flex-shrink-0
-                                ${currentStep > step.number ? 'bg-indigo-600' : 'bg-gray-200'}
+                                h-0.5 flex-1 transition-colors duration-200 -mx-5 relative
+                                ${currentStep > step.number ? 'bg-white' : 'bg-purple-400/30'}
                             `} />
                         )}
                     </React.Fragment>

@@ -19,11 +19,11 @@ const ElectionHistoryPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-indigo-700 to-indigo-500">
+        <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
             <div className="pt-10 pb-10 px-4">
                 <ElectionPageHeader
-                    title="Create new election"
-                    description="Set up a secure election process"
+                    title="History"
+                    description="View your voting history"
                     backLink="/dashboard"
                     backLabel="Back to Dashboard"
                 />

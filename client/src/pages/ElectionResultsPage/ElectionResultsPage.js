@@ -32,7 +32,7 @@ const ElectionResultPage = () => {
     if (!election) return <ElectionNotFound />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-indigo-700 to-indigo-500">
+        <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
             <ElectionHeader election={election} status={status} />
 
             {error && <ErrorMessage error={error} />}

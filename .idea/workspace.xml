@@ -5,21 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthContainer/AuthContainer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthContainer/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useUserEligibility.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/LoginHook/useLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/LoginPage/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardComponent/DashboardComponent.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardComponent/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +150,7 @@
       <workItem from="1749301649258" duration="32000" />
       <workItem from="1749301682161" duration="312000" />
       <workItem from="1749303925973" duration="14860000" />
-      <workItem from="1749626704471" duration="2398000" />
+      <workItem from="1749626704471" duration="7300000" />
     </task>
     <servers />
   </component>
@@ -173,7 +173,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js</url>
-          <line>115</line>
+          <line>112</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

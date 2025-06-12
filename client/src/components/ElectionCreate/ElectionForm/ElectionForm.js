@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ProgressTracker from "./FormSteps/ProgressTracker";
 import BasicInfoStep from "./FormSteps/BasicInfoStep";
 import CandidatesStep from "./FormSteps/CandidateStep";
 import CandidateInfoStep from "./FormSteps/CandidateInfoStep";
@@ -35,8 +34,6 @@ const ElectionForm = ({
                       }) => {
     return (
         <div className="election-form-container">
-            <ProgressTracker currentStep={step} />
-
             <div className="form-card">
                 {step === 1 && (
                     <BasicInfoStep
