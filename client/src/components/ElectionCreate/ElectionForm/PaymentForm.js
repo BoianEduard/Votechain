@@ -1,42 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import LoadingSpinner from "../../Commons/LoadingSpinner";
 import Error from "../../Commons/Error";
-import SuccessMessage from "../../Commons/Success";
+import FormContainer from "../../../hooks/ElectionCreateHook/useExpandableSection";
+import InputSection from "../FormComponents/InputSection";
 import { usePaymentFlow } from "../../../hooks/ElectionCreateHook/useElectionPayment";
 import * as paymentThunks from "../../../redux/thunks/paymentThunks";
-
-const OrderSummary = ({ title }) => (
-    <div className="bg-gray-50 rounded-lg p-4 mb-4">
-        <h4 className="font-semibold text-gray-800 mb-2">Order Summary</h4>
-        <div className="flex justify-between items-center text-sm text-gray-600 mb-1">
-            <span>Election Deployment Fee</span>
-            <span>$29.99</span>
-        </div>
-        <div className="flex justify-between items-center text-sm text-gray-600 mb-2">
-            <span>Election: {title || "Untitled Election"}</span>
-        </div>
-        <div className="border-t pt-2 flex justify-between items-center font-semibold">
-            <span>Total</span>
-            <span>$29.99</span>
-        </div>
-    </div>
-);
-
-const CardInput = ({ options }) => (
-    <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-3">
-            Card Details
-        </label>
-        <div className="relative">
-            <div className="border-2 border-gray-200 rounded-xl p-4 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100 transition-all duration-200 bg-white">
-                <CardElement options={options} />
-            </div>
-        </div>
-    </div>
-);
 
 const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) => {
     const stripe = useStripe();
@@ -49,20 +20,18 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
         handlePaymentStart,
         handlePaymentSuccess,
         handlePaymentError,
-        resetPayment,
     } = usePaymentFlow();
 
     const cardElementOptions = {
         style: {
             base: {
-                fontSize: "16px",
+                fontSize: "14px",
                 color: "#374151",
                 fontFamily: '"Inter", system-ui, sans-serif',
                 "::placeholder": { color: "#9CA3AF" },
-                padding: "12px 16px",
             },
-            invalid: { color: "#EF4444", iconColor: "#EF4444" },
-            complete: { color: "#059669", iconColor: "#059669" },
+            invalid: { color: "#EF4444" },
+            complete: { color: "#059669" },
         },
         hidePostalCode: false,
     };
@@ -80,7 +49,7 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
 
             const paymentIntentData = await dispatch(
                 paymentThunks.createPaymentIntent({
-                    amount: 2999,
+                    amount: 150,
                     currency: "usd",
                     metadata: {
                         electionTitle: formData.title,
@@ -90,9 +59,9 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
                 })
             );
 
-            const { clientSecret, paymentIntentId } = paymentIntentData;
-
+            const { clientSecret } = paymentIntentData;
             const cardElement = elements.getElement(CardElement);
+
             const { error, paymentIntent } = await stripe.confirmCardPayment(
                 clientSecret,
                 {
@@ -120,61 +89,58 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
         }
     };
 
-    const displayError = paymentError;
-
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <span className="text-2xl mr-3">💳</span>
-                    Payment Information
-                </h3>
-                <div className="space-y-4">
-                    <OrderSummary title={formData.title} />
-                    <CardInput options={cardElementOptions} />
-                    {displayError && <Error message={displayError} />}
-                </div>
-            </div>
+        <FormContainer className="p-0">
+            <form onSubmit={handleSubmit} className="space-y-3">
+                {/* Order Summary */}
+                <InputSection title="Order Summary" icon="💳">
+                    <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">Election Deployment</span>
+                            <span className="font-medium">$1.50</span>
+                        </div>
+                        <div className="text-xs text-gray-500">
+                            {formData.title || "Untitled Election"}
+                        </div>
+                    </div>
+                </InputSection>
 
-            <div className="pt-3">
+                {/* Card Details */}
+                <InputSection title="Card Details" icon="🔒">
+                    <div className="border border-gray-300 rounded p-3 bg-white">
+                        <CardElement options={cardElementOptions} />
+                    </div>
+                </InputSection>
+
+                {/* Error Display */}
+                {paymentError && <Error message={paymentError} />}
+
+                {/* Submit Button */}
                 <button
                     type="submit"
-                    disabled={
-                        !stripe ||
-                        processingPayment ||
-                        loading
-                    }
-                    className={`w-full flex items-center justify-center px-8 py-4 rounded-xl font-bold text-lg transition-all duration-200 ${
+                    disabled={!stripe || processingPayment || loading}
+                    className={`w-full py-2 px-4 rounded text-sm font-medium transition-colors ${
                         !stripe || processingPayment || loading
                             ? "bg-gray-300 cursor-not-allowed text-gray-500"
-                            : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            : "bg-blue-600 hover:bg-blue-700 text-white"
                     }`}
                 >
                     {processingPayment ? (
-                        <>
+                        <div className="flex items-center justify-center">
                             <LoadingSpinner size="sm" />
-                            <span className="ml-2">Processing payment..</span>
-                        </>
+                            <span className="ml-2">Processing...</span>
+                        </div>
                     ) : (
-                        <>
-                            <span className="text-xl mr-2">💰</span>
-                            <span>Pay $29.99 & Create Election</span>
-                        </>
+                        "Pay $29.99"
                     )}
                 </button>
-            </div>
 
-            <div className="text-center space-y-2">
-                <div className="flex items-center justify-center text-xs text-gray-500">
-                    <span className="mr-1">🔒</span>
-                    <span>Secured by Stripe • Your payment information is encrypted</span>
-                </div>
-                <p className="text-xs text-gray-500">
-                    By completing this payment, you agree to our terms of service. Your
-                    election will be deployed immediately after successful payment.
+                {/* Security Notice */}
+                <p className="text-xs text-gray-500 text-center">
+                    Secured by Stripe
                 </p>
-            </div>
-        </form>
+            </form>
+        </FormContainer>
     );
 };
 

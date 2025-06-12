@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavigationButton from "../../../Commons/NavigationButton";
+import NavigationButton from "../../Commons/NavigationButton";
+import FormContainer from "../../../hooks/ElectionCreateHook/useExpandableSection";
+import FormInput from "../FormComponents/FormInput";
 
 const CandidatesStep = ({
                             formData,
@@ -11,30 +13,31 @@ const CandidatesStep = ({
                             prevStep
                         }) => {
     return (
-        <div className="form-step bg-white rounded-lg p-4 max-h-[70vh] overflow-y-auto">
-            <h2 className="text-2xl font-semibold mb-1">Candidates</h2>
-            <p className="text-sm text-gray-600 mb-4">Add at least two candidates for your election.</p>
+        <FormContainer
+            title="Candidates"
+            className="form-step bg-white rounded-lg p-0"
+            maxHeight="70vh"
+        >
+            <p className="text-sm text-gray-600 mb-2">Add at least two candidates for your election.</p>
 
             {formData.candidates.map((candidate, index) => (
-                <div key={index} className="flex items-center mb-4">
+                <div key={index} className="flex items-center mb-2">
                     <div className="w-full">
-                        <label htmlFor={`candidate-${index}`} className="block text-sm font-medium mb-1">
-                            Candidate {index + 1}
-                        </label>
-                        <input
-                            type="text"
-                            id={`candidate-${index}`}
+                        <FormInput
+                            label={`Candidate ${index + 1}`}
                             value={candidate.name || ''}
                             onChange={(e) => handleCandidateChange(index, 'name', e.target.value)}
                             placeholder="Candidate name"
+                            name={`candidate-${index}`}
+                            id={`candidate-${index}`}
                             required
-                            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border-gray-300"
                         />
                     </div>
 
                     <button
                         type="button"
-                        className="text-red-500 ml-3 mt-6 hover:text-red-700 disabled:opacity-30"
+                        className="text-red-500 ml-3 mt-4 hover:text-red-700 disabled:opacity-30"
                         onClick={() => removeCandidate(index)}
                         disabled={formData.candidates.length <= 2}
                     >
@@ -43,7 +46,7 @@ const CandidatesStep = ({
                 </div>
             ))}
 
-            <div className="mt-3 mb-6">
+            <div className="mt-3 mb-4">
                 <button
                     type="button"
                     onClick={addCandidate}
@@ -67,7 +70,7 @@ const CandidatesStep = ({
                     onClick={nextStep}
                 />
             </div>
-        </div>
+        </FormContainer>
     );
 };
 

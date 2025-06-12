@@ -6,7 +6,7 @@ import { useFormNavigation } from "../../hooks/ElectionCreateHook/useFormNavigat
 import { usePaymentFlow } from "../../hooks/ElectionCreateHook/useElectionPayment";
 import { useElectionCreation } from "../../hooks/ElectionCreateHook/useElectionCreation";
 import ElectionForm from "../../components/ElectionCreate/ElectionForm";
-import ProgressTracker from "../../components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker";
+import ProgressTracker from "../../components/ElectionCreate/FormSteps/ProgressTracker";
 import Error from "../../components/Commons/Error";
 import SuccessMessage from "../../components/Commons/Success";
 import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
@@ -128,8 +128,7 @@ const ElectionCreatePage = () => {
 
   return (
       <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
-        {/* Header Section */}
-        <div className="pt-10 pb-10 px-4">
+        <div className="pt-10 pb-2 px-2">
           <ElectionPageHeader
               title="Create New Election"
               description="Set up a secure, blockchain-based election"

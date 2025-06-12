@@ -13,13 +13,13 @@ const ProgressTracker = ({ currentStep }) => {
     ];
 
     return (
-        <div className="flex items-center justify-center px-4">
+        <div className="flex items-center justify-center px-2">
             <div className="flex items-center w-full max-w-4xl">
                 {steps.map((step, index) => (
                     <React.Fragment key={step.number}>
                         <div className="flex flex-col items-center flex-1">
                             <div className={`
-                                w-10 h-10 rounded-full flex items-center justify-center font-medium text-sm transition-all duration-200 relative z-10
+                                w-10 h-10 rounded-full flex items-center justify-center font-medium text-sm
                                 ${currentStep > step.number
                                 ? 'bg-white text-purple-600 shadow-md border-2 border-white'
                                 : currentStep === step.number
@@ -43,7 +43,7 @@ const ProgressTracker = ({ currentStep }) => {
 
                         {index < steps.length - 1 && (
                             <div className={`
-                                h-0.5 flex-1 transition-colors duration-200 -mx-5 relative
+                                h-0.5 flex- transition-colors duration-200 relative
                                 ${currentStep > step.number ? 'bg-white' : 'bg-purple-400/30'}
                             `} />
                         )}

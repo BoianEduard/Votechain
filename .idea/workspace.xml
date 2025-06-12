@@ -5,20 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/CandidateInputCard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/FormInput.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/InputSection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/StatusIndicator.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/BasicInfoStep.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useExpandableSection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthButton/AuthButton.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthFooter/AuthFooter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthHead/AuthHead.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/AuthInput/AuthInput.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardComponent/DashboardComponent.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardComponent/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/BasicInfoStep.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/CandidateInfoStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/CandidateInfoStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/CandidateStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/CandidateStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/PaymentStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/PaymentStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ProgressTracker.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/ProgressTracker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/ReviewStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/ReviewStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/FormSteps/SettingsStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/SettingsStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,34 +60,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.CandidateCard.js.executor&quot;: &quot;Run&quot;,
-    &quot;Node.js.app.mjs.executor&quot;: &quot;Debug&quot;,
-    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.18.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.19.0&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/eduardboian/programare/LICENTA/MVP/Arbi1Vote&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.React Buddy Preview.executor&quot;: &quot;Run&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.CandidateCard.js.executor": "Run",
+    "Node.js.app.mjs.executor": "Debug",
+    "Node.js.index.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "dev",
+    "javascript.nodejs.core.library.configured.version": "20.18.0",
+    "javascript.nodejs.core.library.typings.version": "20.19.0",
+    "last_opened_file_path": "/Users/eduardboian/programare/LICENTA/MVP/Arbi1Vote/client/src/components/ElectionCreate",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.React Buddy Preview.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -92,12 +98,15 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionCreate" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps" />
       <recent name="$PROJECT_DIR$/client/src/components/Commons" />
       <recent name="$PROJECT_DIR$/server/services" />
       <recent name="$PROJECT_DIR$/client/src/components/ElectionHistory" />
       <recent name="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsView" />
-      <recent name="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsTurnout" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -150,7 +159,7 @@
       <workItem from="1749301649258" duration="32000" />
       <workItem from="1749301682161" duration="312000" />
       <workItem from="1749303925973" duration="14860000" />
-      <workItem from="1749626704471" duration="7300000" />
+      <workItem from="1749626704471" duration="15098000" />
     </task>
     <servers />
   </component>
@@ -179,6 +188,12 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js</url>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js</url>
+          <line>10</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

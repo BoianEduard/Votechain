@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavigationButton from "../../../Commons/NavigationButton";
+import NavigationButton from "../../Commons/NavigationButton";
+import FormContainer from "../../../hooks/ElectionCreateHook/useExpandableSection";
 
 const CandidateDetailsStep = ({
                                   formData,
@@ -10,9 +11,11 @@ const CandidateDetailsStep = ({
                                   prevStep
                               }) => {
     return (
-        <div className="bg-white rounded-lg p-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 400px)' }}>
-            <h2 className="text-2xl font-semibold mb-1.5">Candidate Details</h2>
-
+        <FormContainer
+            title="Candidate Details"
+            className="bg-white rounded-lg p-0"
+            maxHeight="calc(100vh - 200px)"
+        >
             {formData.candidates.map((candidate, index) => (
                 <div key={index} className="mb-4 p-3 bg-gray-50 rounded-md border border-gray-200">
                     <div className="flex items-center mb-2">
@@ -34,7 +37,7 @@ const CandidateDetailsStep = ({
                             ) : (
                                 <div className="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center mr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                             )}
@@ -92,7 +95,7 @@ const CandidateDetailsStep = ({
                     onClick={nextStep}
                 />
             </div>
-        </div>
+        </FormContainer>
     );
 };
 

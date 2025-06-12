@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import BasicInfoStep from "./FormSteps/BasicInfoStep";
-import CandidatesStep from "./FormSteps/CandidateStep";
-import CandidateInfoStep from "./FormSteps/CandidateInfoStep";
-import SettingsStep from "./FormSteps/SettingsStep";
-import PaymentStep from "./FormSteps/PaymentStep";
-import ReviewStep from "./FormSteps/ReviewStep";
+import BasicInfoStep from "../FormSteps/BasicInfoStep";
+import CandidatesStep from "../FormSteps/CandidateStep";
+import CandidateInfoStep from "../FormSteps/CandidateInfoStep";
+import SettingsStep from "../FormSteps/SettingsStep";
+import PaymentStep from "../FormSteps/PaymentStep";
+import ReviewStep from "../FormSteps/ReviewStep";
 import "./ElectionForm.css";
 
 const ElectionForm = ({

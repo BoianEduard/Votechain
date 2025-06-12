@@ -19,7 +19,7 @@ const ElectionViewPage = () => {
 
   return (
       <div className="min-h-screen bg-gradient-to-b from-purple-600 via-indigo-800 to-blue-500">
-        <div className="pt-10 pb-10 px-4">
+        <div className="pt-10 pb-6 px-4">
           <ElectionPageHeader
               title="Upcoming Elections"
               description="Browse elections and cast a vote for your candidate."
