@@ -36,8 +36,8 @@ contract ElectionContract is ReentrancyGuard, Ownable {
         bytes calldata encryptedVote,
         bytes calldata signature
     ) external nonReentrant {
-        require(isEligibleVoter[voterAddress], "You are not eligible to vote");
-        require(!hasVoted[voterAddress], "You have already voted");
+        require(isEligibleVoter[voterAddress], "Not eligible to vot");
+        require(!hasVoted[voterAddress], "A vote was already submitted from this address.");
 
         bytes32 hash = keccak256(encryptedVote);
         bytes32 ethHash = MessageHashUtils.toEthSignedMessageHash(hash);
