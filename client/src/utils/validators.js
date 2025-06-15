@@ -190,10 +190,10 @@ export const parseDomainWhitelist = (domainWhitelist) => {
       .map(domain => {
         let trimmed = domain.trim().toLowerCase();
 
-        // elimină toate aparițiile lui % pentru a previne erori in backend
+        // eliminate all % appearances to avoid backend possible issues.
         trimmed = trimmed.replace(/%/g, '');
 
-        // ne asiguram ca incepe cu @
+        // make sure the domains start with @.
         if (trimmed && !trimmed.startsWith('@')) {
           trimmed = '@' + trimmed;
         }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRegisterForm, useRegister } from '../../hooks/RegisterHook';
 import ErrorMessage from '../../components/Commons/Error';
-import LoadingSpinner from '../../components/Commons/LoadingSpinner'; // Import spinner-ul
+import LoadingSpinner from '../../components/Commons/LoadingSpinner';
 import AuthContainer from '../../components/Auth/AuthContainer';
 import AuthHead from '../../components/Auth/AuthHead';
 import AuthInput from '../../components/Auth/AuthInput';
@@ -11,19 +11,23 @@ import AuthFooter from '../../components/Auth/AuthFooter';
 const RegisterPage = () => {
   const { formData, updateField, resetForm, validateForm } = useRegisterForm();
   const { register, error, isLoading } = useRegister();
+  const [validationError, setValidationError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setValidationError(null);
 
     const validation = validateForm();
     if (!validation.isValid) {
-      //TODO sa afisam erorile mai frumos..
+      // Afișăm prima eroare găsită
+      setValidationError(validation.firstError);
       return;
     }
 
     const result = await register(formData);
     if (result.success) {
       resetForm();
+      setValidationError(null);
     }
   };
 
@@ -39,54 +43,66 @@ const RegisterPage = () => {
       <AuthContainer>
         <AuthHead subtitle="Create your account to get started" />
 
+        {/* Afișăm eroarea de la server */}
         {error && <ErrorMessage error={error} />}
+
+        {/* Afișăm prima eroare de validare */}
+        {validationError && <ErrorMessage error={validationError} />}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            <AuthInput
-                id="firstName"
-                type="text"
-                label="First Name"
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={(e) => updateField('firstName', e.target.value)}
-                disabled={isLoading}
-                required
-            />
+            <div>
+              <AuthInput
+                  id="firstName"
+                  type="text"
+                  label="First Name"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={(e) => updateField('firstName', e.target.value)}
+                  disabled={isLoading}
+                  required
+              />
+            </div>
 
+            <div>
+              <AuthInput
+                  id="lastName"
+                  type="text"
+                  label="Last Name"
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={(e) => updateField('lastName', e.target.value)}
+                  disabled={isLoading}
+                  required
+              />
+            </div>
+          </div>
+
+          <div>
             <AuthInput
-                id="lastName"
-                type="text"
-                label="Last Name"
-                placeholder="Last Name"
-                value={formData.lastName}
-                onChange={(e) => updateField('lastName', e.target.value)}
+                id="email"
+                type="email"
+                label="Email Address"
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={(e) => updateField('email', e.target.value)}
                 disabled={isLoading}
                 required
             />
           </div>
 
-          <AuthInput
-              id="email"
-              type="email"
-              label="Email Address"
-              placeholder="Enter your email address"
-              value={formData.email}
-              onChange={(e) => updateField('email', e.target.value)}
-              disabled={isLoading}
-              required
-          />
-
-          <AuthInput
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={(e) => updateField('password', e.target.value)}
-              disabled={isLoading}
-              required
-          />
+          <div>
+            <AuthInput
+                id="password"
+                type="password"
+                label="Password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={(e) => updateField('password', e.target.value)}
+                disabled={isLoading}
+                required
+            />
+          </div>
 
           <AuthButton
               type="submit"

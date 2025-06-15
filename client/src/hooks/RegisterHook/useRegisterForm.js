@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import authThunks from '../../redux/thunks/authThunks';
 
 // Hook pentru gestionarea formularului de register
 export const useRegisterForm = (initialValues = {}) => {
@@ -31,31 +28,47 @@ export const useRegisterForm = (initialValues = {}) => {
     };
 
     const validateForm = () => {
-        const errors = {};
-
-        if (!formData.email) {
-            errors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            errors.email = 'Email is invalid';
-        }
-
-        if (!formData.password) {
-            errors.password = 'Password is required';
-        } else if (formData.password.length < 8) {
-            errors.password = 'Password must be at least 8 characters';
-        }
-
         if (!formData.firstName) {
-            errors.firstName = 'First name is required';
+            return {
+                isValid: false,
+                firstError: 'First name is required'
+            };
         }
 
         if (!formData.lastName) {
-            errors.lastName = 'Last name is required';
+            return {
+                isValid: false,
+                firstError: 'Last name is required'
+            };
+        }
+
+        if (!formData.email) {
+            return {
+                isValid: false,
+                firstError: 'Email is required'
+            };
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            return {
+                isValid: false,
+                firstError: 'Email is invalid'
+            };
+        }
+
+        if (!formData.password) {
+            return {
+                isValid: false,
+                firstError: 'Password is required'
+            };
+        } else if (formData.password.length < 8) {
+            return {
+                isValid: false,
+                firstError: 'Password must be at least 8 characters'
+            };
         }
 
         return {
-            isValid: Object.keys(errors).length === 0,
-            errors
+            isValid: true,
+            firstError: null
         };
     };
 

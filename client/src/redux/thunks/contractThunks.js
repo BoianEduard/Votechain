@@ -34,10 +34,10 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         const voteHash = ethers.keccak256(encryptedVoteHex);
         const signature = await signWithMetaMask(address, voteHash);
 
-        // 5. Send to backend - pass the hex-encoded encrypted vote
+        // send to backend - pass the hex-encoded encrypted vote
         const data = await contractAPI.castVote({
             electionId,
-            encryptedVote: encryptedVoteHex, // Send as hex string
+            encryptedVote: encryptedVoteHex, // send the hex string
             signature,
             address,
         });

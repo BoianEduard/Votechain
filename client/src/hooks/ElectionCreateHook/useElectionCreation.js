@@ -103,25 +103,25 @@ export const useElectionCreation = () => {
             }
             console.log('✅ Candidates added successfully');
 
-            // Step 3: Set up eligibility
+            // Step 3: Set up eligibility rules
             console.log('Setting up eligibility...');
             if (formData.eligibilityType === "whitelist") {
                 const emails = validator.parseWhitelist(formData.whitelist);
                 if (emails.length === 0) throw new Error("Whitelist is empty or invalid");
 
                 await dispatch(electionThunk.addWhitelist(currentElectionId, emails));
-                console.log(`✅ Added ${emails.length} emails to whitelist`);
+                console.log(`Added ${emails.length} emails to whitelist`);
 
             } else if (formData.eligibilityType === "domain") {
                 const domains = validator.parseDomainWhitelist(formData.domainWhitelist);
                 if (domains.length === 0) throw new Error("Domain whitelist is empty or invalid");
 
                 await dispatch(electionThunk.addDomainWhitelist(currentElectionId, domains));
-                console.log(`✅ Added ${domains.length} domains to whitelist`);
+                console.log(`Added ${domains.length} domains to whitelist`);
 
             } else {
                 await dispatch(electionThunk.addAll(currentElectionId));
-                console.log('✅ Set eligibility to all users');
+                console.log('Set eligibility to all users');
             }
 
             // Step 4: Deploy smart contract
