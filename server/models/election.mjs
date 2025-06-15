@@ -31,10 +31,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ENUM('all', 'id', 'whitelist','domain'),
       allowNull: false,
     },
-    anonymousResults: { 
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
     realTimeResults: {  
       type: DataTypes.BOOLEAN,
       defaultValue: false

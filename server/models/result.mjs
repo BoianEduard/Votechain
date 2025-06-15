@@ -22,6 +22,11 @@ export default (sequelize, DataTypes) => {
           max: 100,
         },
       },
+      totalCast: {
+        type: DataTypes.INTEGER, // total voturi emise
+        allowNull: false,
+        defaultValue: 0,
+      },
       electionWinner: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -30,7 +30,7 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         const encryptedVoteBase64 = await encryptVote(candidateId.toString(), electionPublicKey);
         const encryptedVoteHex = prepareVote(encryptedVoteBase64);
 
-        //hash the vote before signing
+        // hash the vote before signing
         const voteHash = ethers.keccak256(encryptedVoteHex);
         const signature = await signWithMetaMask(address, voteHash);
 

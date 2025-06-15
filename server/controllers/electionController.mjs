@@ -149,7 +149,6 @@ const getDashboardStats = async (req, res, next) => {
 };
 
 
-//TODO implement new field to also store turnover in database to not alwasy call the contract.
 const getTurnout = async (req, res, next) => {
     try {
         const { electionId } = req.params;
@@ -161,9 +160,23 @@ const getTurnout = async (req, res, next) => {
         if (!election) {
             return res.status(404).json({ message: "Election not found" });
         }
+        const existingResult = await models.Result.findOne({
+            where: { electionId }
+        });
 
-        const contract = contractUtils.getProviderContract(election.contractAddress);
-        const { totalEligible, totalCast } = await contractUtils.fetchVotingStats(contract);
+        let totalEligible, totalCast;
+
+        if (election.status === "closed" && existingResult) {
+            totalCast = existingResult.totalCast;
+            totalEligible = Math.round(totalCast / (existingResult.voterTurnout / 100));
+
+        } else {
+            const contract = contractUtils.getProviderContract(election.contractAddress);
+            const stats = await contractUtils.fetchVotingStats(contract);
+
+            totalEligible = stats.totalEligible;
+            totalCast = stats.totalCast;
+        }
 
         return res.status(200).json({
             totalVoters: totalEligible,

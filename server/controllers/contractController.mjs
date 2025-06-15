@@ -109,16 +109,11 @@ const getElectionResults = async (req, res, next) => {
             return res.status(404).json({ message: "Election not found" });
         }
 
-        if ( !election.realTimeResults && new Date() < new Date(election.endDate)) {
+        if (!election.realTimeResults && new Date() < new Date(election.endDate)) {
             return res.status(403).json({
-                message:
-                    "Election has not ended yet and real-time results are not enabled"
+                message: "Election has not ended yet and real-time results are not enabled"
             });
         }
-
-        const contract = contractUtils.getProviderContract(election.contractAddress);
-        const stats = await contractUtils.fetchVotingStats(contract);
-        const events = await contractUtils.fetchVoteEvents(contract);
 
         const candidates = await models.Candidate.findAll({
             where: { electionId },
@@ -126,48 +121,74 @@ const getElectionResults = async (req, res, next) => {
         });
 
         if (!candidates.length) {
-            return res
-                .status(404)
-                .json({ message: "No candidates found for this election" });
+            return res.status(404).json({ message: "No candidates found for this election" });
         }
 
-        const candidateIds = candidates.map(c => c.id);
-        const voteCounts = await contractUtils.countVotes(
-            events,
-            election.privateKey,
-            candidateIds
-        );
+        // verifica dacă alegerile sunt inchise si avem rezultate stocate
+        const existingResult = await models.Result.findOne({
+            where: { electionId }
+        });
 
-        // save counts to db to not have to fetch them from the contract every time a user asks for them
-        await Promise.all(
-            candidates.map(c => c.update({ votes: voteCounts[c.id] || 0 })
-                .catch(err => console.error(`Error updating candidate ${c.id}:`, err))
-            )
-        );
+        let voteCounts;
+        let stats;
 
-        const { winnerId } = contractUtils.determineWinner(voteCounts);
+        if (election.status === "closed" && existingResult) {
+            // ALEGERI ÎNCHISE: folosește datele din modelele BD
+            console.log("Using stored results for closed election");
 
-        // close election / store result
-        if (
-            new Date() > new Date(election.endDate) &&
-            election.status !== "closed"
-        ) {
-            const existing = await models.Result.findOne({
-                where: { electionId }
+            voteCounts = {};
+            candidates.forEach(candidate => {
+                voteCounts[candidate.id] = candidate.votes;
             });
-            if (!existing) {
-                await models.Result.create({
-                    electionId,
-                    voterTurnout: stats.participationRate,
-                    electionWinner: winnerId
-                        ? candidates.find(c => c.id === winnerId).name
-                        : "No winner"
-                });
-                await election.update({ status: "closed" });
+
+            stats = {
+                totalCast: existingResult.totalCast, // din baza de date
+                participationRate: existingResult.voterTurnout
+            };
+
+        } else {
+            // ALEGERI ÎN CURS sau cu rezultate în timp real: apeleaza contractul
+            console.log("Fetching live results from contract");
+
+            const contract = contractUtils.getProviderContract(election.contractAddress);
+            stats = await contractUtils.fetchVotingStats(contract);
+            const events = await contractUtils.fetchVoteEvents(contract);
+
+            const candidateIds = candidates.map(c => c.id);
+            voteCounts = await contractUtils.countVotes(
+                events,
+                election.privateKey,
+                candidateIds
+            );
+
+            // actualizeaza voturile în baza de date
+            await Promise.all(
+                candidates.map(c => c.update({ votes: voteCounts[c.id] || 0 })
+                    .catch(err => console.error(`Error updating candidate ${c.id}:`, err))
+                )
+            );
+
+            // verifica dacă alegerile trebuie închise
+            if (new Date() > new Date(election.endDate) && election.status !== "closed") {
+                const { winnerId } = contractUtils.determineWinner(voteCounts);
+
+                if (!existingResult) {
+                    await models.Result.create({
+                        electionId,
+                        voterTurnout: stats.participationRate,
+                        totalCast: stats.totalCast, // salvează și totalCast
+                        electionWinner: winnerId
+                            ? candidates.find(c => c.id === winnerId).name
+                            : "No winner"
+                    });
+                    await election.update({ status: "closed" });
+                }
             }
         }
 
+        const { winnerId } = contractUtils.determineWinner(voteCounts);
         const totalCast = stats.totalCast;
+
         const candidateResults = candidates
             .map(c => ({
                 id: c.id,
@@ -175,10 +196,9 @@ const getElectionResults = async (req, res, next) => {
                 description: c.description,
                 imageUrl: c.imageUrl,
                 voteCount: voteCounts[c.id] || 0,
-                percentage:
-                    totalCast > 0
-                        ? ((voteCounts[c.id] / totalCast) * 100).toFixed(2)
-                        : "0.00"
+                percentage: totalCast > 0
+                    ? ((voteCounts[c.id] / totalCast) * 100).toFixed(2)
+                    : "0.00"
             }))
             .sort((a, b) => b.voteCount - a.voteCount);
 
@@ -190,21 +210,19 @@ const getElectionResults = async (req, res, next) => {
             endDate: election.endDate,
             stats,
             candidates: candidateResults,
-            winner:
-                winnerId != null
-                    ? {
-                        id: winnerId,
-                        name: candidates.find(c => c.id === winnerId).name,
-                        voteCount: voteCounts[winnerId],
-                        percentage:
-                            totalCast > 0
-                                ? ((voteCounts[winnerId] / totalCast) * 100).toFixed(2)
-                                : "0.00"
-                    }
-                    : null
+            winner: winnerId != null
+                ? {
+                    id: winnerId,
+                    name: candidates.find(c => c.id === winnerId).name,
+                    voteCount: voteCounts[winnerId],
+                    percentage: totalCast > 0
+                        ? ((voteCounts[winnerId] / totalCast) * 100).toFixed(2)
+                        : "0.00"
+                }
+                : null
         });
     } catch (error) {
-       next(error);
+        next(error);
     }
 };
 
