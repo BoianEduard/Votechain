@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/services/resultUtils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/contractController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/contractController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/electionController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/electionController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/election.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/election.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/result.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/result.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +143,7 @@
       <workItem from="1749626704471" duration="24228000" />
       <workItem from="1749802993389" duration="782000" />
       <workItem from="1749918193412" duration="4331000" />
-      <workItem from="1749927872630" duration="17130000" />
+      <workItem from="1749927872630" duration="26741000" />
     </task>
     <servers />
   </component>

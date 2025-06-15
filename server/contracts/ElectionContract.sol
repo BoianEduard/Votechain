@@ -39,23 +39,13 @@ contract ElectionContract is ReentrancyGuard, Ownable {
         require(isEligibleVoter[voterAddress], "You are not eligible to vote");
         require(!hasVoted[voterAddress], "You have already voted");
 
-        // Verify that the encrypted vote was signed by the voter
-        // First hash the encrypted vote data
         bytes32 hash = keccak256(encryptedVote);
-
-        // Convert to Ethereum signed message format
         bytes32 ethHash = MessageHashUtils.toEthSignedMessageHash(hash);
 
-        // Recover the signer's address from the signature
         address recovered = ECDSA.recover(ethHash, signature);
-
-        // Verify the signature matches the voter's address
         require(recovered == voterAddress, "Invalid signature");
 
-        // Emit event before state changes (best practice)
         emit VoteSubmitted(voterAddress, encryptedVote);
-
-        // Update state after verification
         hasVoted[voterAddress] = true;
         totalVotesCast++;
     }
