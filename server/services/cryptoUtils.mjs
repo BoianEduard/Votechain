@@ -19,7 +19,7 @@ export function generateKeyPair() {
 
 export function encryptPrivateKey(privateKey) {
     if (!AES_SECRET_KEY) {
-        throw new Error("AES_SECRET_KEY is not defined in environment variables");
+        throw new Error("AES_SECRET_KEY is not defined in environment variables"); // debug
     }
 
     if (!privateKey) {

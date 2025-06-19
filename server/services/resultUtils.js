@@ -1,4 +1,3 @@
-// Helper function to format candidate results
 const formatCandidateResults = (candidates, voteCounts, totalCast) => {
     return candidates
         .map(c => ({
@@ -14,7 +13,6 @@ const formatCandidateResults = (candidates, voteCounts, totalCast) => {
         .sort((a, b) => b.voteCount - a.voteCount);
 };
 
-// Helper function to format winner
 const formatWinner = (winnerId, candidates, voteCounts, totalCast) => {
     if (winnerId == null) return null;
 
@@ -29,7 +27,6 @@ const formatWinner = (winnerId, candidates, voteCounts, totalCast) => {
     };
 };
 
-// Helper function to build response
 const buildResponse = (election, stats, candidates, winner) => {
     return {
         electionId: election.id,
@@ -43,7 +40,6 @@ const buildResponse = (election, stats, candidates, winner) => {
     };
 };
 
-// Helper function to return cached results
 const returnCachedResults = async (election, existingResult) => {
     const candidates = await models.Candidate.findAll({
         where: { electionId: election.id },
@@ -62,7 +58,6 @@ const returnCachedResults = async (election, existingResult) => {
     return buildResponse(election, stats, candidateResults, winner);
 };
 
-// Helper function to calculate results from blockchain
 const calculateAndStoreResults = async (election, shouldStore = false) => {
     const contract = contractUtils.getProviderContract(election.contractAddress);
     const stats = await contractUtils.fetchVotingStats(contract);
@@ -84,7 +79,6 @@ const calculateAndStoreResults = async (election, shouldStore = false) => {
         candidateIds
     );
 
-    // Update candidate votes
     await Promise.all(
         candidates.map(c => c.update({ votes: voteCounts[c.id] || 0 })
             .catch(err => console.error(`Error updating candidate ${c.id}:`, err))
@@ -93,7 +87,6 @@ const calculateAndStoreResults = async (election, shouldStore = false) => {
 
     const { winnerId } = contractUtils.determineWinner(voteCounts);
 
-    // Store results if needed
     if (shouldStore) {
         await models.Result.create({
             electionId: election.id,
@@ -109,52 +102,4 @@ const calculateAndStoreResults = async (election, shouldStore = false) => {
     const winner = formatWinner(winnerId, candidates, voteCounts, stats.totalCast);
 
     return buildResponse(election, stats, candidateResults, winner);
-};
-
-// Main function
-const getElectionResults = async (req, res, next) => {
-    try {
-        const { electionId } = req.params;
-
-        const election = await models.Election.findByPk(electionId);
-        if (!election) {
-            return res.status(404).json({ message: "Election not found" });
-        }
-
-        const isElectionEnded = new Date() >= new Date(election.endDate);
-
-        // Case 1: Election ended
-        if (isElectionEnded) {
-            const existingResult = await models.Result.findOne({
-                where: { electionId }
-            });
-
-            if (existingResult) {
-                // Return cached results
-                const response = await returnCachedResults(election, existingResult);
-                return res.status(200).json(response);
-            } else {
-                // First time - calculate and store
-                const response = await calculateAndStoreResults(election, true);
-                return res.status(200).json(response);
-            }
-        }
-
-        // Case 2: Election active but real-time disabled
-        if (!election.realTimeResults) {
-            return res.status(403).json({
-                message: "Election has not ended yet and real-time results are not enabled"
-            });
-        }
-
-        // Case 3: Election active with real-time enabled
-        const response = await calculateAndStoreResults(election, false);
-        return res.status(200).json(response);
-
-    } catch (error) {
-        if (error.message === "No candidates found for this election") {
-            return res.status(404).json({ message: error.message });
-        }
-        next(error);
-    }
 };

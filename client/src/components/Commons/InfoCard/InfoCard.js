@@ -19,7 +19,7 @@ const InfoCard = () => {
                             >
                                 <Shield size={24} className="text-green-600" />
                             </div>
-                            <h3 className="text-lg font-bold mb-0">Blockchain Secured</h3>
+                            <h3 className="text-lg font-bold mb-0">Arb1Vote</h3>
                         </div>
                         <p className="mb-4 md:mb-0">
                             Your votes are secured using blockchain technology, ensuring transparency and immutability.

@@ -1,3 +1,5 @@
+//contract debugging -
+
 import { ethers} from "ethers";
 
 console.log("ECDSAInvalidSignature:", ethers.id("ECDSAInvalidSignature()").slice(0, 10));

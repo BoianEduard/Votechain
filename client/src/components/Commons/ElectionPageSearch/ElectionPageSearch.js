@@ -1,4 +1,3 @@
-// components/ElectionPageSearch.jsx
 import { Search, Filter } from "lucide-react";
 
 export default function ElectionPageSearch({

@@ -13,7 +13,7 @@ const createPaymentIntent = async (req, res) => {
 
         if (!amount || amount < 50) {
             return res.status(400).json({
-                error: 'Invalid amount. Minimum charge is $0.50' // failsafe
+                error: 'Invalid amount. Minimum charge is $0.50' // failsafe ?? maybe try something different
             });
         }
 
@@ -42,9 +42,7 @@ const createPaymentIntent = async (req, res) => {
     }
 };
 
-/**
- * Verify status of a payment
- */
+//basically check if the payment happened.
 const verifyPayment = async (req, res) => {
     try {
         const { paymentIntentId } = req.params;
@@ -66,9 +64,6 @@ const verifyPayment = async (req, res) => {
     }
 };
 
-/**
- * Handle Stripe Webhooks
- */
 const stripeWebhook = (req, res) => {
     const sig = req.headers['stripe-signature'];
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -86,7 +81,6 @@ const stripeWebhook = (req, res) => {
         case 'payment_intent.succeeded':
             const paymentIntent = event.data.object;
             console.log('Payment succeeded:', paymentIntent.id);
-            // Optional: Trigger post-payment logic
             break;
 
         case 'payment_intent.payment_failed':
@@ -101,9 +95,7 @@ const stripeWebhook = (req, res) => {
     res.json({ received: true });
 };
 
-/**
- * Process a refund
- */
+//should implement to trigger automatically on failed deploy.
 const refundPayment = async (req, res) => {
     try {
         const { paymentIntentId, amount, reason = 'requested_by_customer' } = req.body;

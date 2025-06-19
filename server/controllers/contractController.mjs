@@ -100,6 +100,8 @@ const castVote = async (req, res, next) => {
     }
 };
 
+
+//ar trebui un refactoring serios aici => resultUtils in progress
 const getElectionResults = async (req, res, next) => {
     try {
         const { electionId } = req.params;
