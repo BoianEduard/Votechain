@@ -92,7 +92,6 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
     return (
         <FormContainer className="p-0">
             <form onSubmit={handleSubmit} className="space-y-3">
-                {/* Order Summary */}
                 <InputSection title="Order Summary" icon="💳">
                     <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
@@ -105,17 +104,14 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
                     </div>
                 </InputSection>
 
-                {/* Card Details */}
                 <InputSection title="Card Details" icon="🔒">
                     <div className="border border-gray-300 rounded p-3 bg-white">
                         <CardElement options={cardElementOptions} />
                     </div>
                 </InputSection>
 
-                {/* Error Display */}
                 {paymentError && <Error message={paymentError} />}
 
-                {/* Submit Button */}
                 <button
                     type="submit"
                     disabled={!stripe || processingPayment || loading}
@@ -135,7 +131,6 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
                     )}
                 </button>
 
-                {/* Security Notice */}
                 <p className="text-xs text-gray-500 text-center">
                     Secured by Stripe
                 </p>

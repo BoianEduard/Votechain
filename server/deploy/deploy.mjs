@@ -18,6 +18,7 @@ function findImports(importPath) {
     }
 }
 
+//do not touch frfr
 export async function deployContract({ eligibleVoters }) {
     const contractPath = path.resolve("contracts", "ElectionContract.sol");
     const source = fs.readFileSync(contractPath, "utf8");

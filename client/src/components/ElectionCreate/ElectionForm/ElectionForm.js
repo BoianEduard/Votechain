@@ -118,7 +118,7 @@ ElectionForm.propTypes = {
     step: PropTypes.number.isRequired,
     nextStep: PropTypes.func.isRequired,
     prevStep: PropTypes.func.isRequired,
-    // Payment flow props
+    // payment flow props.. perhaps find a better way
     paymentId: PropTypes.string,
     paymentCompleted: PropTypes.bool,
     paymentError: PropTypes.string,
