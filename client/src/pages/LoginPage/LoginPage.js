@@ -1,89 +1,79 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import authThunks from '../../redux/thunks/authThunks';
-import './LoginPage.css';
+import React from 'react';
+import { useAuthForm, useLogin } from '../../hooks/LoginHook';
+import ErrorMessage from '../../components/Commons/Error';
+import AuthContainer from '../../components/Auth/AuthContainer';
+import AuthHead from '../../components/Auth/AuthHead';
+import AuthInput from '../../components/Auth/AuthInput';
+import AuthButton from '../../components/Auth/AuthButton';
+import AuthFooter from '../../components/Auth/AuthFooter';
+import LoadingSpinner from "../../components/Commons/LoadingSpinner";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const { errorMessage, loading } = useSelector((state) => state.auth);
+  const { formData, updateField, resetForm } = useAuthForm();
+  const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      setError('Please enter both email and password');
-      return;
-    }
-
-    setIsLoading(true);
-    setError('');
-
-    try {
-      await dispatch(authThunks.loginUser({ email, password }));
-      setEmail('');
-      setPassword('');
-      navigate('/dashboard')
-    } catch (err) {
-      setError(errorMessage || 'Login failed. Please try again.');
-    } finally {
-      setIsLoading(false);
+    const result = await login(formData);
+    if (result.success) {
+      resetForm();
     }
   };
 
+  if (isLoading) {
+    return (
+        <AuthContainer>
+          <LoadingSpinner message="Logging into account..." />
+        </AuthContainer>
+    );
+  }
+
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1 className="login-title">Votechain</h1>
-        <p className="login-subtitle">Welcome back! Please login to your account.</p>
+      <AuthContainer>
+        <AuthHead subtitle="Welcome back! Please sign in to your account." />
 
-        {error && <div className="login-error">{error}</div>}
+        {error && <ErrorMessage error={error} />}
 
-        <form onSubmit={handleSubmit}>
-
-          <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input
-              type="email"
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <AuthInput
               id="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              label="Email address"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={(e) => updateField('email', e.target.value)}
               disabled={isLoading}
               required
-            />
-          </div>
+          />
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
+          <AuthInput
               id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              label="Password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) => updateField('password', e.target.value)}
               disabled={isLoading}
               required
-            />
-          </div>
+          />
 
-          <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-
+          <AuthButton
+              type="submit"
+              disabled={isLoading}
+              isLoading={isLoading}
+              loadingText="Signing in..."
+          >
+            Sign in
+          </AuthButton>
         </form>
 
-       <p className="signup-link"> 
-        Don't have an account? <Link to ="/signup">Sign up!</Link> 
-        </p>
-      </div>
-    </div>
+        <AuthFooter
+            text="Don't have an account?"
+            linkText="Sign up"
+            linkTo="/signup"
+        />
+      </AuthContainer>
   );
 };
 

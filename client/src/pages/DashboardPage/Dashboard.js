@@ -1,57 +1,48 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./Dashboard.css";
+import LoadingSpinner from "../../components/Commons/LoadingSpinner";
+import ErrorCard from "../../components/Commons/Error";
+import { useDashboardStats } from "../../hooks/DashboardHook";
+import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
+import StatSection from "../../components/Dashboard/StatsComponent";
+import ActionSection from "../../components/Dashboard/ActionSection";
+import DashboardSidebar from "../../components/Dashboard/DashboardSidebar";
+import FooterCard from "../../components/Commons/FooterCard";
 
-const Dashboard = () => {
-  const navigate = useNavigate();
+const DashboardPage = () => {
+    const { dashboardData, loading, error } = useDashboardStats();
 
-  const handleElectionCreate = () => {
-    navigate('/create-election');
-  };
+    if (loading) return <LoadingSpinner />;
+    if (error) return <ErrorCard message={error} />;
 
-  const handleVote = () => {
-    navigate('/vote');
-  };
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800">
+            <div className="pt-10 pb-2 px-4">
+                <ElectionPageHeader
+                    title="Arbi1Vote Dashboard"
+                    description="Secure, transparent, and decentralized voting platform"
+                    backLink="/logout"
+                    backLabel="Logout"
+                />
+            </div>
 
-  const handleElectionHistory = () => {
-    navigate('/election-history');
-  };
+            {/* Main Content Section */}
+            <div className="bg-white dark:bg-gray-900 min-h-screen rounded-t-3xl px-4 py-8 transition-colors duration-200">
+                <div className="max-w-6xl mx-auto">
+                    {/* Stats Section */}
+                    <StatSection stats={dashboardData?.stats} />
 
-  const navigateOptions = [
-    {
-      title: "Create Elections",
-      handler: handleElectionCreate,
-      description: "Create a new election process"
-    },
-    {
-      title: "Vote",
-      handler: handleVote,
-      description: "Cast your vote in your available elections"
-    },
-    {
-      title: "Election History",
-      handler: handleElectionHistory,
-      description: "View the history of the elections you were eligible to vote in"
-    }
-  ];
+                    {/* Actions Section */}
+                    <ActionSection />
+                </div>
 
-  return (
-    <div className="dashboard-container">
-      <h1 className="title">Votechain Dashboard</h1>
-      <p className="subtitle">Secure, transparent decentralized voting platform</p>
-      
-      <div className="action-container">
-        {navigateOptions.map((option, index) => (
-          <div key={index} className="action-item">
-            <button className="action-button" onClick={option.handler}>
-              {option.title}
-            </button>
-            <p className="action-description">{option.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+                {/* Dashboard Sidebar */}
+                <DashboardSidebar />
+
+                {/* Footer */}
+                <FooterCard />
+            </div>
+        </div>
+    );
 };
 
-export default Dashboard;
+export default DashboardPage;

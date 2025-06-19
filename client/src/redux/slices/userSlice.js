@@ -1,46 +1,70 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    id:null,
-    email:null,
-    firstName:null,
-    lastName:null,
-    publicKey:null,
-    loading:null,
-    error:null
-}
+    userData: null,
+    loadingUser: false,
+    errorUser: null,
+    eligibility: null,
+    loadingEligibility: false,
+    errorEligibility: null,
+};
 
 const userSlice = createSlice({
-    name:'user',
+    name: 'user',
     initialState,
     reducers: {
         setUserStart(state) {
-            state.loading = true;
-            state.error = null;
-          },
+            state.loadingUser = true;
+            state.errorUser = null;
+        },
         setUserSuccess(state, action) {
-            state.loading = false;
-            state.id = action.payload.id;
-            state.email = action.payload.email;
-            state.firstName = action.payload.firstName;
-            state.lastName = action.payload.lastName;
-            state.publicKey = action.payload.publicKey;
-            state.error = null
+            state.loadingUser = false;
+            state.userData = action.payload;
         },
-        setUserFailure(state,action) {
-            state.loading = false;
-            state.error = action.payload;
+        setUserFailure(state, action) {
+            state.loadingUser = false;
+            state.errorUser = action.payload;
         },
-        setUserUpdate(state,action){
-            const {field, value} = action.payload;
-            state[field] = value;
+
+        setEligibilityStart(state) {
+            state.loadingEligibility = true;
+            state.errorEligibility = null;
         },
-        clearUser(state,action) {
-            return initialState;
+        setEligibilitySuccess(state, action) {
+            state.loadingEligibility = false;
+            state.eligibility = action.payload;
+        },
+        setEligibilityFailure(state, action) {
+            state.loadingEligibility = false;
+            state.errorEligibility = action.payload;
+        },
+
+        clearUser(state) {
+            state.userData = null;
+            state.eligibility = null;
+            state.errorUser = null;
+            state.errorEligibility = null;
+            state.loadingUser = false;
+            state.loadingEligibility = false;
+        },
+
+        setUserUpdate(state, action) {
+            if (state.userData) {
+                state.userData = { ...state.userData, ...action.payload };
+            }
         }
     }
-})
+});
 
-export const {setUserStart, setUserSuccess, setUserFailure, setUserUpdate, clearUser} = userSlice.actions
+export const {
+    setUserStart,
+    setUserSuccess,
+    setUserFailure,
+    setUserUpdate,
+    clearUser,
+    setEligibilityStart,
+    setEligibilitySuccess,
+    setEligibilityFailure
+} = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

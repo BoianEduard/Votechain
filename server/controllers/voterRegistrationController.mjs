@@ -1,4 +1,70 @@
 import models from "../models/index.mjs";
+import { Op } from "sequelize";
+
+const addDomainWhitelist = async (req, res, next) => {
+  try {
+    const { electionId, domains } = req.body;
+
+    if (!electionId) {
+      return res.status(400).json({ message: "Election Id not provided" });
+    }
+
+    if (!domains || !Array.isArray(domains) || domains.length === 0) {
+      return res.status(400).json({ message: "Valid domain list is required" });
+    }
+
+    console.log(domains)
+
+    const election = await models.Election.findByPk(electionId);
+    if (!election) {
+      return res.status(404).json({ message: "Election not found" });
+    }
+
+    const domainPatterns = domains.map(domain => `%${domain}`);
+
+    const users = await models.User.findAll({
+      where: {
+        email: {
+          [Op.or]: domainPatterns.map(pattern => ({
+            [Op.like]: pattern
+          }))
+        }
+      },
+    });
+
+    if (users.length === 0) {
+      return res.status(400).json({
+        message: "No registered users found with the specified domain(s)",
+        domains: domains,
+      });
+    }
+
+    const whitelistEntries = await Promise.all(
+        users.map(user =>
+            models.VoterRegistration.create({
+              electionId: electionId,
+              userId: user.id,
+            })
+        )
+    );
+
+    return res.status(201).json({
+      message: "Domain whitelist added successfully",
+      count: whitelistEntries.length,
+      domains: domains,
+      matchedUsers: users.length,
+      whitelist: whitelistEntries.map(entry => entry.toJSON()),
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res.status(400).json({
+        message: "Some users are already registered for this election",
+      });
+    }
+
+   next(error);
+  }
+};
 
 const addWhitelist = async (req, res, next) => {
   try {
@@ -19,7 +85,7 @@ const addWhitelist = async (req, res, next) => {
 
     const users = await models.User.findAll({
       where: {
-        email: emails, 
+        email: emails,
       },
     });
 
@@ -37,12 +103,12 @@ const addWhitelist = async (req, res, next) => {
     }
 
     const whitelistEntries = await Promise.all(
-      emails.map(email =>
-        models.VoterRegistration.create({
-          electionId: electionId,
-          userId: emailToUserIdMap[email], 
-        })
-      )
+        emails.map(email =>
+            models.VoterRegistration.create({
+              electionId: electionId,
+              userId: emailToUserIdMap[email],
+            })
+        )
     );
 
     return res.status(201).json({
@@ -56,14 +122,17 @@ const addWhitelist = async (req, res, next) => {
         message: "Some email addresses are already in the whitelist",
       });
     }
-    console.log(error)
+    console.error("Error adding whitelist:", error);
+    return res.status(500).json({
+      message: "Internal server error while adding whitelist",
+    });
   }
 };
 
 const addAll = async (req, res, next) => {
   try {
     const {electionId} = req.body;
-
+    console.log(electionId);
     if (!electionId) {
       return res.status(400).json({message: "Election ID is required"});
     }
@@ -76,27 +145,49 @@ const addAll = async (req, res, next) => {
 
     const users = await models.User.findAll();
 
+    // Add this debugging code at the beginning of your addAll function
+    const existingRegistrations = await models.VoterRegistration.findAll({
+      where: { electionId }
+    });
+    console.log(`Found ${existingRegistrations.length} existing registrations for election ${electionId}`);
+
     await Promise.all(
-      users.map(user => models.VoterRegistration.create({
-        electionId:electionId,
-        userId: user.id
-        })
-      ) 
+        users.map(user => models.VoterRegistration.create({
+              electionId:electionId,
+              userId: user.id
+            })
+        )
     );
     return res.status(201).json({
       message:"All voters added successfully"
     })
   } catch(error) {
+    console.error("Full error:", JSON.stringify(error, null, 2));
+    console.error("Error name:", error.name);
+    console.error("Error message:", error.message);
+    if (error.errors) {
+      console.error("Constraint errors:", error.errors.map(e => ({
+        message: e.message,
+        path: e.path,
+        value: e.value,
+        type: e.type
+      })));
+    }
+
     if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
-        message: "Some email addresses are already in the whitelist",
+        message: "Some users are already registered for this election",
       });
     }
-    console.log(error)
-}
+    console.error("Error adding all voters:", error);
+    return res.status(500).json({
+      message: "Internal server error while adding all voters",
+    });
+  }
 }
 
 export default {
   addWhitelist,
+  addDomainWhitelist,
   addAll
 };

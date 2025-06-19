@@ -127,3 +127,77 @@ export const validateElectionForm = (formData) => {
   
     return { isValid: true, error: "" };
   };
+
+// Add these functions to your validators module (../../utils/validators)
+
+export const validateDomainWhitelist = (domainWhitelist) => {
+  if (!domainWhitelist || typeof domainWhitelist !== 'string') {
+    return {
+      isValid: false,
+      error: "Domain whitelist is required"
+    };
+  }
+
+  const domains = domainWhitelist.trim().split('\n').filter(domain => domain.trim());
+
+  if (domains.length === 0) {
+    return {
+      isValid: false,
+      error: "At least one domain is required"
+    };
+  }
+
+  // validate domain format
+  for (const domain of domains) {
+    const trimmedDomain = domain.trim();
+
+    // Check if domain is empty
+    if (!trimmedDomain) {
+      continue;
+    }
+
+    // check if domain starts with @ before adding it
+    let cleanDomain = trimmedDomain;
+    if (!cleanDomain.startsWith('@')) {
+      cleanDomain = '@' + cleanDomain;
+    }
+
+    // basic domain regex validation
+    const domainRegex = /^@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    if (!domainRegex.test(cleanDomain)) {
+      return {
+        isValid: false,
+        error: `Invalid domain format: ${trimmedDomain}. Domains should be in format like "company.com" or "@company.com"`
+      };
+    }
+  }
+
+  return {
+    isValid: true,
+    error: null
+  };
+};
+
+export const parseDomainWhitelist = (domainWhitelist) => {
+  if (!domainWhitelist || typeof domainWhitelist !== 'string') {
+    return [];
+  }
+
+  return domainWhitelist
+      .trim()
+      .split('\n')
+      .map(domain => {
+        let trimmed = domain.trim().toLowerCase();
+
+        // eliminate all % appearances to avoid backend possible issues.
+        trimmed = trimmed.replace(/%/g, '');
+
+        // make sure the domains start with @.
+        if (trimmed && !trimmed.startsWith('@')) {
+          trimmed = '@' + trimmed;
+        }
+        return trimmed;
+      })
+      .filter(domain => domain.length > 1); //stergem liniile goale
+};

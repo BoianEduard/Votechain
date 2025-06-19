@@ -49,6 +49,69 @@ const electionSlice = createSlice({
         addWhitelistFail(state, action) {
             state.loading = false;
             state.error = action.payload;
+        },
+        fetchElectionsStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchElectionsSuccess(state, action) {
+            state.loading = false;
+            state.elections = action.payload;
+            state.error = null;
+        },
+        fetchElectionsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        fetchElectionDetailsStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchElectionDetailsSuccess(state, action) {
+            state.loading = false;
+            state.selectedElection = action.payload;
+            state.error = null;
+        },
+        fetchElectionDetailsFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        deleteElectionStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        deleteElectionSuccess(state, action) {
+            state.loading = false;
+            state.error = null;
+        },
+        deleteElectionFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        getDashboardStatsStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getDashboardStatsSuccess: (state, action) => {
+            state.loading = false;
+            state.dashboardStats = action.payload;
+        },
+        getDashboardStatsFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        getVoterTurnoutStart(state) {
+            state.loading = true;
+            state.error = null;
+        },
+        getVoterTurnoutSuccess(state, action) {
+            state.loading = false;
+            state.voterTurnout = action.payload;
+            state.error = null;
+        },
+        getVoterTurnoutFail(state, action) {
+            state.loading = false;
+            state.error = action.payload;
         }
     }
 });
@@ -56,7 +119,12 @@ const electionSlice = createSlice({
 export const {
     createElectionStart, createElectionSuccess, createElectionFail,
     addCandidatesStart, addCandidatesSuccess, addCandidatesFail,
-    addWhitelistStart, addWhitelistSuccess, addWhitelistFail
+    addWhitelistStart, addWhitelistSuccess, addWhitelistFail,
+    fetchElectionsStart, fetchElectionsSuccess, fetchElectionsFail,
+    fetchElectionDetailsStart, fetchElectionDetailsSuccess, fetchElectionDetailsFail,
+    deleteElectionStart,deleteElectionSuccess,deleteElectionFail,
+    getDashboardStatsStart,getDashboardStatsFail,getDashboardStatsSuccess,
+    getVoterTurnoutStart,getVoterTurnoutSuccess,getVoterTurnoutFail
 } = electionSlice.actions;
 
 export default electionSlice.reducer;

@@ -1,18 +1,3 @@
-/**
- * Defines the 'election' entity in the database.
- *
- * @param {object} sequelize - The Sequelize instance used to define the model.
- * @param {object} DataTypes - A collection of data types supported by Sequelize.
- * @returns {object} A Sequelize model representing the 'election' entity.
- *
- * @property {string} title - The title of the election. This field is required.
- * @property {string} description - A description of the election. This field is optional.
- * @property {Date} startDate - The start date of the election. This field is required.
- * @property {Date} endDate - The end date of the election. This field is required.
- * @property {string} status - The status of the election (e.g., 'draft', 'active', 'closed'). Default is 'draft'.
- * @property {decimal} electionFee - A fee that must be paid in order for the elections to be posted.
- */
-
 export default (sequelize, DataTypes) => {
   return sequelize.define('election', {
     id: {
@@ -43,12 +28,8 @@ export default (sequelize, DataTypes) => {
       },
     },
     eligibilityType: {
-      type: DataTypes.ENUM('all', 'id', 'whitelist'),
+      type: DataTypes.ENUM('all', 'id', 'whitelist','domain'),
       allowNull: false,
-    },
-    anonymousResults: { 
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
     },
     realTimeResults: {  
       type: DataTypes.BOOLEAN,
@@ -58,5 +39,20 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
+    publicKey: {
+      type:DataTypes.TEXT,
+      allowNull:false
+    },
+    privateKey: {
+      type:DataTypes.TEXT,
+      allowNull:false
+    },
+    contractAddress: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        is: /^0x[a-fA-F0-9]{40}$/,
+      },
+    }
   });
 };

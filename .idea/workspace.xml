@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="com.intellij.reactbuddy.palette" />
+        <option value="com.intellij.reactbuddy.previews" />
+        <option value="com.intellij.reactbuddy.index" />
+        <option value="com.intellij.reactbuddy.useInitial" />
+        <option value="com.intellij.reactbuddy.README" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/server/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2uupU5EG1eu6FOftilfDf8B9FQT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.CandidateCard.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.ElectionVotePage.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.app.mjs.executor&quot;: &quot;Debug&quot;,
+    &quot;Node.js.index.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.18.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.19.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/eduardboian/programare/LICENTA/MVP/Arbi1Vote/client/src/components/ElectionCreate&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.React Buddy Preview.executor&quot;: &quot;Run&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
+  }
+}</component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionCreate" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps" />
+      <recent name="$PROJECT_DIR$/client/src/components/Commons" />
+      <recent name="$PROJECT_DIR$/server/services" />
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionHistory" />
+      <recent name="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsView" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.26053.12" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="" />
+      <created>1743108326001</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743108326001</updated>
+      <workItem from="1743108327483" duration="8081000" />
+      <workItem from="1743147060222" duration="3085000" />
+      <workItem from="1743185801644" duration="810000" />
+      <workItem from="1743264919656" duration="731000" />
+      <workItem from="1743265657123" duration="15920000" />
+      <workItem from="1743412225669" duration="343000" />
+      <workItem from="1743515948887" duration="185000" />
+      <workItem from="1743619595369" duration="2711000" />
+      <workItem from="1744706781576" duration="4641000" />
+      <workItem from="1744919393905" duration="4810000" />
+      <workItem from="1744924425093" duration="93000" />
+      <workItem from="1744924696388" duration="848000" />
+      <workItem from="1744974797645" duration="8521000" />
+      <workItem from="1745581232514" duration="13356000" />
+      <workItem from="1745821162254" duration="1642000" />
+      <workItem from="1745823100666" duration="986000" />
+      <workItem from="1745824234955" duration="6333000" />
+      <workItem from="1746134869580" duration="9957000" />
+      <workItem from="1746222928069" duration="19452000" />
+      <workItem from="1747568843233" duration="3318000" />
+      <workItem from="1747575985163" duration="78336000" />
+      <workItem from="1748040872016" duration="56920000" />
+      <workItem from="1748337768855" duration="111000" />
+      <workItem from="1748628841233" duration="1078000" />
+      <workItem from="1748712715505" duration="13851000" />
+      <workItem from="1748878454026" duration="7251000" />
+      <workItem from="1749052525642" duration="2482000" />
+      <workItem from="1749130706750" duration="1825000" />
+      <workItem from="1749150525881" duration="4467000" />
+      <workItem from="1749300934046" duration="50000" />
+      <workItem from="1749301012651" duration="584000" />
+      <workItem from="1749301602170" duration="47000" />
+      <workItem from="1749301649258" duration="32000" />
+      <workItem from="1749301682161" duration="312000" />
+      <workItem from="1749303925973" duration="14860000" />
+      <workItem from="1749626704471" duration="24228000" />
+      <workItem from="1749802993389" duration="782000" />
+      <workItem from="1749918193412" duration="4331000" />
+      <workItem from="1749927872630" duration="29916000" />
+      <workItem from="1750354230053" duration="517000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js</url>
+          <line>112</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/hooks/DashboardHook/useDashboardStats.js</url>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js</url>
+          <line>10</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
