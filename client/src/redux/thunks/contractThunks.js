@@ -1,6 +1,6 @@
 import * as contractSlice from "../slices/contractSlice";
 import contractAPI from '../../api/contractAPI';
-import {encryptVote,getConnectedAddress, prepareVote} from "../../utils/blockchain";
+import {encryptVote,getConnectedAddress} from "../../utils/blockchain";
 import {ethers} from 'ethers';
 import serializeError from '../../utils/serializeError';
 import {signWithMetaMask} from "../../utils/metamask";
@@ -27,8 +27,9 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
             throw new Error("Connected MetaMask address does not match registered address");
         }
 
-        const encryptedVoteBase64 = await encryptVote(candidateId.toString(), electionPublicKey);
-        const encryptedVoteHex = prepareVote(encryptedVoteBase64);
+        //return array buffer containing encrypted data & convert to hex
+        const encryptedData = await encryptVote(candidateId.toString(), electionPublicKey);
+        const encryptedVoteHex = '0x' + Buffer.from(encryptedData).toString('hex');
 
         // hash the vote before signing
         const voteHash = ethers.keccak256(encryptedVoteHex);
