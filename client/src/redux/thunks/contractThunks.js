@@ -28,8 +28,8 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         }
 
         //return array buffer containing encrypted data & convert to hex
-        const encryptedData = await encryptVote(candidateId.toString(), electionPublicKey);
-        const encryptedVoteHex = '0x' + Buffer.from(encryptedData).toString('hex');
+        const encryptedVote = await encryptVote(candidateId.toString(), electionPublicKey);
+        const encryptedVoteHex = '0x' + Buffer.from(encryptedVote).toString('hex');
 
         // hash the vote before signing
         const voteHash = ethers.keccak256(encryptedVoteHex);

@@ -21,13 +21,12 @@ const loginUser = (credentials) => async (dispatch) => {
 
 const registerUser = (userData) => async (dispatch) => {
   dispatch(loginStart());
-
   try {
-    await authAPI.checkEmail({ email: userData.email });
-
     if (!window.ethereum) {
       throw new Error("MetaMask is not installed. You need a wallet to enter this site.");
     }
+
+    await authAPI.checkEmail({ email: userData.email });
 
     const address = await connectToMetaMask();
     const message = `Register with Arbi1Vote: ${userData.email} at ${new Date().toISOString()}`;

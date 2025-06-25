@@ -109,6 +109,10 @@ const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email or password not provided.' });
+        }
+
         const user = await models.User.findOne({ where: { email } });
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password' });
@@ -178,7 +182,7 @@ const register = async (req, res, next) => {
         setCookieToken(res, token);
 
         return res.status(201).json({
-            message: 'User registered successfully',
+            message: 'Register successful!',
             token,
             user: {
                 id: user.id,
