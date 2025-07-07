@@ -1,6 +1,6 @@
 import * as contractSlice from "../slices/contractSlice";
 import contractAPI from '../../api/contractAPI';
-import {encryptVote,getConnectedAddress} from "../../utils/blockchain";
+import {encryptVote, getConnectedAddress, prepareVote} from "../../utils/blockchain";
 import {ethers} from 'ethers';
 import serializeError from '../../utils/serializeError';
 import {signWithMetaMask} from "../../utils/metamask";
@@ -29,7 +29,7 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
 
         //return array buffer containing encrypted data & convert to hex
         const encryptedVote = await encryptVote(candidateId.toString(), electionPublicKey);
-        const encryptedVoteHex = '0x' + Buffer.from(encryptedVote).toString('hex');
+        const encryptedVoteHex = prepareVote(encryptedVote);
 
         // hash the vote before signing
         const voteHash = ethers.keccak256(encryptedVoteHex);

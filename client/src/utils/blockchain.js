@@ -72,11 +72,16 @@ export const encryptVote = async (candidateId, electionPublicKeyString) => {
             voteData
         );
 
-        return encryptedData;
+        return ab2base64(encryptedData);
     } catch (error) {
         console.error('Error encrypting vote:', error);
         throw new Error('Failed to encrypt vote');
     }
+};
+
+export const prepareVote = (encryptedVoteBase64) => {
+    const encryptedVoteBuffer = Buffer.from(encryptedVoteBase64, 'base64');
+    return '0x' + encryptedVoteBuffer.toString('hex');
 };
 
 export const getConnectedAddress = async () => {
