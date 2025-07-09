@@ -50,7 +50,7 @@ const addDomainWhitelist = async (req, res, next) => {
 
     return res.status(201).json({
       message: "Domain whitelist added successfully",
-      count: whitelistEntries.length,
+      voterCount: whitelistEntries.length,
       domains: domains,
       matchedUsers: users.length,
       whitelist: whitelistEntries.map(entry => entry.toJSON()),
@@ -61,8 +61,7 @@ const addDomainWhitelist = async (req, res, next) => {
         message: "Some users are already registered for this election",
       });
     }
-
-   next(error);
+    next(error);
   }
 };
 
@@ -113,7 +112,7 @@ const addWhitelist = async (req, res, next) => {
 
     return res.status(201).json({
       message: "Voter whitelist added successfully",
-      count: whitelistEntries.length,
+      voterCount: whitelistEntries.length,
       whitelist: whitelistEntries.map(entry => entry.toJSON()),
     });
   } catch (error) {
@@ -145,22 +144,24 @@ const addAll = async (req, res, next) => {
 
     const users = await models.User.findAll();
 
-    // Add this debugging code at the beginning of your addAll function
     const existingRegistrations = await models.VoterRegistration.findAll({
       where: { electionId }
     });
     console.log(`Found ${existingRegistrations.length} existing registrations for election ${electionId}`);
 
-    await Promise.all(
+    const whitelistEntries = await Promise.all(
         users.map(user => models.VoterRegistration.create({
               electionId:electionId,
               userId: user.id
             })
         )
     );
+
     return res.status(201).json({
-      message:"All voters added successfully"
-    })
+      message: "All voters added successfully",
+      voterCount: whitelistEntries.length,
+      whitelist: whitelistEntries.map(entry => entry.toJSON()),
+    });
   } catch(error) {
     console.error("Full error:", JSON.stringify(error, null, 2));
     console.error("Error name:", error.name);
@@ -186,8 +187,105 @@ const addAll = async (req, res, next) => {
   }
 }
 
+const checkWhitelistCount = async (req, res, next) => {
+  try {
+    const { emails } = req.body;
+
+    if (!emails || !Array.isArray(emails) || emails.length === 0) {
+      return res.status(400).json({
+        message: "Valid email list is required",
+        voterCount: 0
+      });
+    }
+
+    const users = await models.User.findAll({
+      where: {
+        email: emails,
+      },
+    });
+
+    const matchedEmails = users.map(user => user.email);
+    const missingEmails = emails.filter(email => !matchedEmails.includes(email));
+
+    return res.status(200).json({
+      voterCount: users.length,
+      matchedEmails: matchedEmails,
+      missingEmails: missingEmails,
+      totalRequested: emails.length
+    });
+  } catch (error) {
+    console.error("Error checking whitelist count:", error);
+    return res.status(500).json({
+      message: "Internal server error while checking whitelist count",
+      voterCount: 0
+    });
+  }
+};
+
+const checkDomainWhitelistCount = async (req, res, next) => {
+  try {
+    const { domains } = req.body;
+
+    if (!domains || !Array.isArray(domains) || domains.length === 0) {
+      return res.status(400).json({
+        message: "Valid domain list is required",
+        voterCount: 0
+      });
+    }
+
+    console.log("Checking domains:", domains);
+
+    const domainPatterns = domains.map(domain => `%${domain}`);
+
+    const users = await models.User.findAll({
+      where: {
+        email: {
+          [Op.or]: domainPatterns.map(pattern => ({
+            [Op.like]: pattern
+          }))
+        }
+      },
+    });
+
+    return res.status(200).json({
+      voterCount: users.length,
+      domains: domains,
+      matchedUsers: users.map(user => ({
+        id: user.id,
+        email: user.email
+      }))
+    });
+  } catch (error) {
+    console.error("Error checking domain whitelist count:", error);
+    return res.status(500).json({
+      message: "Internal server error while checking domain whitelist count",
+      voterCount: 0
+    });
+  }
+};
+
+const checkAllUsersCount = async (req, res, next) => {
+  try {
+    const userCount = await models.User.count();
+
+    return res.status(200).json({
+      voterCount: userCount,
+      message: "All registered users count retrieved successfully"
+    });
+  } catch (error) {
+    console.error("Error checking all users count:", error);
+    return res.status(500).json({
+      message: "Internal server error while checking all users count",
+      voterCount: 0
+    });
+  }
+};
+
 export default {
   addWhitelist,
   addDomainWhitelist,
-  addAll
+  addAll,
+  checkWhitelistCount,
+  checkDomainWhitelistCount,
+  checkAllUsersCount
 };

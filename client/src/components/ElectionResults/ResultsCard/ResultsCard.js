@@ -5,7 +5,7 @@ import CandidateResults from "../CandidateResultsCard";
 
 const ResultsCard = ({ result, status }) => {
     return (
-        <div className="bg-white min-h-screen rounded-t-3xl px-4 py-8">
+        <div className="bg-white rounded-t-3xl px-4 py-8">
             <div className="max-w-3xl mx-auto">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Election Results</h2>
 

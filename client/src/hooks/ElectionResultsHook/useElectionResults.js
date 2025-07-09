@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchElectionResults } from "../../redux/thunks/contractThunks";
+import { fetchElectionResults } from "../../redux/thunks/electionThunks";
 
 export const useElectionResults = (id) => {
     const dispatch = useDispatch();

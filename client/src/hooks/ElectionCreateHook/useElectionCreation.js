@@ -21,6 +21,10 @@ export const useElectionCreation = () => {
         setSuccess("");
     };
 
+    const stopLoading = () => {
+        setLoading(false);
+    };
+
     const clearFinalizing = () => {
         setFinalizing(false);
     };
@@ -77,10 +81,7 @@ export const useElectionCreation = () => {
 
             currentElectionId = electionResult.id;
             setElectionId(currentElectionId);
-            console.log('✅ Election created with ID:', currentElectionId);
 
-            // Step 2: Add candidates
-            console.log('Adding candidates...');
             const candidatesWithImages = formData.candidates
                 .filter(candidate => candidate.name || (typeof candidate === 'string' && candidate.trim()))
                 .map(candidate => ({
@@ -88,7 +89,6 @@ export const useElectionCreation = () => {
                     image: candidate.imagePreview || null,
                     description: candidate.description || ""
                 }));
-
             if (candidatesWithImages.length === 0) {
                 throw new Error('No valid candidates found');
             }
@@ -97,60 +97,34 @@ export const useElectionCreation = () => {
                 electionId: currentElectionId,
                 candidates: candidatesWithImages
             }));
-
             if (!candidateResult) {
                 throw new Error('Failed to add candidates to election');
             }
-            console.log('✅ Candidates added successfully');
 
-            // Step 3: Set up eligibility rules
-            console.log('Setting up eligibility...');
             if (formData.eligibilityType === "whitelist") {
                 const emails = validator.parseWhitelist(formData.whitelist);
                 if (emails.length === 0) throw new Error("Whitelist is empty or invalid");
-
-                await dispatch(electionThunk.addWhitelist(currentElectionId, emails));
-                console.log(`Added ${emails.length} emails to whitelist`);
-
             } else if (formData.eligibilityType === "domain") {
                 const domains = validator.parseDomainWhitelist(formData.domainWhitelist);
                 if (domains.length === 0) throw new Error("Domain whitelist is empty or invalid");
-
-                await dispatch(electionThunk.addDomainWhitelist(currentElectionId, domains));
-                console.log(`Added ${domains.length} domains to whitelist`);
-
             } else {
                 await dispatch(electionThunk.addAll(currentElectionId));
-                console.log('Set eligibility to all users');
             }
 
-            // Step 4: Deploy smart contract
-            console.log('Deploying contract...');
             const deployResult = await dispatch(contractThunk.deployContract(currentElectionId));
-
             if (!deployResult?.contractAddress) {
                 throw new Error('Contract deployment failed - no contract address returned');
             }
 
-            console.log('✅ Contract deployed at:', deployResult.contractAddress);
-            console.log('=== ELECTION CREATION COMPLETE ===');
-
-            // Success!
-            setSuccess(
-                `Election "${formData.title}" created successfully! ` +
-                `Contract deployed at: ${deployResult.contractAddress.substring(0, 10)}...`
-            );
-
+            setSuccess(`Election created successfully!`);
             return {
                 success: true,
                 electionId: currentElectionId,
                 contractAddress: deployResult.contractAddress
             };
 
-        } catch (error) {
-            console.error("Election creation failed:", error);
 
-            // Cleanup if we created an election but failed later
+        } catch (error) {
             if (currentElectionId) {
                 await cleanupFailedElection(currentElectionId);
                 setElectionId(null);
@@ -158,26 +132,26 @@ export const useElectionCreation = () => {
 
             const errorMessage = getErrorMessage(error);
             setError(errorMessage);
-
             return { success: false, error: errorMessage };
 
         } finally {
-            setLoading(false);
             setFinalizing(true);
         }
     };
 
     return {
         loading,
+        finalizing,
+        isBusy,
         error,
         success,
         electionId,
-        finalizing,
-        isBusy,
         createElection,
         clearMessages,
         clearFinalizing,
         setError,
-        setSuccess
+        setSuccess,
+        stopLoading
     };
+
 };

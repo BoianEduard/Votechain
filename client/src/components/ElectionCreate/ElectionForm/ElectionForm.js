@@ -15,22 +15,18 @@ const ElectionForm = ({
                           handleCandidateImageChange,
                           addCandidate,
                           removeCandidate,
-                          handleSubmit,
-                          loading,
-                          error,
+
                           step,
                           nextStep,
                           prevStep,
-                          // Payment flow props
-                          paymentId,
+
+                          loading,
+                          success,
+
                           paymentCompleted,
                           paymentError,
-                          processingPayment,
-                          onPaymentStart,
                           onPaymentSuccess,
-                          onPaymentError,
                           resetPayment,
-                          setPaymentError
                       }) => {
     return (
         <div className="election-form-container">
@@ -78,7 +74,8 @@ const ElectionForm = ({
                         formData={formData}
                         prevStep={prevStep}
                         nextStep={nextStep}
-                        loading = {loading}/>
+                        loading={loading}
+                    />
                 )}
 
                 {step === 6 && (
@@ -86,18 +83,10 @@ const ElectionForm = ({
                         formData={formData}
                         prevStep={prevStep}
                         onPaymentSuccess={onPaymentSuccess}
-                        handleSubmit={handleSubmit}
                         loading={loading}
-                        // Payment flow props - now properly passed through
-                        paymentId={paymentId}
                         paymentCompleted={paymentCompleted}
                         paymentError={paymentError}
-                        processingPayment={processingPayment}
-                        onPaymentStart={onPaymentStart}
-                        onPaymentSuccessHook={onPaymentSuccess} // Map to expected prop name
-                        onPaymentError={onPaymentError}
                         resetPayment={resetPayment}
-                        setPaymentError={setPaymentError}
                     />
                 )}
             </div>
@@ -112,22 +101,18 @@ ElectionForm.propTypes = {
     handleCandidateImageChange: PropTypes.func.isRequired,
     addCandidate: PropTypes.func.isRequired,
     removeCandidate: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+
     step: PropTypes.number.isRequired,
     nextStep: PropTypes.func.isRequired,
     prevStep: PropTypes.func.isRequired,
-    // payment flow props.. perhaps find a better way
-    paymentId: PropTypes.string,
+
+    loading: PropTypes.bool.isRequired,
+    success: PropTypes.bool,
+
     paymentCompleted: PropTypes.bool,
     paymentError: PropTypes.string,
-    processingPayment: PropTypes.bool,
-    onPaymentStart: PropTypes.func,
     onPaymentSuccess: PropTypes.func.isRequired,
-    onPaymentError: PropTypes.func,
     resetPayment: PropTypes.func,
-    setPaymentError: PropTypes.func
 };
 
 export default ElectionForm;

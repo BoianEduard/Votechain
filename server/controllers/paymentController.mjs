@@ -42,7 +42,7 @@ const createPaymentIntent = async (req, res) => {
     }
 };
 
-//basically check if the payment happened.
+// basically check if the payment happened.
 const verifyPayment = async (req, res) => {
     try {
         const { paymentIntentId } = req.params;

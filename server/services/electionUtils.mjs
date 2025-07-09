@@ -1,3 +1,31 @@
+import * as contractUtils from "../services/contractUtils.mjs";
+import models from "../models/index.mjs";
+
+export const getElectionStatus = (election) => {
+    const now = new Date();
+    const startDate = new Date(election.startDate);
+    const endDate = new Date(election.endDate);
+
+    if (now < startDate) {
+        return "draft";
+    } else if (now >= startDate && now <= endDate) {
+        return "active";
+    } else {
+        return "closed";
+    }
+};
+
+export const updateElectionStatus = async (election) => {
+    const currentStatus = getElectionStatus(election);
+
+    if (currentStatus !== election.status) {
+        await election.update({ status: currentStatus });
+        election.status = currentStatus;
+    }
+
+    return election;
+};
+
 const formatCandidateResults = (candidates, voteCounts, totalCast) => {
     return candidates
         .map(c => ({
@@ -27,7 +55,7 @@ const formatWinner = (winnerId, candidates, voteCounts, totalCast) => {
     };
 };
 
-const buildResponse = (election, stats, candidates, winner) => {
+export const buildResponse = (election, stats, candidates, winner) => {
     return {
         electionId: election.id,
         title: election.title,
@@ -40,7 +68,7 @@ const buildResponse = (election, stats, candidates, winner) => {
     };
 };
 
-const returnCachedResults = async (election, existingResult) => {
+export const returnCachedResults = async (election, existingResult) => {
     const candidates = await models.Candidate.findAll({
         where: { electionId: election.id },
         attributes: ["id", "name", "description", "imageUrl", "votes"]
@@ -58,7 +86,7 @@ const returnCachedResults = async (election, existingResult) => {
     return buildResponse(election, stats, candidateResults, winner);
 };
 
-const calculateAndStoreResults = async (election, shouldStore = false) => {
+export const calculateAndStoreResults = async (election, shouldStore = false) => {
     const contract = contractUtils.getProviderContract(election.contractAddress);
     const stats = await contractUtils.fetchVotingStats(contract);
     const events = await contractUtils.fetchVoteEvents(contract);

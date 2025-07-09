@@ -57,25 +57,33 @@ const ElectionCreatePage = () => {
     createElection,
     clearMessages,
     clearFinalizing,
-    finalizing
+    finalizing,
+    stopLoading
   } = useElectionCreation();
 
   const isBusy = loading || finalizing || processingPayment;
 
   useEffect(() => {
+    console.log("paymentCompleted in ElectionCreatePage:", paymentCompleted);
+  }, [paymentCompleted]);
+
+  useEffect(() => {
     if (success) {
+      stopLoading();
       const timer = setTimeout(() => {
         navigate("/dashboard");
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [success, navigate]);
+  }, [success, navigate, stopLoading]);
+
 
   useEffect(() => {
     if (error) {
       clearMessages();
     }
   }, [form, error, clearMessages]);
+
 
   useEffect(() => {
     clearFinalizing();
@@ -105,21 +113,14 @@ const ElectionCreatePage = () => {
 
   const handlePaymentSuccess = async (paymentIntentId) => {
     try {
-      // first, call the payment success hook
       onPaymentSuccessHook(paymentIntentId);
-
-      // Then create the election using our custom hook
-      const result = await createElection(form);
-
-      if (!result.success) {
-        handlePaymentError(result.error);
-      }
+      await createElection(form);
     } catch (error) {
       handlePaymentError(error.message || "Failed to create election");
     }
   };
 
-  // combine all errors for display
+  // combine d all errors for display
   const allErrors = [
     error,
     paymentError,
@@ -138,10 +139,8 @@ const ElectionCreatePage = () => {
            <ProgressTracker currentStep={step} />
         </div>
 
-        {/* Main Content Section */}
         <div className="bg-white dark:bg-gray-900 min-h-screen rounded-t-3xl px-4 py-4 transition-colors duration-200">
           <div className="max-w-4xl mx-auto">
-            {/* Error Messages */}
             {allErrors.length > 0 && (
                 <div className="mb-6 space-y-2">
                   {allErrors.map((errorMsg, index) => (
@@ -150,14 +149,12 @@ const ElectionCreatePage = () => {
                 </div>
             )}
 
-            {/* Success Message */}
             {success && (
                 <div className="mb-6">
                   <SuccessMessage message={success} />
                 </div>
             )}
 
-            {/* Election Form */}
             <ElectionForm
                 formData={form}
                 handleInputChange={handleInputChange}
@@ -173,8 +170,8 @@ const ElectionCreatePage = () => {
                 prevStep={prevStep}
                 onReset={handleReset}
                 electionId={electionId}
+                success={success}
 
-                // Payment flow props
                 paymentId={paymentId}
                 paymentCompleted={paymentCompleted}
                 paymentError={paymentError}
@@ -183,7 +180,6 @@ const ElectionCreatePage = () => {
                 onPaymentSuccess={handlePaymentSuccess}
                 onPaymentError={handlePaymentError}
                 resetPayment={resetPayment}
-                success={success}
             />
           </div>
         </div>

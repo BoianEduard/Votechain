@@ -3,10 +3,9 @@ import React from "react";
 
 const ElectionHead = ({ election, expanded, toggleExpand }) => {
     const getStatus = () => {
-        const now = new Date();
-        if (new Date(election.startDate) > now) return "Not Started";
-        if (new Date(election.endDate) < now) return "Closed";
-        return "Vote In Progress";
+        if (election.status === "active") return "Vote In Progress";
+        if (election.endDate === "closed") return "Closed";
+        return "Not Started ";
     };
 
     const status = getStatus();

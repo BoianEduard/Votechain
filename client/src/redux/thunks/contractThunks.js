@@ -52,17 +52,3 @@ export const castVote = (electionId, candidateId, electionPublicKey, registeredA
         throw error;
     }
 };
-
-export const fetchElectionResults = (electionId) => async (dispatch) => {
-    dispatch(contractSlice.fetchResultsStart());
-    try {
-        const result = await contractAPI.getElectionResults(electionId);
-        dispatch(contractSlice.fetchResultsSuccess({ electionId, result }));
-        console.log(result);
-        return result;
-    } catch (error) {
-        const serializedError = serializeError(error, "Fetching election results failed");
-        dispatch(contractSlice.castVoteFail(serializedError));
-        throw error;
-    }
-};

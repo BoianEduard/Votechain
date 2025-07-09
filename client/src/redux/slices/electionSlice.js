@@ -112,6 +112,38 @@ const electionSlice = createSlice({
         getVoterTurnoutFail(state, action) {
             state.loading = false;
             state.error = action.payload;
+        },
+        checkVoterCountStart(state) {
+            state.voterCountLoading = true;
+            state.voterCountError = null;
+        },
+        checkVoterCountSuccess(state, action) {
+            state.voterCountLoading = false;
+            state.voterCount = action.payload.voterCount;
+            state.voterCountError = null;
+        },
+        checkVoterCountFail(state, action) {
+            state.voterCountLoading = false;
+            state.voterCountError = action.payload;
+            state.voterCount = 0;
+        },
+        resetVoterCount(state) {
+            state.voterCount = 0;
+            state.voterCountLoading = false;
+            state.voterCountError = null;
+        },
+        fetchResultsStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        fetchResultsSuccess: (state, action) => {
+            state.loading = false;
+            const { electionId, result } = action.payload;
+            state.results[electionId] = result;
+        },
+        fetchResultsFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         }
     }
 });
@@ -122,9 +154,11 @@ export const {
     addWhitelistStart, addWhitelistSuccess, addWhitelistFail,
     fetchElectionsStart, fetchElectionsSuccess, fetchElectionsFail,
     fetchElectionDetailsStart, fetchElectionDetailsSuccess, fetchElectionDetailsFail,
-    deleteElectionStart,deleteElectionSuccess,deleteElectionFail,
-    getDashboardStatsStart,getDashboardStatsFail,getDashboardStatsSuccess,
-    getVoterTurnoutStart,getVoterTurnoutSuccess,getVoterTurnoutFail
+    deleteElectionStart, deleteElectionSuccess, deleteElectionFail,
+    getDashboardStatsStart, getDashboardStatsFail, getDashboardStatsSuccess,
+    getVoterTurnoutStart, getVoterTurnoutSuccess, getVoterTurnoutFail,
+    checkVoterCountStart, checkVoterCountSuccess, checkVoterCountFail, resetVoterCount,
+    fetchResultsStart, fetchResultsSuccess, fetchResultsFail
 } = electionSlice.actions;
 
 export default electionSlice.reducer;

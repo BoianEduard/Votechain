@@ -113,6 +113,46 @@ const getVoterTurnout = async (electionId) => {
     }
 };
 
+const checkWhitelistCount = async (emails) => {
+    try {
+        const response = await axiosInstance.post(`${API_ENDPOINT}/check-whitelist-count`, { emails });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Checking whitelist count failed";
+    }
+};
+
+const checkDomainWhitelistCount = async (domains) => {
+    try {
+        const response = await axiosInstance.post(`${API_ENDPOINT}/check-domain-count`, { domains });
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Checking domain whitelist count failed";
+    }
+};
+
+const checkAllUsersCount = async () => {
+    try {
+        const response = await axiosInstance.get(`${API_ENDPOINT}/check-all-count`);
+        return response.data;
+    } catch (error) {
+        throw error.response?.data?.message || "Checking all users count failed";
+    }
+};
+
+const getElectionResults = async (electionId) => {
+    try {
+        const response = await axiosInstance.get(`${API_ENDPOINT}/${electionId}/results`);
+        return response.data;
+    } catch (error) {
+        const message = error.response?.data?.message || "Getting election results failed";
+        const customError = new Error(message);
+        customError.status = error.response?.status;
+        throw customError;
+    }
+};
+
+
 export default {
     createElection,
     addCandidates,
@@ -123,5 +163,9 @@ export default {
     getElection,
     deleteElection,
     getDashboardStats,
-    getVoterTurnout
+    getVoterTurnout,
+    checkWhitelistCount,
+    checkDomainWhitelistCount,
+    checkAllUsersCount,
+    getElectionResults
 };

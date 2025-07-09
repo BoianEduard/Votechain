@@ -1,5 +1,11 @@
 import models from "../models/index.mjs";
 import { generateKeyPair, encryptPrivateKey } from "../services/cryptoUtils.mjs";
+import {
+    calculateAndStoreResults,
+    getElectionStatus,
+    returnCachedResults,
+    updateElectionStatus
+} from "../services/electionUtils.mjs";
 import * as contractUtils from "../services/contractUtils.mjs";
 
 const createElection = async (req, res, next) => {
@@ -7,10 +13,15 @@ const createElection = async (req, res, next) => {
         const electionKeys = generateKeyPair();
         const encryptedPrivateKey = encryptPrivateKey(electionKeys.privateKey);
 
+        const today = new Date();
+        const startDate = new Date(req.body.startDate);
+        const status = startDate >= today ? "active" : "draft";
+
         const election = await models.Election.create({
             ...req.body,
             publicKey: electionKeys.publicKey,
             privateKey: encryptedPrivateKey,
+            status: status
         });
 
         const electionData = election.toJSON();
@@ -21,7 +32,7 @@ const createElection = async (req, res, next) => {
             ...electionData,
         });
     } catch (error) {
-        next(error);  // Propaghezi eroarea mai departe
+        next(error);
     }
 };
 
@@ -40,8 +51,31 @@ const getAllElections = async (req, res, next) => {
                     as: "candidates",
                 },
             ],
-            attributes: { exclude: ["privateKey"] }, // obvious
+            attributes: { exclude: ["privateKey"] },
         });
+
+        const now = new Date();
+        const electionsToUpdate = [];
+
+        elections.forEach(election => {
+            const currentStatus = getElectionStatus(election);
+            if (currentStatus !== election.status) {
+                electionsToUpdate.push({
+                    id: election.id,
+                    newStatus: currentStatus
+                });
+                election.status = currentStatus; // Actualizează obiectul local
+            }
+        });
+
+        // bulk update
+        if (electionsToUpdate.length > 0) {
+            await Promise.all(
+                electionsToUpdate.map(({ id, newStatus }) =>
+                    models.Election.update({ status: newStatus }, { where: { id } })
+                )
+            );
+        }
 
         return res.status(200).json(elections);
     } catch (error) {
@@ -74,7 +108,10 @@ const getElectionById = async (req, res, next) => {
             return res.status(404).json({ message: "Election not found or not eligible" });
         }
 
-        return res.status(200).json(election);
+        // Verifică și actualizează statusul
+        const updatedElection = await updateElectionStatus(election);
+
+        return res.status(200).json(updatedElection);
     } catch (error) {
         next(error);
     }
@@ -187,11 +224,47 @@ const getTurnout = async (req, res, next) => {
     }
 };
 
+const getElectionResults = async (req, res, next) => {
+    try {
+        const { electionId } = req.params;
+
+        let election = await models.Election.findByPk(electionId);
+        if (!election) {
+            return res.status(404).json({ message: "Election not found" });
+        }
+
+        // Actualizează statusul înainte de orice logică
+        election = await updateElectionStatus(election, models);
+
+        if (!election.realTimeResults && election.status !== "closed") {
+            return res.status(403).json({
+                message: "Election has not ended yet and real-time results are not enabled"
+            });
+        }
+
+        const existingResult = await models.Result.findOne({ where: { electionId } });
+        let response;
+
+        if (election.status === "closed" && existingResult) {
+            response = await returnCachedResults(election, existingResult);
+        } else {
+            const now = new Date();
+            const isElectionEnded = now > new Date(election.endDate);
+            response = await calculateAndStoreResults(election, isElectionEnded && !existingResult);
+        }
+
+        return res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
     createElection,
     getAllElections,
     getElectionById,
     deleteElection,
     getDashboardStats,
-    getTurnout
+    getTurnout,
+    getElectionResults
 };

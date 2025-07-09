@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -6,21 +6,23 @@ import LoadingSpinner from "../../Commons/LoadingSpinner";
 import Error from "../../Commons/Error";
 import FormContainer from "../../../hooks/ElectionCreateHook/useExpandableSection";
 import InputSection from "../FormComponents/InputSection";
-import { usePaymentFlow } from "../../../hooks/ElectionCreateHook/useElectionPayment";
+import { formatPrice } from "../../../utils/pricing";
 import * as paymentThunks from "../../../redux/thunks/paymentThunks";
+import SuccessMessage from "../../Commons/Success";
 
-const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) => {
+const PaymentForm = ({
+                         formData,
+                         pricingData,
+                         onPaymentSuccess,
+                         onPaymentError,
+                         onProcessingChange,
+                     }) => {
     const stripe = useStripe();
     const elements = useElements();
     const dispatch = useDispatch();
 
-    const {
-        processingPayment,
-        paymentError,
-        handlePaymentStart,
-        handlePaymentSuccess,
-        handlePaymentError,
-    } = usePaymentFlow();
+    const [processingPayment, setProcessingPayment] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
 
     const cardElementOptions = {
         style: {
@@ -36,25 +38,43 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
         hidePostalCode: false,
     };
 
+    const updateProcessingState = (isProcessing) => {
+        setProcessingPayment(isProcessing);
+        onProcessingChange?.(isProcessing);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
-            handlePaymentError("Payment system is not ready. Please try again.");
+            const error = "Payment system is not ready. Please try again.";
+            setPaymentError(error);
+            onPaymentError(new Error(error));
+            return;
+        }
+
+        if (!pricingData) {
+            const error = "Price calculation is not ready. Please try again.";
+            setPaymentError(error);
+            onPaymentError(new Error(error));
             return;
         }
 
         try {
-            handlePaymentStart();
+            setPaymentError(null);
+            updateProcessingState(true);
 
             const paymentIntentData = await dispatch(
                 paymentThunks.createPaymentIntent({
-                    amount: 150,
+                    amount: pricingData.totalCents,
                     currency: "usd",
                     metadata: {
                         electionTitle: formData.title,
                         candidateCount: formData.candidates.length,
                         eligibilityType: formData.eligibilityType,
+                        voterCount: pricingData.voterCount,
+                        basePrice: pricingData.basePrice,
+                        pricePerVoter: pricingData.pricePerVoter,
                     },
                 })
             );
@@ -77,29 +97,54 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
             }
 
             if (paymentIntent.status === "succeeded") {
-                handlePaymentSuccess(paymentIntent.id);
                 onPaymentSuccess(paymentIntent.id);
             } else {
                 throw new Error("Payment was not completed successfully");
             }
         } catch (err) {
             console.error("Payment error:", err);
-            handlePaymentError(err.message || "An unexpected error occurred. Please try again.");
+            const errorMessage = err.message || "An unexpected error occurred. Please try again.";
+            setPaymentError(errorMessage);
             onPaymentError(err);
+        } finally {
+            updateProcessingState(false);
         }
     };
+
+    if (!pricingData) {
+        return (
+            <FormContainer className="p-0">
+                <div className="flex items-center justify-center py-8">
+                    <LoadingSpinner message="Calculating price..." />
+                </div>
+            </FormContainer>
+        );
+    }
 
     return (
         <FormContainer className="p-0">
             <form onSubmit={handleSubmit} className="space-y-3">
                 <InputSection title="Order Summary" icon="💳">
-                    <div className="space-y-1 text-sm">
+                    <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Election Deployment</span>
-                            <span className="font-medium">$1.50</span>
+                            <span className="text-gray-600">Base Election Fee</span>
+                            <span className="font-medium">${formatPrice(pricingData.basePrice * 100)}</span>
                         </div>
-                        <div className="text-xs text-gray-500">
-                            {formData.title || "Untitled Election"}
+
+                        <div className="flex justify-between">
+                            <span className="text-gray-600">
+                                Voter Fee ({pricingData.voterCount} voters × ${formatPrice(pricingData.pricePerVoter * 100)})
+                            </span>
+                            <span className="font-medium">
+                                ${formatPrice((pricingData.voterCount * pricingData.pricePerVoter) * 100)}
+                            </span>
+                        </div>
+
+                        <div className="border-t pt-2">
+                            <div className="flex justify-between font-bold text-base">
+                                <span>Total</span>
+                                <span>${formatPrice(pricingData.totalCents)}</span>
+                            </div>
                         </div>
                     </div>
                 </InputSection>
@@ -112,27 +157,28 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
 
                 {paymentError && <Error message={paymentError} />}
 
+                {}
+
                 <button
                     type="submit"
-                    disabled={!stripe || processingPayment || loading}
+                    disabled={!stripe || processingPayment}
                     className={`w-full py-2 px-4 rounded text-sm font-medium transition-colors ${
-                        !stripe || processingPayment || loading
+                        !stripe || processingPayment
                             ? "bg-gray-300 cursor-not-allowed text-gray-500"
                             : "bg-blue-600 hover:bg-blue-700 text-white"
                     }`}
                 >
                     {processingPayment ? (
                         <div className="flex items-center justify-center">
-                            <LoadingSpinner size="sm" />
-                            <span className="ml-2">Processing...</span>
+                            <span className="ml-1">Processing...</span>
                         </div>
                     ) : (
-                        "Pay $29.99"
+                        `Pay $${formatPrice(pricingData.totalCents)}`
                     )}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
-                    Secured by Stripe
+                    Stripe
                 </p>
             </form>
         </FormContainer>
@@ -140,14 +186,21 @@ const PaymentForm = ({ onPaymentSuccess, onPaymentError, loading, formData }) =>
 };
 
 PaymentForm.propTypes = {
-    onPaymentSuccess: PropTypes.func.isRequired,
-    onPaymentError: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
     formData: PropTypes.shape({
         title: PropTypes.string,
         candidates: PropTypes.array,
         eligibilityType: PropTypes.string,
     }).isRequired,
+    pricingData: PropTypes.shape({
+        totalCents: PropTypes.number.isRequired,
+        totalDollars: PropTypes.number.isRequired,
+        basePrice: PropTypes.number.isRequired,
+        pricePerVoter: PropTypes.number.isRequired,
+        voterCount: PropTypes.number.isRequired,
+    }),
+    onPaymentSuccess: PropTypes.func.isRequired,
+    onPaymentError: PropTypes.func.isRequired,
+    onProcessingChange: PropTypes.func,
 };
 
 export default PaymentForm;

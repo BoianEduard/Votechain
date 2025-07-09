@@ -1,6 +1,8 @@
 import * as electionSlice from "../slices/electionSlice";
 import electionAPI from '../../api/electionAPI';
 import serializeError from '../../utils/serializeError';
+import * as contractSlice from "../slices/contractSlice";
+import contractAPI from "../../api/contractAPI";
 
 export const createElection = (details) => async (dispatch) => {
     dispatch(electionSlice.createElectionStart());
@@ -129,6 +131,63 @@ export const getVoterTurnout = (electionId) => async (dispatch) => {
     } catch (error) {
         const serializedError = serializeError(error, "Fetching voter turnout failed");
         dispatch(electionSlice.getVoterTurnoutFail(serializedError));
+        throw error;
+    }
+};
+
+export const checkWhitelistCount = (emails) => async (dispatch) => {
+    dispatch(electionSlice.checkVoterCountStart());
+    try {
+        const data = await electionAPI.checkWhitelistCount(emails);
+        dispatch(electionSlice.checkVoterCountSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = serializeError(error, "Checking whitelist count failed");
+        dispatch(electionSlice.checkVoterCountFail(serializedError));
+        throw error;
+    }
+};
+
+export const checkDomainWhitelistCount = (domains) => async (dispatch) => {
+    dispatch(electionSlice.checkVoterCountStart());
+    try {
+        const data = await electionAPI.checkDomainWhitelistCount(domains);
+        dispatch(electionSlice.checkVoterCountSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = serializeError(error, "Checking domain whitelist count failed");
+        dispatch(electionSlice.checkVoterCountFail(serializedError));
+        throw error;
+    }
+};
+
+export const checkAllUsersCount = () => async (dispatch) => {
+    dispatch(electionSlice.checkVoterCountStart());
+    try {
+        const data = await electionAPI.checkAllUsersCount();
+        dispatch(electionSlice.checkVoterCountSuccess(data));
+        return data;
+    } catch (error) {
+        const serializedError = serializeError(error, "Checking all users count failed");
+        dispatch(electionSlice.checkVoterCountFail(serializedError));
+        throw error;
+    }
+};
+
+export const resetVoterCount = () => (dispatch) => {
+    dispatch(electionSlice.resetVoterCount());
+};
+
+export const fetchElectionResults = (electionId) => async (dispatch) => {
+    dispatch(electionSlice.fetchResultsStart());
+    try {
+        const result = await electionAPI.getElectionResults(electionId);
+        dispatch(electionSlice.fetchResultsSuccess({ electionId, result }));
+        console.log(result);
+        return result;
+    } catch (error) {
+        const serializedError = serializeError(error, "Fetching election results failed");
+        dispatch(electionSlice.fetchResultsFail(serializedError));
         throw error;
     }
 };

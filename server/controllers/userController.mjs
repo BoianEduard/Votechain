@@ -36,6 +36,10 @@ export const checkEligibility = async (req, res, next) => {
             });
         }
 
+        if (now > new Date(election.start_date)) {
+
+        }
+
         if (now > new Date(election.end_date)) {
             return res.status(403).json({
                 message: 'Election has ended',
