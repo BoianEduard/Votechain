@@ -61,9 +61,7 @@ export const validateElectionForm = (formData) => {
   
     return { isValid: true, error: "" };
   };
-  
-  
-  //Validate candiddate list
+
   export const validateCandidates = (candidates) => {
     const validCandidates = candidates.filter(candidate => candidate.trim() !== "");
     
@@ -74,7 +72,6 @@ export const validateElectionForm = (formData) => {
     return { isValid: true, error: "" };
   };
   
-  //Validate voter whitelist
   export const validateWhitelist = (whitelist) => {
     if (!whitelist.trim()) {
       return { isValid: false, error: "Whitelist is required when eligibility type is set to whitelist" };
@@ -128,8 +125,6 @@ export const validateElectionForm = (formData) => {
     return { isValid: true, error: "" };
   };
 
-// Add these functions to your validators module (../../utils/validators)
-
 export const validateDomainWhitelist = (domainWhitelist) => {
   if (!domainWhitelist || typeof domainWhitelist !== 'string') {
     return {
@@ -146,12 +141,9 @@ export const validateDomainWhitelist = (domainWhitelist) => {
       error: "At least one domain is required"
     };
   }
-
-  // validate domain format
   for (const domain of domains) {
     const trimmedDomain = domain.trim();
 
-    // Check if domain is empty
     if (!trimmedDomain) {
       continue;
     }
@@ -193,7 +185,6 @@ export const parseDomainWhitelist = (domainWhitelist) => {
         // eliminate all % appearances to avoid backend possible issues.
         trimmed = trimmed.replace(/%/g, '');
 
-        // make sure the domains start with @.
         if (trimmed && !trimmed.startsWith('@')) {
           trimmed = '@' + trimmed;
         }

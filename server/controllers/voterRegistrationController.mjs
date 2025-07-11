@@ -13,8 +13,6 @@ const addDomainWhitelist = async (req, res, next) => {
       return res.status(400).json({ message: "Valid domain list is required" });
     }
 
-    console.log(domains)
-
     const election = await models.Election.findByPk(electionId);
     if (!election) {
       return res.status(404).json({ message: "Election not found" });
@@ -131,7 +129,6 @@ const addWhitelist = async (req, res, next) => {
 const addAll = async (req, res, next) => {
   try {
     const {electionId} = req.body;
-    console.log(electionId);
     if (!electionId) {
       return res.status(400).json({message: "Election ID is required"});
     }
@@ -147,7 +144,6 @@ const addAll = async (req, res, next) => {
     const existingRegistrations = await models.VoterRegistration.findAll({
       where: { electionId }
     });
-    console.log(`Found ${existingRegistrations.length} existing registrations for election ${electionId}`);
 
     const whitelistEntries = await Promise.all(
         users.map(user => models.VoterRegistration.create({
@@ -232,11 +228,7 @@ const checkDomainWhitelistCount = async (req, res, next) => {
         voterCount: 0
       });
     }
-
-    console.log("Checking domains:", domains);
-
     const domainPatterns = domains.map(domain => `%${domain}`);
-
     const users = await models.User.findAll({
       where: {
         email: {

@@ -5,38 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionResults/TransactionHistoryCard/TransactionHistoryCard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/ElectionResults/TransactionHistoryCard/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/utils/pricing.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.Rhistory" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useVoterCount.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/api/contractAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/contractAPI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/api/electionAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/api/electionAPI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Commons/Error/ErrorCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Commons/Error/ErrorCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Commons/Success/Success.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Commons/Success/Success.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/App/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/App/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard/DashboardSidebar/DashboardSidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/ElectionForm.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/CandidateInputCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormComponents/CandidateInputCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/CandidateInfoStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/CandidateInfoStep.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/PaymentStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/PaymentStep.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/ReviewStep.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionCreate/FormSteps/ReviewStep.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/ElectionHead/ElectionHead.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionHead/ElectionHead.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsCard/ResultsCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsCard/ResultsCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionHistory/ResultsCard/ResultsCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionHistory/ResultsCard/ResultsCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionResults/TransactionHistoryCard/TransactionHistoryCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionResults/TransactionHistoryCard/TransactionHistoryCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Vote/VoteSuccessCard/VoteSuccessCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Vote/VoteSuccessCard/VoteSuccessCard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useElectionCreation.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useElectionCreation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useElectionPayment.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionCreateHook/useElectionPayment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionData.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionHistoryHook/useElectionData.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionResults.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionResultsHook/useElectionResults.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/DashboardPage/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreate.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreate.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionCreatePage/ElectionCreatePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionHistoryPage/ElectionHistoryPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionResultsPage/ElectionResultsPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/slices/electionSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/slices/electionSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/contractThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/contractController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/contractController.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ElectionViewPage/ElectionViewPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/RegisterPage/RegisterPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/serializeError.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/serializeError.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/candidateController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/candidateController.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/controllers/electionController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/electionController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/paymentController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/paymentController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/userController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/userController.mjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/contractRoutes.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/contractRoutes.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/electionRoutes.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/electionRoutes.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/errorHash.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/errorHash.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/hardhat.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/hardhat.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/services/resultUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/services/electionUtils.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +178,8 @@
       <workItem from="1750617294135" duration="2267000" />
       <workItem from="1750671387946" duration="12837000" />
       <workItem from="1750860614836" duration="6523000" />
-      <workItem from="1751920833923" duration="31408000" />
+      <workItem from="1751920833923" duration="36912000" />
+      <workItem from="1752262258884" duration="3175000" />
     </task>
     <servers />
   </component>
@@ -210,7 +210,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>

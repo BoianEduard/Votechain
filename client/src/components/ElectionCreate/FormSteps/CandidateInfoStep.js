@@ -26,7 +26,6 @@ const CandidateDetailsStep = ({
                     </div>
 
                     <div className="flex flex-wrap gap-3">
-                        {/* Image section */}
                         <div className="flex items-center">
                             {candidate.imagePreview ? (
                                 <img
@@ -69,7 +68,6 @@ const CandidateDetailsStep = ({
                             </div>
                         </div>
 
-                        {/* Description field */}
                         <div className="flex-1 min-w-[200px]">
               <textarea
                   value={candidate.description || ''}

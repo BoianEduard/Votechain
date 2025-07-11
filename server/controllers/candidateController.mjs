@@ -38,7 +38,6 @@ const saveImage = (imageData, candidateName) => {
 
 const createCandidates = async (req, res, next) => {
   try {
-    console.log("Creating candidates with data:", JSON.stringify(req.body, null, 2));
     const { electionId, candidates } = req.body;
 
     if (!Array.isArray(candidates) || candidates.length < 2) {
@@ -48,7 +47,6 @@ const createCandidates = async (req, res, next) => {
     }
 
     const candidateFields = Object.keys(models.Candidate.rawAttributes);
-    console.log("Available candidate fields:", candidateFields);
 
     const candidatePromises = candidates.map(candidate => {
       let name, image, description;
@@ -64,7 +62,6 @@ const createCandidates = async (req, res, next) => {
       }
 
       const imageUrl = image ? saveImage(image, name) : null;
-      console.log(`Processing candidate: ${name}, imageUrl: ${imageUrl}`);
 
       const candidateData = {
         name: name,

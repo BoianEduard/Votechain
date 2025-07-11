@@ -81,7 +81,6 @@ const ReviewStep = ({ formData, prevStep, nextStep }) => {
             className="p-0"
         >
             <div className="space-y-4">
-                {/* Basic Information */}
                 <InputSection
                     title="Basic Information"
                     icon="📋"
@@ -115,7 +114,6 @@ const ReviewStep = ({ formData, prevStep, nextStep }) => {
                     )}
                 </InputSection>
 
-                {/* Candidates */}
                 <InputSection
                     title={`Candidates (${formData.candidates.length})`}
                     icon="🗳️"
@@ -136,7 +134,6 @@ const ReviewStep = ({ formData, prevStep, nextStep }) => {
                     </div>
                 </InputSection>
 
-                {/* Settings */}
                 <InputSection title="Settings" icon="⚙️">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-center gap-3">
@@ -167,7 +164,6 @@ const ReviewStep = ({ formData, prevStep, nextStep }) => {
                     </div>
                 </InputSection>
 
-                {/* Blockchain Notice */}
                 <InputSection
                     title="Blockchain Secured"
                     icon="🔒"
@@ -180,7 +176,6 @@ const ReviewStep = ({ formData, prevStep, nextStep }) => {
                 </InputSection>
             </div>
 
-            {/* Navigation Buttons */}
             <div className="flex justify-between mt-6 pt-4 border-t">
                 <NavigationButton
                     title="Back: Settings"

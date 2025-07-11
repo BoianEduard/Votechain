@@ -70,7 +70,6 @@ const addAll = async (electionId) => {
 const getAllElections = async () => {
     try {
         const response = await axiosInstance.get(`${API_ENDPOINT}/elections`);
-        console.log(response);
         return response.data;
     } catch (error) {
         throw error.response?.data?.message || "Fetching elections failed";
@@ -89,7 +88,6 @@ const getElection = async (electionId) => {
 const deleteElection = async (electionId) => {
     try {
         await axiosInstance.delete(`${API_ENDPOINT}/${electionId}/delete-election`);
-        console.log(`Election data was deleted sucessfully for election ${electionId}`);
     } catch (votersError) {
             console.warn(`Failed to delete voter registrations for election ${electionId}:`, votersError);
     }

@@ -55,7 +55,9 @@ const PaymentStep = ({
             if (verificationResult.status !== 'succeeded') {
                 throw new Error('Payment verification failed');
             }
-            await onPaymentSuccess(paymentIntentId);
+            const voterCount = await calculateVoterCount(formData);
+            const pricing = calculateElectionPrice(voterCount);
+            await onPaymentSuccess(paymentIntentId, pricing.totalDollars);
         } catch (error) {
             console.error("Election creation failed:", error);
             const errorMessage = error.message || "Failed to create election after payment";

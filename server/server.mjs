@@ -4,9 +4,6 @@ import { ethers } from "ethers";
 
 const PORT = process.env.PORT || 5000;
 
-const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_AMOY_URL);
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider); // o sa fie mutat.
-
 sequelize
     .sync({ alter: true })
     .then(() => {

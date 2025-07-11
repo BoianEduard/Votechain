@@ -5,13 +5,13 @@ import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
 import ElectionPageSearch from "../../components/Commons/ElectionPageSearch";
 import LoadingSpinner from "../../components/Commons/LoadingSpinner";
 import ErrorCard from "../../components/Commons/Error/ErrorCard";
+import { Link } from "react-router-dom";
 
 const ElectionViewPage = () => {
   const { elections, loading, error } = useElectionData();
   const { searchTerm, setSearchTerm, filteredElections } = useElectionSearch(elections);
 
   const handleFilterClick = () => {
-    console.log("Filter clicked");
   };
 
   if (loading) return <LoadingSpinner />;
@@ -35,7 +35,6 @@ const ElectionViewPage = () => {
           />
         </div>
 
-        {/* Content Section */}
         <div className="bg-white min-h-screen rounded-t-3xl px-4 py-8">
           <div className="max-w-3xl mx-auto">
             {elections.length > 0 ? (
@@ -50,7 +49,6 @@ const ElectionViewPage = () => {
                 </div>
             )}
 
-            {/* FAQ Section */}
             <div className="bg-indigo-50 rounded-lg border border-indigo-100 p-6 mt-8 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="mb-4 md:mb-0 md:mr-6">
@@ -64,7 +62,7 @@ const ElectionViewPage = () => {
                 </div>
                 <div className="flex-shrink-0">
                   <button className="px-5 py-2.5 rounded-full border border-indigo-500 text-indigo-600 font-medium hover:bg-indigo-600 hover:text-white transition-colors">
-                    View FAQ
+                    <Link to="/dashboard#faq">View FAQ</Link>
                   </button>
                 </div>
               </div>

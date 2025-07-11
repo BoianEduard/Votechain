@@ -25,20 +25,13 @@ const DashboardPage = () => {
                 />
             </div>
 
-            {/* Main Content Section */}
             <div className="bg-white dark:bg-gray-900 min-h-screen rounded-t-3xl px-4 py-8 transition-colors duration-200">
                 <div className="max-w-6xl mx-auto">
-                    {/* Stats Section */}
                     <StatSection stats={dashboardData?.stats} />
-
-                    {/* Actions Section */}
                     <ActionSection />
                 </div>
 
-                {/* Dashboard Sidebar */}
                 <DashboardSidebar />
-
-                {/* Footer */}
                 <FooterCard />
             </div>
         </div>

@@ -1,9 +1,27 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HelpCircle, MessageCircle, Settings, ChevronDown, ChevronUp, Shield, CheckCircle } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const DashboardSidebar = () => {
     const [expandedSection, setExpandedSection] = useState(null);
+    const location = useLocation();
+
+    // cauta hash-ul și expandează secțiunea FAQ
+    useEffect(() => {
+        if (location.hash === '#faq') {
+            setExpandedSection('faq');
+            // Scroll la secțiunea FAQ dupa un delay mic pt render
+            setTimeout(() => {
+                const faqElement = document.getElementById('faq-section');
+                if (faqElement) {
+                    faqElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        }
+    }, [location.hash]);
 
     const toggleSection = (section) => {
         setExpandedSection(expandedSection === section ? null : section);
@@ -67,12 +85,10 @@ const DashboardSidebar = () => {
                         <div>
                             <p className="font-medium text-gray-700">Business Hours</p>
                             <p className="text-gray-600">Mon-Fri: 8AM-8PM EST</p>
-                            <p className="text-gray-600">Election Days: 24/7</p>
                         </div>
                         <div className="pt-2 border-t border-gray-200">
-                            <p className="font-medium text-gray-700 mb-2">Response Times</p>
-                            <p className="text-xs text-gray-600">• Critical issues: Within 1 hour</p>
-                            <p className="text-xs text-gray-600">• General inquiries: Within 24 hours</p>
+                            <p className="font-medium text-gray-700 mb-2">Response Time</p>
+                            <p className="text-xs text-gray-600"> Within 24 hours</p>
                         </div>
                     </div>
                 </div>
@@ -83,14 +99,17 @@ const DashboardSidebar = () => {
     return (
         <div className="bg-gray-50 border-t border-gray-200">
             <div className="container mx-auto px-4 py-6">
-                {/* Expandable Sections */}
                 <div className="space-y-4">
                     {sections.map((section) => {
                         const Icon = section.icon;
                         const isExpanded = expandedSection === section.id;
 
                         return (
-                            <div key={section.id} className="bg-white rounded-lg border overflow-hidden">
+                            <div
+                                key={section.id}
+                                className="bg-white rounded-lg border overflow-hidden"
+                                id={section.id === 'faq' ? 'faq-section' : undefined}
+                            >
                                 <button
                                     className="w-full p-4 text-left hover:bg-gray-50 transition-colors flex items-center justify-between"
                                     onClick={() => toggleSection(section.id)}

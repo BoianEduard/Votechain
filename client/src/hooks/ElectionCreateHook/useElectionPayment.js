@@ -23,14 +23,12 @@ export const usePaymentFlow = () => {
         setPaymentCompleted(true);
         setProcessingPayment(false);
         setPaymentError("");
-        console.log("Payment completed:", paymentCompleted);
     };
 
     const handlePaymentError = (error) => {
         setPaymentError(error.message || "Payment failed");
         setProcessingPayment(false);
         setPaymentCompleted(false);
-        console.log("Payment failed:", paymentCompleted);
     };
 
     const resetPayment = () => {
@@ -40,7 +38,7 @@ export const usePaymentFlow = () => {
         setProcessingPayment(false);
     };
 
-    const isBusy = processingPayment || paymentCompleted;
+    const isBusy = processingPayment;
     return {
         paymentId,
         paymentCompleted,

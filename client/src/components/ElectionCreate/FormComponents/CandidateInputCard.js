@@ -33,7 +33,6 @@ const CandidateInputCard = ({
             </div>
 
             <div className="space-y-3">
-                {/* Image Upload Section */}
                 {showImage && onImageChange && (
                     <div className="flex items-center">
                         {candidate.imagePreview ? (
@@ -78,7 +77,6 @@ const CandidateInputCard = ({
                     </div>
                 )}
 
-                {/* Description Field */}
                 {showDescription && (
                     <FormInput
                         type="textarea"

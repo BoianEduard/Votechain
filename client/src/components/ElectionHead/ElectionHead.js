@@ -26,7 +26,7 @@ const ElectionHead = ({ election, expanded, toggleExpand }) => {
                     <div className="flex items-center text-gray-500">
                         <Calendar className="h-4 w-4 mr-2" />
                         <span className="text-sm">
-              {new Date(election.startDate).toLocaleDateString()} - {new Date(election.endDate).toLocaleDateString()}
+              {new Date(election.startDate).toLocaleString()} - {new Date(election.endDate).toLocaleString()}
             </span>
                     </div>
                 </div>

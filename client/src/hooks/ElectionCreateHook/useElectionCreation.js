@@ -6,15 +6,11 @@ import * as validator from '../../utils/validators';
 
 export const useElectionCreation = () => {
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.user.id);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [electionId, setElectionId] = useState(null);
-    const [finalizing, setFinalizing] = useState(false);
-
-    const isBusy = loading || finalizing;
 
     const clearMessages = () => {
         setError("");
@@ -25,14 +21,9 @@ export const useElectionCreation = () => {
         setLoading(false);
     };
 
-    const clearFinalizing = () => {
-        setFinalizing(false);
-    };
-
     const cleanupFailedElection = async (electionId) => {
         try {
             await dispatch(electionThunk.deleteElection(electionId));
-            console.log(`Cleaned up failed election: ${electionId}`);
         } catch (cleanupError) {
             console.error(`Failed to cleanup election ${electionId}:`, cleanupError);
         }
@@ -55,8 +46,7 @@ export const useElectionCreation = () => {
         return errorMessage;
     };
 
-    const createElection = async (formData) => {
-        setFinalizing(false);
+    const createElection = async (formData, electionFee) => {
         setLoading(true);
         setError("");
         setSuccess("");
@@ -70,7 +60,7 @@ export const useElectionCreation = () => {
                 endDate: formData.endDate,
                 eligibilityType: formData.eligibilityType,
                 realTimeResults: formData.realTimeResults,
-                creatorId: userId,
+                electionFee: electionFee
             };
 
             const electionResult = await dispatch(electionThunk.createElection(electionData));
@@ -135,23 +125,19 @@ export const useElectionCreation = () => {
             return { success: false, error: errorMessage };
 
         } finally {
-            setFinalizing(true);
+            setLoading(false);
         }
     };
 
     return {
         loading,
-        finalizing,
-        isBusy,
         error,
         success,
         electionId,
         createElection,
         clearMessages,
-        clearFinalizing,
         setError,
         setSuccess,
         stopLoading
     };
-
 };

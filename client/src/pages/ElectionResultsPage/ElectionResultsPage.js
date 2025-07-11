@@ -35,7 +35,7 @@ const ElectionResultPage = () => {
     if (!election) return <ElectionNotFound />;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-red-500 via-purple-800 to-indigo-400">
+        <div className="max-h-screen bg-gradient-to-b from-red-500 via-purple-800 to-indigo-400">
             <ElectionHeader election={election} status={status} />
             <ResultsContainer result={result} status={status} />
             <TransactionHistoryCard contractAddress={election?.contractAddress} />

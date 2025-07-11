@@ -31,8 +31,6 @@ const AuthChecker = ({ children }) => {
 };
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
-console.log("Stripe key (pls be string):", process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY); // nu Promise
-console.log("Stripe key: " + stripePromise)
 
 function App() {
   return (

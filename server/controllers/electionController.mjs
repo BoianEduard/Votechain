@@ -10,6 +10,7 @@ import * as contractUtils from "../services/contractUtils.mjs";
 
 const createElection = async (req, res, next) => {
     try {
+        const userId = req.user.userId;
         const electionKeys = generateKeyPair();
         const encryptedPrivateKey = encryptPrivateKey(electionKeys.privateKey);
 
@@ -21,6 +22,7 @@ const createElection = async (req, res, next) => {
             ...req.body,
             publicKey: electionKeys.publicKey,
             privateKey: encryptedPrivateKey,
+            creatorId: userId,
             status: status
         });
 
@@ -108,7 +110,6 @@ const getElectionById = async (req, res, next) => {
             return res.status(404).json({ message: "Election not found or not eligible" });
         }
 
-        // Verifică și actualizează statusul
         const updatedElection = await updateElectionStatus(election);
 
         return res.status(200).json(updatedElection);
@@ -117,7 +118,7 @@ const getElectionById = async (req, res, next) => {
     }
 };
 
-//this will only ever be called when there is an issue in deploying the contract, but candidates and voter registration will already
+// only be called when there is an issue in deploying the contract, but candidates and voter registration will already
 // be populated
 const deleteElection = async (req, res) => {
     try {

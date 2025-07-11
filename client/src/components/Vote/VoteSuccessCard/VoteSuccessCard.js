@@ -19,7 +19,7 @@ const VoteSuccessCard = ({ election, selectedCandidate }) => {
     };
 
     const openArbiExplorer = (address) => {
-        const explorerUrl = `https://arbiscan.io/address/${address}`;
+        const explorerUrl = `https://sepolia.arbiscan.io/address/${address}`;
         window.open(explorerUrl, '_blank');
     };
 

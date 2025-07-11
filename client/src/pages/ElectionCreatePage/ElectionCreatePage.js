@@ -57,14 +57,12 @@ const ElectionCreatePage = () => {
     createElection,
     clearMessages,
     clearFinalizing,
-    finalizing,
     stopLoading
   } = useElectionCreation();
 
-  const isBusy = loading || finalizing || processingPayment;
+  const isBusy = loading || processingPayment;
 
   useEffect(() => {
-    console.log("paymentCompleted in ElectionCreatePage:", paymentCompleted);
   }, [paymentCompleted]);
 
   useEffect(() => {
@@ -83,11 +81,6 @@ const ElectionCreatePage = () => {
       clearMessages();
     }
   }, [form, error, clearMessages]);
-
-
-  useEffect(() => {
-    clearFinalizing();
-  }, [success, error, clearFinalizing]);
 
   const handleStepValidation = () => {
     clearValidationErrors();
@@ -111,16 +104,15 @@ const ElectionCreatePage = () => {
     e.preventDefault();
   };
 
-  const handlePaymentSuccess = async (paymentIntentId) => {
+  const handlePaymentSuccess = async (paymentIntentId, electionFee) => {
     try {
       onPaymentSuccessHook(paymentIntentId);
-      await createElection(form);
+      await createElection(form, electionFee);
     } catch (error) {
       handlePaymentError(error.message || "Failed to create election");
     }
   };
 
-  // combine d all errors for display
   const allErrors = [
     error,
     paymentError,

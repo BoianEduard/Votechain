@@ -19,7 +19,6 @@ const RegisterPage = () => {
 
     const validation = validateForm();
     if (!validation.isValid) {
-      // Afișăm prima eroare găsită
       setValidationError(validation.firstError);
       return;
     }
@@ -43,10 +42,7 @@ const RegisterPage = () => {
       <AuthContainer>
         <AuthHead subtitle="Create your account to get started" />
 
-        {/* Afișăm eroarea de la server */}
         {error && <ErrorMessage error={error} />}
-
-        {/* Afișăm prima eroare de validare */}
         {validationError && <ErrorMessage error={validationError} />}
 
         <form onSubmit={handleSubmit} className="space-y-6">

@@ -8,7 +8,6 @@ import FormContainer from "../../../hooks/ElectionCreateHook/useExpandableSectio
 import InputSection from "../FormComponents/InputSection";
 import { formatPrice } from "../../../utils/pricing";
 import * as paymentThunks from "../../../redux/thunks/paymentThunks";
-import SuccessMessage from "../../Commons/Success";
 
 const PaymentForm = ({
                          formData,

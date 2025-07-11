@@ -1,10 +1,10 @@
 .create-election-container {
-  width: 100vw;          /* full viewport width */
-  margin: 0;             /* no margin */
-  padding: 0 1.5rem;     /* horizontal padding */
-  position: relative;    /* if you want to layer or position elements */
-  top: 0;                /* stick to the top */
-  left: 0;               /* align left */
+  width: 100vw;
+  margin: 0;
+  padding: 0 1.5rem;
+  position: relative;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
 }
 

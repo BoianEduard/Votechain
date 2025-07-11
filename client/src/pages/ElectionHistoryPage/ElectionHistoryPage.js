@@ -1,5 +1,3 @@
-import { Calendar, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
 import {
     useElectionData,
     useElectionSearch,
@@ -7,7 +5,7 @@ import {
 } from "../../hooks/ElectionHistoryHook";
 import ElectionPageHeader from "../../components/Commons/ElectionPageHeader";
 import ElectionPageSearch from "../../components/Commons/ElectionPageSearch";
-import HistoryTurnoutCard from "../../components/ElectionHistory/HistoryTurnoutCard";
+import ResultsCard from "../../components/ElectionHistory/ResultsCard";
 
 const ElectionHistoryPage = () => {
     const { elections } = useElectionData();
@@ -15,7 +13,6 @@ const ElectionHistoryPage = () => {
     const { getStatus } = useElectionStatus();
 
     const handleFilterClick = () => {
-        console.log("Filter clicked");
     };
 
     return (
@@ -47,52 +44,9 @@ const ElectionHistoryPage = () => {
                     </h2>
 
                     {filteredElections.length > 0 ? (
-                        filteredElections.map((election) => {
-                            const status = getStatus(election);
-
-                            return (
-                                <div
-                                    key={election.id}
-                                    className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 p-6 relative"
-                                >
-                                    <div className="absolute top-4 right-4">
-                                        <span
-                                            className={`px-3 py-1 text-sm rounded-full ${
-                                                status === "Vote In Progress"
-                                                    ? "bg-green-100 text-green-800"
-                                                    : "bg-gray-100 text-gray-700"
-                                            }`}
-                                        >
-                                            {status}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-xl font-semibold text-indigo-700 mb-2">
-                                        {election.title}
-                                    </h3>
-
-                                    <div className="flex items-center text-gray-500 mb-6">
-                                        <Calendar className="h-4 w-4 mr-2" />
-                                        <span className="text-sm">
-                                            {new Date(election.startDate).toLocaleDateString()} -{" "}
-                                            {new Date(election.endDate).toLocaleDateString()}
-                                        </span>
-                                    </div>
-
-                                    <HistoryTurnoutCard electionId={election.id} />
-
-                                    <div className="text-right">
-                                        <Link
-                                            to={`/election-results/${election.id}`}
-                                            className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
-                                        >
-                                            View Results
-                                            <ExternalLink className="h-4 w-4 ml-2" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            );
-                        })
+                        filteredElections.map((election) => (
+                            <ResultsCard key={election.id} election={election} />
+                        ))
                     ) : (
                         <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 text-center">
                             <p className="text-gray-600 mb-4">

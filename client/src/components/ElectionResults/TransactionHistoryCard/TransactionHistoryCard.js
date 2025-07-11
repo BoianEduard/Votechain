@@ -7,7 +7,7 @@ const truncateAddress = (address) => {
 };
 
 const openArbiExplorer = (address) => {
-    const url = `https://arbiscan.io/address/${address}`;
+    const url = `https://sepolia.arbiscan.io/address/${address}`;
     window.open(url, "_blank");
 };
 
