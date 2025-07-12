@@ -4,7 +4,6 @@ import { Op } from "sequelize";
 const addDomainWhitelist = async (req, res, next) => {
   try {
     const { electionId, domains } = req.body;
-
     if (!electionId) {
       return res.status(400).json({ message: "Election Id not provided" });
     }

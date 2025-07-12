@@ -94,9 +94,11 @@ export const useElectionCreation = () => {
             if (formData.eligibilityType === "whitelist") {
                 const emails = validator.parseWhitelist(formData.whitelist);
                 if (emails.length === 0) throw new Error("Whitelist is empty or invalid");
+                await dispatch(electionThunk.addWhitelist(currentElectionId, emails));
             } else if (formData.eligibilityType === "domain") {
                 const domains = validator.parseDomainWhitelist(formData.domainWhitelist);
                 if (domains.length === 0) throw new Error("Domain whitelist is empty or invalid");
+                await dispatch(electionThunk.addDomainWhitelist(currentElectionId, domains));
             } else {
                 await dispatch(electionThunk.addAll(currentElectionId));
             }

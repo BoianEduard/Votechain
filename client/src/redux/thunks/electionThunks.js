@@ -1,8 +1,6 @@
 import * as electionSlice from "../slices/electionSlice";
 import electionAPI from '../../api/electionAPI';
 import serializeError from '../../utils/serializeError';
-import * as contractSlice from "../slices/contractSlice";
-import contractAPI from "../../api/contractAPI";
 
 export const createElection = (details) => async (dispatch) => {
     dispatch(electionSlice.createElectionStart());
