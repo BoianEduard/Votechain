@@ -1,6 +1,5 @@
 import models from "../models/index.mjs";
 import * as contractUtils from "../services/contractUtils.mjs";
-import {returnCachedResults, calculateAndStoreResults} from '../services/electionUtils.mjs';
 
 const deployElectionContract = async (req, res, next) => {
     try {
@@ -20,17 +19,18 @@ const deployElectionContract = async (req, res, next) => {
         });
         const eligibleVoters = users.map(u => u.address);
 
-        // folosim namespace‐importul
-        const contractAddress = await contractUtils.deployElectionOnChain(eligibleVoters);
-
+        const deploymentInfo = await contractUtils.deployElectionOnChain(eligibleVoters);
         await models.Election.update(
-            { contractAddress },
+            {
+                contractAddress: deploymentInfo.contractAddress,
+                deploymentBlock: deploymentInfo.deploymentBlock
+            },
             { where: { id: electionId } }
         );
 
         return res.status(200).json({
             message: "Contract deployed successfully",
-            contractAddress
+            contractAddress: deploymentInfo.contractAddress,
         });
     } catch (error) {
         next(error);

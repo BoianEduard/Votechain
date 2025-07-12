@@ -89,7 +89,7 @@ export const returnCachedResults = async (election, existingResult) => {
 export const calculateAndStoreResults = async (election, shouldStore = false) => {
     const contract = contractUtils.getProviderContract(election.contractAddress);
     const stats = await contractUtils.fetchVotingStats(contract);
-    const events = await contractUtils.fetchVoteEvents(contract);
+    const events = await contractUtils.fetchVoteEvents(contract, election.deploymentBlock);
 
     const candidates = await models.Candidate.findAll({
         where: { electionId: election.id },

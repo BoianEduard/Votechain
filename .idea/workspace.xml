@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/voterRegistrationController.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/contractController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/contractController.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/electionController.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/electionController.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/deploy/deploy.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/deploy/deploy.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/election.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/election.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/services/contractUtils.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/services/contractUtils.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/services/electionUtils.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/services/electionUtils.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +156,7 @@
       <workItem from="1750860614836" duration="6523000" />
       <workItem from="1751920833923" duration="36912000" />
       <workItem from="1752262258884" duration="3229000" />
-      <workItem from="1752332917692" duration="8109000" />
+      <workItem from="1752332917692" duration="12474000" />
     </task>
     <servers />
   </component>
@@ -184,6 +188,18 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/components/ElectionCreate/ElectionForm/PaymentForm.js</url>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/deploy/deploy.mjs</url>
+          <line>73</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/services/electionUtils.mjs</url>
+          <line>89</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

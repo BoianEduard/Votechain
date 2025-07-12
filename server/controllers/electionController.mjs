@@ -234,7 +234,7 @@ const getElectionResults = async (req, res, next) => {
             return res.status(404).json({ message: "Election not found" });
         }
 
-        // Actualizează statusul înainte de orice logică
+        // actualizam statusul înainte de orice logica
         election = await updateElectionStatus(election, models);
 
         if (!election.realTimeResults && election.status !== "closed") {

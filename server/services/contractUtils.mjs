@@ -47,9 +47,32 @@ export async function fetchVotingStats(contract) {
     };
 }
 
-export async function fetchVoteEvents(contract) {
+export async function fetchVoteEvents(contract, deploymentBlock = null) {
+    console.log('Starting fetchVoteEvents...');
     const filter = contract.filters.VoteSubmitted();
-    return await contract.queryFilter(filter);
+
+    const latestBlock = await contract.runner.getBlockNumber();
+    console.log(`Latest block: ${latestBlock}`);
+
+    const fromBlock = deploymentBlock;
+    console.log(`Scanning from block ${fromBlock} to ${latestBlock}`);
+
+    const chunkSize = 500;
+    let allEvents = [];
+
+    for (let start = fromBlock; start <= latestBlock; start += chunkSize) {
+        const end = Math.min(start + chunkSize - 1, latestBlock);
+        console.log(`Querying blocks ${start}-${end}...`);
+
+        const startTime = Date.now();
+        const events = await contract.queryFilter(filter, start, end);
+        const duration = Date.now() - startTime;
+
+        console.log(`Found ${events.length} events in ${duration}ms`);
+        allEvents = allEvents.concat(events);
+    }
+
+    return allEvents;
 }
 
 export async function countVotes(events, encryptedPrivateKey, candidateIds) {

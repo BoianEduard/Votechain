@@ -31,8 +31,13 @@ const ElectionResultPage = () => {
         return election ? getStatus(election) : 'Loading...';
     }, [election, getStatus]);
 
-    if (loading) return <LoadingSpinner message="Loading election results..." />;
-    if (!election) return <ElectionNotFound />;
+    if (loading) {
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80">
+                <LoadingSpinner message="Loading election results..." />
+            </div>
+        );
+    }    if (!election) return <ElectionNotFound />;
 
     return (
         <div className="max-h-screen bg-gradient-to-b from-red-500 via-purple-800 to-indigo-400">

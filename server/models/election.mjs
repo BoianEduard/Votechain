@@ -31,7 +31,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ENUM('all', 'id', 'whitelist','domain'),
       allowNull: false,
     },
-    realTimeResults: {  
+    realTimeResults: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
@@ -40,12 +40,12 @@ export default (sequelize, DataTypes) => {
       allowNull: true,
     },
     publicKey: {
-      type:DataTypes.TEXT,
-      allowNull:false
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     privateKey: {
-      type:DataTypes.TEXT,
-      allowNull:false
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     contractAddress: {
       type: DataTypes.STRING,
@@ -53,6 +53,10 @@ export default (sequelize, DataTypes) => {
       validate: {
         is: /^0x[a-fA-F0-9]{40}$/,
       },
+    },
+    deploymentBlock: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   });
 };

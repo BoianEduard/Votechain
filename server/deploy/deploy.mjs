@@ -78,6 +78,11 @@ export async function deployContract({ eligibleVoters }) {
     const contract = await factory.deploy(eligibleVoters);
 
     await contract.waitForDeployment();
-
-    return await contract.getAddress();
-}
+    const deploymentTransaction = contract.deploymentTransaction();
+    const receipt = await deploymentTransaction.wait();
+    console.log(receipt.blockNumber);
+    return {
+        contractAddress: await contract.getAddress(),
+        deploymentBlock: receipt.blockNumber
+    };
+};
