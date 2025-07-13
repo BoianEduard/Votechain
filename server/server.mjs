@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 const PORT = process.env.PORT || 5000;
 
 sequelize
-    .sync({ alter: true })
+    .sync({ force: true })
     .then(() => {
         console.log("Database connected and synchronized");
         app.listen(PORT, () => {

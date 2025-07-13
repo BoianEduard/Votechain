@@ -4,7 +4,7 @@ import { fetchElectionResults } from "../../redux/thunks/electionThunks";
 
 export const useElectionResults = (id) => {
     const dispatch = useDispatch();
-    const result = useSelector((state) => state.contract.results?.[id] ?? null);
+    const result = useSelector((state) => state.election.results?.[id] ?? null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 

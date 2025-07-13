@@ -5,6 +5,7 @@ const initialState = {
     selectedElection: null,
     loading: false,
     error: null,
+    results: {}, // Adaugă această linie
 };
 
 const electionSlice = createSlice({
@@ -24,7 +25,7 @@ const electionSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        
+
         addCandidatesStart(state) {
             state.loading = true;
             state.error = null;
@@ -37,7 +38,7 @@ const electionSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        
+
         addWhitelistStart(state) {
             state.loading = true;
             state.error = null;
@@ -139,6 +140,10 @@ const electionSlice = createSlice({
         fetchResultsSuccess: (state, action) => {
             state.loading = false;
             const { electionId, result } = action.payload;
+            // Verifică dacă results există și inițializează-l dacă nu
+            if (!state.results) {
+                state.results = {};
+            }
             state.results[electionId] = result;
         },
         fetchResultsFail: (state, action) => {

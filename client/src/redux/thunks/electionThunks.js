@@ -179,13 +179,15 @@ export const resetVoterCount = () => (dispatch) => {
 export const fetchElectionResults = (electionId) => async (dispatch) => {
     dispatch(electionSlice.fetchResultsStart());
     try {
+        console.log("Election id in thunk:", electionId)
         const result = await electionAPI.getElectionResults(electionId);
         dispatch(electionSlice.fetchResultsSuccess({ electionId, result }));
-        console.log(result);
+        console.log("Did not throw error for result: ", result);
         return result;
     } catch (error) {
         const serializedError = serializeError(error, "Fetching election results failed");
         dispatch(electionSlice.fetchResultsFail(serializedError));
+        console.log("Results in thunk:", serializedError);
         throw error;
     }
 };
