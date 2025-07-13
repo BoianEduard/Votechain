@@ -24,7 +24,7 @@ export const useVoteSubmit = () => {
             return { success: true };
         } catch (err) {
             console.error("Failed to submit vote:", err);
-            const errorMessage = err?.message || "Failed to submit vote. Please try again.";
+            const errorMessage = err || "Failed to submit vote. Please try again.";
             setError(errorMessage);
             return { success: false, error: errorMessage };
         } finally {

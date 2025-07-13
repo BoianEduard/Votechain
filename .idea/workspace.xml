@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ec7a70f2-9b91-4597-82e6-d856260eaa6b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsCard/ResultsCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ElectionResults/ResultsCard/ResultsCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/slices/electionSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/slices/electionSlice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/thunks/electionThunks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoteSubmit.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/hooks/ElectionVoteHook/useVoteSubmit.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +152,7 @@
       <workItem from="1751920833923" duration="36912000" />
       <workItem from="1752262258884" duration="3229000" />
       <workItem from="1752332917692" duration="12889000" />
-      <workItem from="1752394923055" duration="2886000" />
+      <workItem from="1752394923055" duration="7245000" />
     </task>
     <servers />
   </component>
