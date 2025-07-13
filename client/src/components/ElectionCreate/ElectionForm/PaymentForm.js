@@ -154,7 +154,7 @@ const PaymentForm = ({
                     </div>
                 </InputSection>
 
-                {paymentError && <Error message={paymentError} />}
+                {paymentError && <Error error = {paymentError}  />}
 
                 {}
 
