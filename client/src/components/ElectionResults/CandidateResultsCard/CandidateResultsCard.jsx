@@ -36,11 +36,6 @@ const CandidateResultsCard = ({ result }) => {
                                         <h4 className="font-medium text-gray-800 text-sm">
                                             {candidate.name}
                                         </h4>
-                                        {candidate.position && (
-                                            <p className="text-xs text-gray-500">
-                                                {candidate.position}
-                                            </p>
-                                        )}
                                     </div>
                                 </div>
                                 <div className="text-right">

@@ -9,9 +9,6 @@ export default (sequelize, DataTypes, UUIDV4) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    position: {
-      type: DataTypes.STRING,
-    },
     votes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
